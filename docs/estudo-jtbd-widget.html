@@ -103,6 +103,10 @@ footer{margin-top:3rem;padding-top:1.25rem;border-top:1px solid var(--rule);colo
 .t-qa{background:var(--em-soft);color:var(--em)}
 .t-inf{background:var(--new-soft);color:var(--new)}
 .t-neu{background:var(--rule);color:var(--muted)}
+.t-src{background:var(--fn);color:var(--paper);font-weight:600;min-width:1.15rem;text-align:center;
+  padding:.05rem .3rem;margin-right:.1rem}
+.tab-main[aria-selected="false"]{color:var(--ink)}
+.tab-sep{flex:0 0 1px;background:var(--rule);margin:.45rem .4rem .35rem;align-self:stretch}
 td.oid{font-weight:600;color:var(--fn);font-size:.9rem;white-space:nowrap;
   font-variant-numeric:tabular-nums}
 /* --- variantes de box --- */
@@ -115,6 +119,7 @@ td.oid{font-weight:600;color:var(--fn);font-size:.9rem;white-space:nowrap;
   line-height:1;font-variant-numeric:tabular-nums}
 .stat .k{display:block;font-size:.8rem;color:var(--muted);margin-top:.3rem;line-height:1.3}
 td.big{font-family:var(--serif);font-weight:600;font-size:1.1rem;font-variant-numeric:tabular-nums}
+td.big .caption{font-family:var(--sans);font-weight:400;font-size:.78rem}
 code{font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;font-size:.88em;
   background:var(--fn-soft);color:var(--fn);padding:.05rem .3rem;border-radius:3px}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
@@ -123,16 +128,211 @@ code{font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;font-size:.88em
 
 <header>
   <h1>Conversão no widget pela lente de Jobs to be Done</h1>
-  <p class="meta">Estudo JTBD · documento vivo · 19 de setembro de 2026</p>
+  <p class="meta">Estudo JTBD · documento vivo · 19 de setembro de 2026 · síntese na aba Main, dados nas demais</p>
   <div class="tabs" role="tablist" aria-label="Documentos">
-    <button class="tab" id="tab-estudo" role="tab" aria-selected="true" aria-controls="panel-estudo">Estudo · v0.5</button>
+    <button class="tab tab-main" id="tab-main" role="tab" aria-selected="true" aria-controls="panel-main">Main · síntese</button>
+    <span class="tab-sep" aria-hidden="true"></span>
+    <button class="tab" id="tab-estudo" role="tab" aria-selected="false" aria-controls="panel-estudo" tabindex="-1">Estudo · v0.5</button>
     <button class="tab" id="tab-mapa" role="tab" aria-selected="false" aria-controls="panel-mapa" tabindex="-1">Mapa do widget · v1.0</button>
     <button class="tab" id="tab-modelo" role="tab" aria-selected="false" aria-controls="panel-modelo" tabindex="-1">Banco de outcomes · v1.1</button>
     <button class="tab" id="tab-gates" role="tab" aria-selected="false" aria-controls="panel-gates" tabindex="-1">Gates × jobs · v1.0</button>
   </div>
 </header>
 
-<section class="panel" id="panel-estudo" role="tabpanel" aria-labelledby="tab-estudo">
+<section class="panel" id="panel-main" role="tabpanel" aria-labelledby="tab-main">
+  <p class="lede">Análise cruzada das quatro fontes deste documento. Aqui está o que só aparece quando o job map, o mapa do widget, o banco de outcomes e o modelo de gates são lidos juntos — a conclusão, a ordem de trabalho e o que ainda não se sabe. As outras abas guardam os dados de cada análise.</p>
+  <div class="legend">
+    <span><span class="tag t-src">E</span> Estudo</span>
+    <span><span class="tag t-src">M</span> Mapa do widget</span>
+    <span><span class="tag t-src">B</span> Banco de outcomes</span>
+    <span><span class="tag t-src">G</span> Gates × jobs</span>
+  </div>
+
+  <h2>1. A conclusão que muda a ordem do trabalho</h2>
+  <div class="box accent">
+    <h3>O 37,9% ainda não é um baseline <span class="tag t-src">E</span><span class="tag t-src">M</span></h3>
+    <p style="margin:0">O funil perde 49.600 pessoas. Lidas juntas, as quatro análises identificam <b>quatro causas de natureza diferente</b> dentro desse número — e apenas uma delas é problema de UX no sentido que o estudo assumia.</p>
+  </div>
+  <div class="tw"><table>
+    <thead><tr><th>Causa</th><th>Natureza</th><th>Onde bate</th><th>Dimensionada?</th></tr></thead>
+    <tbody>
+      <tr><td><b>Instrumentação</b> — sessões com <code>selectedConnectorId</code> ou <code>updateItem</code> pulam a seleção e nunca podem emitir <code>List Item Clicked</code></td><td>artefato de medição</td><td class="big">23.402</td><td><b>não</b></td></tr>
+      <tr><td><b>Configuração do cliente</b> — <code>oauthRedirectUri</code> ausente deixa o usuário sem caminho de volta do banco</td><td>defeito de integração do ERP</td><td class="big">15.570</td><td><b>não</b></td></tr>
+      <tr><td><b>Mecânico</b> — pop-up bloqueado, limite de taxa por retentativa, múltipla alçada pendente, espera de autorização de dispositivo</td><td>estrutural, não persuasivo</td><td class="big">15.570<br><span class="caption">+ parte de 7.976</span></td><td><b>não</b></td></tr>
+      <tr><td><b>Outcome desatendido</b> — O4, O5, O6</td><td>UX, o alvo original</td><td class="big">23.402<br><span class="caption">+ 7.976</span></td><td>parcial</td></tr>
+    </tbody>
+  </table></div>
+  <p>Três das quatro não têm tamanho. Enquanto não tiverem, <b>não se sabe quanto dos 49.600 é sequer endereçável por experimento de UX</b> — e qualquer teste A/B roda sobre um denominador contaminado.</p>
+  <p>Isso não paralisa o trabalho: dimensionar as três primeiras é barato, usa dados que já existem e não depende de pesquisa com o empresário. É a fase 0 da seção 8.</p>
+
+  <h2>2. A convergência: três análises independentes, mesma etapa</h2>
+  <p>O sinal mais forte de todo o material, e o mais fácil de perder porque está espalhado.</p>
+  <div class="tw"><table>
+    <thead><tr><th>Fonte</th><th>O que encontrou</th><th>Aponta para</th></tr></thead>
+    <tbody>
+      <tr><td><span class="tag t-src">E</span> Estudo</td><td>O4 e O5 são os únicos outcomes da etapa 2, e H3 estava apenas como proposta</td><td><b>etapa 2 Localizar</b></td></tr>
+      <tr><td><span class="tag t-src">M</span> Mapa</td><td>6 dos 14 tutoriais PJ não ensinam a conectar — ensinam a provisionar acesso no banco antes</td><td><b>etapa 2 Localizar</b></td></tr>
+      <tr><td><span class="tag t-src">G</span> Gates</td><td>5 dos 8 gates atendem à etapa 2</td><td><b>etapa 2 Localizar</b></td></tr>
+      <tr><td><span class="tag t-src">B</span> Banco</td><td>o conjunto R é o mais lastreado: 5 das 12 formulações vêm de achado documentado</td><td><b>etapa 2 Localizar</b></td></tr>
+    </tbody>
+  </table></div>
+  <div class="box accent">
+    <p>Nenhuma das três olhou para as outras. O mapa saiu da documentação, os gates saíram das telas de referência dos conectores, o estudo saiu do funil.</p>
+    <p style="margin:0"><b>A etapa 2 Localizar — reunir dispositivo, credenciais, app do banco e poderes na conta — é onde começar.</b> O estudo original a tratava como intensidade média, com dois outcomes e uma hipótese não priorizada. E há um reforço: a etapa 2 é a única em que a Pluggy pode agir <b>antes de o banco entrar em cena</b>. Tudo depois é atrito do banco, que só se consegue tornar esperado.</p>
+  </div>
+
+  <h2>3. A maior oportunidade isolada não pertence a nenhum dos modelos</h2>
+  <p>Num widget só de PJ a lista chega a 77 entradas, e nove marcas aparecem nos dois trilhos — Itaú com quatro, Caixa e Santander com três. A escolha entre elas muda <b>quem pode autorizar</b>: o trilho direto aceita usuário operador, que muitas empresas já têm; o Open Finance exige a aprovação de todos os aprovadores.</p>
+  <p>Cruzando as quatro fontes, essa escolha cai num vão:</p>
+  <div class="tw"><table>
+    <tbody>
+      <tr><td><span class="tag t-src">E</span></td><td>classificava O6 como intensidade baixa</td></tr>
+      <tr><td><span class="tag t-src">M</span></td><td>identificou o problema e o chamou de maior oportunidade aparente da zona A</td></tr>
+      <tr><td><span class="tag t-src">G</span></td><td>começa explicitamente <b>depois</b> da escolha — o nó raiz é "o usuário escolhe banco + tipo"</td></tr>
+      <tr><td><span class="tag t-src">B</span></td><td>tem P2, P3, P4 e P12 escritos, mas nenhum gate os cobre</td></tr>
+    </tbody>
+  </table></div>
+  <div class="box accent">
+    <h3>Ninguém olha para o momento mais barato de resolver o problema mais caro</h3>
+    <p>O G1 pergunta "você tem acesso admin?" depois de a pessoa já ter escolhido um trilho que talvez fosse evitável. Se ela é operador e o banco é o Santander, o Direct funciona e o Open Finance não — mas a escolha já foi feita.</p>
+    <p style="margin:0"><b>H7 e H8 são o mesmo problema atacado em dois momentos.</b> A proposta que sai deste cruzamento é um <b>gate zero</b>: usar a resposta de poderes para ordenar ou rotular as entradas duplicadas na própria lista, convertendo a pergunta de triagem em roteamento.</p>
+  </div>
+
+  <h2>4. Três classes de outcome, e uma regra de triagem</h2>
+  <p>O modelo de gates classifica o atrito por propriedade. Aplicada aos outcomes do estudo, essa taxonomia produz uma distinção que nenhuma fonte enuncia sozinha. <span class="tag t-src">G</span><span class="tag t-src">E</span></p>
+  <div class="tw"><table>
+    <thead><tr><th>Classe</th><th>O que a Pluggy pode fazer</th><th>Exemplos</th></tr></thead>
+    <tbody>
+      <tr><td><b>Satisfazível</b></td><td>mover o número</td><td class="oid">O4 O5 O6 O13 — verificar, perguntar, ordenar antes do banco</td></tr>
+      <tr><td><b>Apenas esperável</b></td><td>fazer com que não pareça erro</td><td class="oid">O10 O12 — a Caixa leva 30 min, e isso não muda</td></tr>
+      <tr><td><b>Inegociável</b></td><td>apenas divulgar</td><td class="oid">O2 — no Open Finance todas as contas da empresa naquele banco vão de uma vez, e o usuário não escolhe</td></tr>
+    </tbody>
+  </table></div>
+  <div class="box">
+    <p><b>Regra prática:</b> para outcome apenas esperável, reescreva o outcome sobre o <i>saber</i>, não sobre o <i>fato</i>. "Minimizar o tempo para concluir a autorização" (O10) é um outcome que a Pluggy não pode atender; "minimizar o tempo para saber quanto a autorização vai levar" é. A diferença decide qual métrica o experimento persegue.</p>
+    <p style="margin:0">O caso de O2 merece atenção própria: é impossível de satisfazer por desenho do Open Finance. Se a importância for alta nas entrevistas, vira <b>argumento de produto para o trilho direto em certos casos</b> — não um problema de copy.</p>
+  </div>
+
+  <h2>5. A teoria implícita dos gates sobre os jobs emocionais</h2>
+  <p>Vale explicitar, porque é uma divergência silenciosa entre as fontes — e é testável.</p>
+  <p>O <b>modelo de gates é inteiramente funcional</b>. Não há gate de segurança, de confiança ou de tranquilidade. E, no entanto, o próprio artefato diz: <i>"uma etapa normal do banco que chega sem aviso é lida como erro; antecipada, é lida como progresso"</i>.</p>
+  <div class="tw"><table>
+    <thead><tr><th>Tese</th><th>De onde vem</th><th>O que implica</th></tr></thead>
+    <tbody>
+      <tr><td>A ansiedade de legitimidade é <b>subproduto de expectativa não atendida</b>. Some quando os gates fazem o trabalho.</td><td><span class="tag t-src">G</span> implícita no modelo</td><td>basta prever bem; nenhuma reassurance é necessária</td></tr>
+      <tr><td>E1 é <b>job emocional com peso próprio</b>. Os bancos treinaram o cliente a desconfiar de redirecionamentos — reflexo que existiria mesmo com expectativa calibrada.</td><td><span class="tag t-src">E</span> explícita no estudo</td><td>há um trabalho de legitimidade que nenhum aviso de preparação resolve</td></tr>
+    </tbody>
+  </table></div>
+  <div class="box accent">
+    <p style="margin:0"><b>As duas teses levam a produtos diferentes</b>, e a pergunta é barata de fazer em entrevista: perguntar sobre uma conexão que deu certo e entender se o desconforto sumiu por saber o que ia acontecer, ou se permaneceu apesar disso.</p>
+  </div>
+
+  <h2>6. O que a instrumentação dos gates desbloqueia</h2>
+  <p>Três peças de fontes diferentes que só funcionam juntas.</p>
+  <div class="tw"><table>
+    <tbody>
+      <tr><td><span class="tag t-src">B</span></td><td>outcomes escritos como tempo têm proxy comportamental — satisfação pode sair do funil, sem pesquisa</td></tr>
+      <tr><td><span class="tag t-src">M</span></td><td>o funil não tem nenhum evento entre <code>SELECTED_INSTITUTION</code> e <code>SUBMITTED_LOGIN</code></td></tr>
+      <tr><td><span class="tag t-src">G</span></td><td>os gates vivem exatamente nesse vão, e cada um é tela mais ação — instrumentável, com esquema de ID estável</td></tr>
+    </tbody>
+  </table></div>
+  <div class="box accent">
+    <h3>Os IDs de gate são a instrumentação que faz os proxies funcionarem</h3>
+    <p>Nenhum dos três documentos diz isso sozinho. Consequências diretas:</p>
+    <ul style="margin:0">
+      <li>a perda passa a ser atribuível ao gate, não à transição inteira de 7.976;</li>
+      <li>a resposta do G1 vira dimensão de segmentação do funil inteiro — o que <b>responde a pergunta aberta nº 4 do estudo sem pesquisa nenhuma</b>;</li>
+      <li>o custo de cada gate fica isolável, o que permite remover os que não pagam.</li>
+    </ul>
+  </div>
+  <p>Por isso a recomendação é instrumentar <b>antes</b> de desenhar as telas. O esquema de IDs foi pensado para design, conteúdo e engenharia; estendê-lo a analytics é barato agora e caro depois.</p>
+
+  <h2>7. A tensão que precisa de métrica de guarda</h2>
+  <p>O estudo é explícito: o job é instrumental, ninguém quer conectar conta, e <b>"reassurance espalhada por todas as telas vira ruído"</b>. O modelo de gates propõe oito unidades de orientação antes do banco. <span class="tag t-src">E</span><span class="tag t-src">G</span></p>
+  <p>A contradição é real, e o modelo já a mitiga ao ser uma espinha dorsal que acumula num pacote único em vez de 64 caminhos. Mas o cruzamento permite quantificar o limite:</p>
+  <div class="tw"><table>
+    <thead><tr><th>Janela</th><th>Perda hoje</th><th>Papel</th></tr></thead>
+    <tbody>
+      <tr><td>Clique na instituição → formulário enviado</td><td class="big">7.976<br><span class="caption">85,9%</span></td><td>onde vivem os gates de preparação</td></tr>
+      <tr><td>Login bem-sucedido → polling com sucesso</td><td class="big">15.570<br><span class="caption">66,0%</span></td><td>onde a preparação precisa pagar</td></tr>
+    </tbody>
+  </table></div>
+  <div class="box accent">
+    <p style="margin:0"><b>Os gates de preparação precisam custar menos na primeira janela do que economizam na segunda.</b> A transição de 85,9% é a métrica de guarda do modelo inteiro, desde o primeiro teste. Com um corolário de desenho: <b>se um gate custa mais do que economiza, ele não vira tela — vira texto dentro de uma tela que já existe.</b></p>
+  </div>
+
+  <h2>8. Plano sequenciado</h2>
+
+  <h3>Fase 0 · Saneamento <span class="tag t-neu">nenhum experimento antes disto</span></h3>
+  <p class="caption">Tudo aqui usa dados existentes e não depende do empresário.</p>
+  <ol>
+    <li>Segmentar o funil por presença de <code>selectedConnectorId</code> e <code>updateItem</code>.</li>
+    <li>Levantar clientes que criam connect tokens sem <code>oauthRedirectUri</code> e cruzar com a conversão da zona B.</li>
+    <li>Inserir <code>SUBMITTED_CONSENT</code> no funil para separar abandono nas boas-vindas do abandono na lista.</li>
+    <li>Resolver o significado de <code>Login Step Success</code> segmentando a transição anterior por trilho.</li>
+    <li>Medir <code>SUCCESS</code> contra <code>PARTIAL_SUCCESS</code> nos 30.230, e a distribuição de warnings.</li>
+    <li>Contar <code>USER_NOT_SUPPORTED</code> por conector e itens PJ de Open Finance com warning 002.</li>
+  </ol>
+  <p class="caption"><b>Saída:</b> um baseline confiável, e o tamanho real da oportunidade de UX.</p>
+
+  <h3>Fase 1 · Instrumentação</h3>
+  <ol start="7">
+    <li>Emitir um evento por variante de gate, com o ID estável, <b>antes</b> de desenhar qualquer tela.</li>
+    <li>Fixar a transição clique → formulário enviado (85,9%) como métrica de guarda.</li>
+  </ol>
+
+  <h3>Fase 2 · Entrevistas com PME</h3>
+  <ol start="9">
+    <li>Roteiro sobre importância, usando as 36 formulações do banco de outcomes como material de apoio — descartar as que não ressoam, capturar as que faltam.</li>
+    <li>Testar a tese de E1 da seção 5: a ansiedade some com expectativa calibrada, ou persiste?</li>
+    <li>Testar a formulação comportamental do G1 contra a de nomenclatura.</li>
+    <li>Medir a importância de O2, o compartilhamento em bloco, que é inegociável e pode virar argumento de trilho.</li>
+  </ol>
+
+  <h3>Fase 3 · Experimentos, nesta ordem</h3>
+  <ol start="13">
+    <li><b>Gate zero</b> — ordenar ou rotular as entradas duplicadas usando poderes (H7 + H8). Maior oportunidade, e a montante de tudo.</li>
+    <li><b>Pacote de preparação</b> — os gates da etapa 2 (H1 + H3), onde as três análises convergem.</li>
+    <li><b>Aviso de pop-up</b> (H9) — menor custo de implementação de todas, e no pico de E1.</li>
+    <li><b>Recuperação por tipo de erro</b> (H5) — 17 estados em 8 famílias, com <code>providerMessage</code> como fonte de texto.</li>
+  </ol>
+
+  <h2>9. Tensões não resolvidas entre as fontes</h2>
+  <p>Registradas em vez de conciliadas por suposição.</p>
+  <div class="tw"><table>
+    <thead><tr><th>Tensão</th><th>Entre</th><th>Como resolver</th></tr></thead>
+    <tbody>
+      <tr><td>"G1 é o maior fator de perda" é conclusão de análise de fluxo; o estudo tem a mesma pergunta em aberto desde a v0.2</td><td><span class="tag t-src">G</span><span class="tag t-src">E</span></td><td><code>USER_NOT_SUPPORTED</code> por conector — fase 0</td></tr>
+      <tr><td>E1 é necessidade própria ou subproduto de expectativa não atendida</td><td><span class="tag t-src">E</span><span class="tag t-src">G</span></td><td>entrevista — fase 2</td></tr>
+      <tr><td>Reassurance espalhada vira ruído × oito gates de orientação</td><td><span class="tag t-src">E</span><span class="tag t-src">G</span></td><td>métrica de guarda — seção 7</td></tr>
+      <tr><td>Cobertura: 16 conectores revisados × 11 diretos PJ e 66 instituições OF no universo documentado</td><td><span class="tag t-src">G</span><span class="tag t-src">M</span></td><td>a generalização do modelo de gates vale para 16, não para 66</td></tr>
+      <tr><td><s>O6 como intensidade baixa × maior oportunidade da zona A</s></td><td><span class="tag t-src">E</span><span class="tag t-src">M</span></td><td><b>resolvido:</b> O6 elevado a alta na v0.3</td></tr>
+      <tr><td><s>Granularidade: 2 outcomes por etapa × uma dúzia em Ulwick</s></td><td><span class="tag t-src">E</span><span class="tag t-src">B</span></td><td><b>resolvido:</b> fica em 2; a granularidade vem das entrevistas</td></tr>
+    </tbody>
+  </table></div>
+
+  <h2>10. O que continua desconhecido</h2>
+  <p>Consolidado das quatro fontes, ordenado pelo que cada resposta destrava.</p>
+  <div class="tw"><table>
+    <thead><tr><th>Pergunta</th><th>Destrava</th><th>Custo</th></tr></thead>
+    <tbody>
+      <tr><td>Quanto da perda da zona A é instrumentação e não abandono</td><td><b>o baseline inteiro</b></td><td>consulta</td></tr>
+      <tr><td>Quantos clientes não configuram <code>oauthRedirectUri</code></td><td>dimensionar a zona B</td><td>consulta</td></tr>
+      <tr><td>O que <code>Login Step Success</code> significa em cada trilho</td><td>a leitura da zona B</td><td>consulta</td></tr>
+      <tr><td>Com que frequência quem está no widget não tem poderes</td><td>prioridade de G1 e do gate zero</td><td>consulta</td></tr>
+      <tr><td>Qual lista de conectores cada cliente de fato exibe</td><td>validade dos experimentos por cliente</td><td>dashboard</td></tr>
+      <tr><td>A importância de cada outcome</td><td>a priorização por oportunidade</td><td>entrevista</td></tr>
+      <tr><td>Se E1 sobrevive à expectativa calibrada</td><td>o escopo do trabalho de legitimidade</td><td>entrevista</td></tr>
+      <tr><td>O texto real de cada tela do widget</td><td>H9 e toda revisão de copy</td><td>Chrome, pendente</td></tr>
+    </tbody>
+  </table></div>
+  <p>As seis primeiras não dependem do empresário e podem ser respondidas nesta semana. As duas últimas são as que exigem campo.</p>
+
+  <footer>Síntese versão 1.0 · 19 de setembro de 2026. Análise cruzada das quatro abas seguintes, que guardam os dados de cada linha de investigação. Fonte em <code>docs/sintese.md</code>.</footer>
+
+</section>
+
+<section class="panel" id="panel-estudo" role="tabpanel" aria-labelledby="tab-estudo" hidden>
   <p class="lede">Base de trabalho para melhorar a conversão do empresário da PME no fluxo de conexão da Pluggy. O objetivo é que ele chegue ao fim do fluxo informado e sem dúvidas, e que os experimentos de UX ataquem primeiro os outcomes mais desatendidos.</p>
   <div class="legend">
     <span><span class="tag t-fn">funcional</span> job ou outcome funcional</span>
@@ -1317,7 +1517,8 @@ code{font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;font-size:.88em
 <script>
 (function () {
   var tabs = Array.prototype.slice.call(document.querySelectorAll('.tab'));
-  var KEY = 'jtbd-aba';
+  var KEY = 'jtbd-aba-v2'; // v2: a Main entrou como principal; a chave nova garante que
+  // quem já visitou caia nela uma vez, e só depois volte a ter a escolha lembrada
 
   function show(id, focus) {
     tabs.forEach(function (t) {

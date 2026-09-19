@@ -2,10 +2,17 @@
 
 Contexto migrado de uma conversa no claude.ai (18–19 set 2026). Este arquivo resume o que já foi alinhado.
 
-- Documento vivo: `docs/estudo-jtbd-widget.html` (versão 0.5) — publicado em abas
-- Mapa do widget: `docs/mapa-widget.md` (v1.0)
-- Banco de outcomes: `docs/modelo-valor-outcomes.md` (v1.1)
-- Gates × jobs: `docs/gates-jobs.md` (v1.0)
+Publicado em `docs/estudo-jtbd-widget.html`, em cinco abas. **A aba Main é a síntese e o ponto de entrada**; as outras quatro guardam os dados de cada linha de investigação.
+
+| Aba | Fonte | Conteúdo |
+|---|---|---|
+| **Main** | `docs/sintese.md` (v1.0) | análise cruzada das quatro, plano sequenciado, tensões |
+| Estudo | — (v0.5) | job map, 16 outcomes, funil, hipóteses |
+| Mapa do widget | `docs/mapa-widget.md` (v1.0) | telas, conectores, eventos, perdas estruturais |
+| Banco de outcomes | `docs/modelo-valor-outcomes.md` (v1.1) | 36 formulações para testar em entrevista |
+| Gates × jobs | `docs/gates-jobs.md` (v1.0) | 8 gates cruzados com job map e outcomes |
+
+Ao acrescentar uma análise nova: ela vira aba própria **e** a Main é atualizada com o que o cruzamento revela.
 
 ## Quem sou e o objetivo
 
@@ -102,7 +109,16 @@ Use `claude --chrome` ou `/chrome` numa sessão local, não nesta.
 7. Não concluir conexões reais nem submeter credenciais reais.
 8. Atualizar `docs/mapa-widget.md` para a v1.1 e o estudo para a v0.4.
 
-#### Decisão sobre granularidade de outcomes
+### Conclusões da síntese (aba Main)
+
+1. **O 37,9% ainda não é um baseline.** Das 49.600 perdas, quatro causas distintas: instrumentação, configuração do cliente, mecânica e outcome desatendido. Três não têm tamanho. Dimensioná-las é a fase 0 e não depende do empresário.
+2. **Três análises independentes convergem na etapa 2 Localizar** — é onde começar, e é a única etapa em que a Pluggy age antes de o banco entrar.
+3. **A maior oportunidade isolada está num vão entre modelos:** a escolha do trilho (Itaú com 4 entradas) fica a montante dos gates e era intensidade baixa no estudo. Proposta: gate zero unindo H7 e H8.
+4. **Três classes de outcome:** satisfazível, apenas esperável, inegociável. Para o apenas esperável, reescrever sobre o *saber*, não sobre o *fato*.
+5. **Divergência testável sobre E1:** os gates supõem que a ansiedade de legitimidade é subproduto de expectativa não atendida; o estudo supõe necessidade própria. Levar à entrevista.
+6. **Os IDs de gate são a instrumentação que faz os proxies comportamentais funcionarem** — instrumentar antes de desenhar telas.
+
+### Decisão sobre granularidade de outcomes
 
 **O job map segue com cerca de dois outcomes por etapa.** A Figura 2.4 de Ulwick sugere uma dúzia, e a v0.4 chegou a tratar isso como déficit — a decisão foi não seguir por ali. A granularidade fina virá das **entrevistas com empresários de PME**, não de dedução em cima de documentação. Não reintroduzir a cota de 12 no documento central.
 
