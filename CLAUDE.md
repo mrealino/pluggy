@@ -1,6 +1,9 @@
 # Estudo JTBD — conversão no widget de conexão da Pluggy
 
-Contexto migrado de uma conversa no claude.ai (18–19 set 2026). Este arquivo resume o que já foi alinhado. O documento completo está em `docs/estudo-jtbd-widget.html` (versão 0.2).
+Contexto migrado de uma conversa no claude.ai (18–19 set 2026). Este arquivo resume o que já foi alinhado.
+
+- Documento vivo: `docs/estudo-jtbd-widget.html` (versão 0.3)
+- Mapa do widget: `docs/mapa-widget.md` (versão 1.0)
 
 ## Quem sou e o objetivo
 
@@ -39,10 +42,10 @@ Insight central: o fluxo legítimo parece golpe (bancos ensinaram a nunca inform
 |---|---|---|---|
 | 1 Definir | Definir quais acessos conceder e para quê | E3, E4 | O1 minimizar o tempo para saber quais dados ou operações o sistema terá acesso; O2 minimizar a probabilidade de autorizar mais acesso do que pretendia; O3 minimizar a probabilidade de não saber para que o acesso será usado |
 | 2 Localizar | Reunir o necessário: dispositivo, app do banco, token, credenciais, poderes na conta | E2 | O4 minimizar a probabilidade de iniciar sem ter em mãos o que será exigido; O5 minimizar a probabilidade de iniciar sem permissão para autorizar em nome da empresa |
-| 3 Preparar | Escolher a instituição e a conta certas | E2 | O6 minimizar a probabilidade de selecionar a instituição ou a conta errada |
+| 3 Preparar | Escolher a instituição e a conta certas | E2 (**alta**, reavaliado v0.3) | O6 minimizar a probabilidade de selecionar a instituição ou a conta errada |
 | 4 Confirmar | Verificar que o pedido é legítimo e que tem poderes | E1 | O7 minimizar a probabilidade de desconfiar da legitimidade do pedido e desistir |
 | 5 Executar | Autorizar o acesso junto à instituição | E1 (pico) | O8 minimizar a probabilidade de não saber o que fazer na etapa seguinte; O9 minimizar a probabilidade de se perder na ida e volta entre o sistema e o app do banco; O10 minimizar o tempo para concluir a autorização |
-| 6 Monitorar | Acompanhar se a conexão foi concluída | E5 | O11 minimizar o tempo para saber se a conexão foi concluída; O12 minimizar a probabilidade de a conexão ficar pendente sem saber o que falta |
+| 6 Monitorar | Acompanhar se a conexão foi concluída | E5 | O11 minimizar o tempo para saber se a conexão foi concluída; O12 minimizar a probabilidade de a conexão ficar pendente sem saber o que falta; **O16 (proposta v0.3)** minimizar o tempo para saber que a conclusão depende de outra pessoa, e de quem |
 | 7 Modificar | Corrigir falhas e ajustar ou revogar | E4, E2 | O13 minimizar o tempo para saber como corrigir quando algo falha; O14 minimizar o tempo para saber como revogar ou alterar a autorização |
 | 8 Concluir | Voltar ao sistema com a conta conectada | E4, E3 | O15 minimizar a probabilidade de ser surpreendido com o que o sistema faz com o acesso |
 
@@ -66,36 +69,53 @@ Um print com dados de um único cliente foi descartado; usar só a base inteira.
 
 ## Respostas já confirmadas
 
-- Customização pelos ERPs: apenas nome da empresa na primeira página, logo e cor dos botões. Estratificar experimentos por cliente.
+- Customização pelos ERPs: **revisado na v0.3.** Além de nome da empresa, logo e cor, são customizáveis o raio de borda, o texto dos botões da primeira tela e da tela de credenciais, a seleção de conectores exibidos e os textos de consentimento. Há ainda uma camada de parâmetros do SDK escolhidos no código do ERP (`selectedConnectorId` pula a seleção de instituição; `updateItem` abre direto nas credenciais). Estratificar por configuração, não só por cliente.
 - Regulação: pelas regras do Open Finance, só o handoff para o banco é regulado. A LGPD (consentimento livre, informado e inequívoco) continua valendo dentro do widget; variantes da tela de termos devem passar pelo jurídico.
 
 ## Perguntas ainda abertas
 
-1. Divisão entre Open Finance e conectores diretos; lista de conectores e credenciais pedidas por cada um.
-2. O que Login Step Success significa em cada trilho (no Open Finance, dispara antes ou depois do handoff?).
-3. Entre os 15.570 da zona B, quanto é erro técnico, erro do usuário e abandono.
+1. O que Login Step Success significa em cada trilho. O mapa propõe um teste barato (segmentar `Form Submitted → Login Step Success` por trilho); falta rodar.
+2. Entre os 15.570 da zona B, quanto é erro técnico, erro do usuário e abandono.
+3. Quanto da perda da zona A é abandono e quanto é sessão que nunca teve a etapa de seleção de instituição.
 4. Com que frequência quem está no widget não é o titular ou não tem poderes na conta.
-5. Com que frequência o consentimento PJ fica parado em múltiplas alçadas.
+5. Quantos clientes não configuram `oauthRedirectUri`, e quanto isso explica da zona B.
+6. Qual lista de conectores cada cliente de fato exibe (o universo documentado não é o que o empresário vê).
 
-## Próxima tarefa: mapear o widget atual (requer Chrome)
+Respondidas na v0.3: divisão entre trilhos (27 diretos, sendo 11 PJ; 143 instituições de Open Finance, sendo 66 com contexto empresarial) e credenciais por conector direto PJ; e como medir a múltipla alçada (warning 002 no `statusDetail`).
 
-Use a integração com o Chrome (`claude --chrome` ou `/chrome`).
+## Estado do mapeamento do widget
+
+`docs/mapa-widget.md` v1.0 existe, derivado da documentação viva da Pluggy (MCP Pluggy Docs) e da base de Q&A do suporte — **não da observação da tela**. No ambiente remoto do Claude Code a saída de rede para `connect.pluggy.ai`, `demo-connect.pluggy.dev` e `api.pluggy.ai` é bloqueada pelo proxy (403 no CONNECT). As ferramentas de dashboard do MCP (`list_connectors`, `get_stats`) pedem re-autenticação do conector.
+
+### Próxima tarefa A: percorrer o widget (requer Chrome, rodar localmente)
+
+Use `claude --chrome` ou `/chrome` numa sessão local, não nesta.
 
 1. Abrir https://demo-connect.pluggy.dev/ (aba React Pluggy Connect).
-2. Em Connect Demo Settings, usar a URL https://connect.pluggy.ai e o cliente com label "marco". Eu preencho as credenciais; não peça nem grave o client secret em arquivos.
+2. Em Connect Demo Settings, usar https://connect.pluggy.ai e o cliente com label "marco". Eu preencho as credenciais; não peça nem grave o client secret em arquivos.
 3. Gerar o connectToken e abrir o widget.
-4. Percorrer o fluxo tela a tela, registrando: texto e elementos de cada tela, conectores disponíveis, trilho de cada um (Open Finance ou direto) e credenciais pedidas.
-5. Não concluir conexões reais nem submeter credenciais.
-6. Salvar o resultado em `docs/mapa-widget.md` e cruzar cada tela com as etapas do job, os outcomes e os eventos do funil.
-7. Atualizar `docs/estudo-jtbd-widget.html` para a versão 0.3.
+4. Registrar o texto e os elementos reais de cada tela, confirmando ou corrigindo a seção 2 do mapa.
+5. Conferir: se a lista de instituições tem busca, como agrupa, como exibe marcas duplicadas (Itaú tem 4 entradas), e a redação exata do aviso de pop-up bloqueado (insumo de H9).
+6. Percorrer os fluxos sintéticos do sandbox (`includeSandbox: true`): `user-ok-multi-company`, `user-ok-phone`, `user-ok-select`, QR, conta conjunta e o fluxo Open Finance com CPF `761.092.776-73`. São dados sintéticos — não envolvem credencial real nem conexão real.
+7. Não concluir conexões reais nem submeter credenciais reais.
+8. Atualizar `docs/mapa-widget.md` para a v1.1 e o estudo para a v0.4.
+
+### Próxima tarefa B: saneamento de dados, antes de qualquer experimento
+
+Ver a lista reordenada na seção 11 do estudo. Os quatro primeiros itens (segmentar por configuração, levantar `oauthRedirectUri` ausente, inserir `SUBMITTED_CONSENT` no funil, resolver o significado de Login Step Success) precedem qualquer teste A/B: hoje não se sabe quanto da perda é comportamento e quanto é instrumentação ou configuração.
 
 ## Hipóteses candidatas de experimento
 
 - H1: preparar o empresário antes do redirecionamento (O7, O8, O9; E1)
 - H2: confirmação imediata e explícita no retorno (O11, O12; E5)
-- H3 (proposta): checklist do que ter em mãos, incluindo poderes na conta (O4, O5; E2)
+- H3 (prioridade alta v0.3): checklist do que ter em mãos, incluindo poderes na conta (O4, O5; E2). Seis dos catorze tutoriais PJ da Pluggy são sobre provisionar acesso no banco antes de começar.
 - H4 (proposta): resumo de permissões em linguagem simples (O1–O3; E3)
-- H5 (proposta): recuperação específica por tipo de erro (O13; E2)
-- H6 (proposta): mostrar como revogar na conclusão (O14, O15; E4)
+- H5 (detalhada v0.3): recuperação específica por tipo de erro — 17 estados em 8 famílias, `providerMessage` como fonte de texto (O13; E2)
+- H6 (proposta): mostrar como revogar na conclusão. Consentimentos de OF não expiram por padrão e se revogam no app do banco (O14, O15; E4)
+- H7 (novo v0.3): desambiguar instituições duplicadas na lista (O6; E2) — maior oportunidade aparente da zona A
+- H8 (novo v0.3): roteamento por poderes antes da lista, sugerindo o trilho direto com usuário operador (O5, O6; E2)
+- H9 (novo v0.3): tratar o aviso de pop-up bloqueado como tela de pico (O8, O9; E1) — menor custo de todas
+
+Não é hipótese: `oauthRedirectUri` ausente na integração do ERP é defeito de configuração, trabalho de CS, não experimento.
 
 Priorização: Oportunidade = Importância + máx(Importância − Satisfação, 0). Fontes: funil por etapa, micropesquisa no ponto de abandono, tickets e entrevistas. Segmentar por trilho, instituição, titular ou operador, dispositivo e cliente.
