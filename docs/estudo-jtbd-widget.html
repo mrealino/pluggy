@@ -125,9 +125,10 @@ code{font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;font-size:.88em
   <h1>Conversão no widget pela lente de Jobs to be Done</h1>
   <p class="meta">Estudo JTBD · documento vivo · 19 de setembro de 2026</p>
   <div class="tabs" role="tablist" aria-label="Documentos">
-    <button class="tab" id="tab-estudo" role="tab" aria-selected="true" aria-controls="panel-estudo">Estudo · v0.4</button>
+    <button class="tab" id="tab-estudo" role="tab" aria-selected="true" aria-controls="panel-estudo">Estudo · v0.5</button>
     <button class="tab" id="tab-mapa" role="tab" aria-selected="false" aria-controls="panel-mapa" tabindex="-1">Mapa do widget · v1.0</button>
-    <button class="tab" id="tab-modelo" role="tab" aria-selected="false" aria-controls="panel-modelo" tabindex="-1">Modelo de valor · v1.0</button>
+    <button class="tab" id="tab-modelo" role="tab" aria-selected="false" aria-controls="panel-modelo" tabindex="-1">Banco de outcomes · v1.1</button>
+    <button class="tab" id="tab-gates" role="tab" aria-selected="false" aria-controls="panel-gates" tabindex="-1">Gates × jobs · v1.0</button>
   </div>
 </header>
 
@@ -176,10 +177,7 @@ code{font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;font-size:.88em
     <tr><td>E5</td><td>Evitar a ansiedade de não saber se deu certo</td><td>adjacente</td></tr>
   </tbody>
 </table></div>
-<div class="box">
-  <h3>Proposta da v0.4: E1 não é emoção, é etapa transversal <span class="tag t-new">novo v0.4</span></h3>
-  <p style="margin:0">Na Figura 2.4 de Ulwick, "Ensure Safety" não é atributo nem sentimento — é uma <b>etapa do job map desenhada fora da cadeia, com uma seta apontando para o job inteiro</b>, e com outcomes próprios. Que E1 apareça hoje em duas etapas com intensidades diferentes (4 alta, 5 pico) já é o sintoma de que atravessa o job em vez de ocupar uma posição nele. A proposta é promover E1 a etapa transversal <b>"Garantir que não está sendo golpeado"</b>, com doze outcomes funcionais próprios (G1–G12 em <code>docs/modelo-valor-outcomes.md</code>), e dissolver a etapa 4. Isso não contradiz "intervir nos picos": etapa transversal significa que a necessidade atravessa o job, não que a solução deva aparecer em toda tela.</p>
-</div>
+
 <div class="box">
   <h3>O fluxo legítimo parece golpe</h3>
   <p style="margin:0">Os bancos ensinaram o cliente a nunca informar senha fora do app e a desconfiar de redirecionamentos e pedidos de acesso inesperados. O fluxo de conexão pede exatamente esses comportamentos. E1 não se resolve com selos de segurança; exige romper um reflexo treinado, com razão. Excesso de reassurance espalhado por todas as telas vira ruído e pode aumentar a desconfiança, porque "confie, é seguro" também é padrão de golpe.</p>
@@ -187,10 +185,7 @@ code{font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;font-size:.88em
 
 <h2>5. Mapa do job em oito etapas</h2>
 <p>Estrutura do job map universal do ODI. As versões anteriores da conversa agrupavam algumas etapas; aqui elas foram separadas, e as etapas Preparar e Modificar receberam um mapeamento emocional novo.</p>
-<div class="box">
-  <h3>Aviso da v0.4: este mapa está subespecificado <span class="tag t-new">novo v0.4</span></h3>
-  <p style="margin:0">Ulwick estabelece que <b>cerca de uma dúzia de outcomes define o sucesso em cada etapa</b>. Temos 16 outcomes em 8 etapas — média de dois, com três etapas a um único outcome. O que está abaixo é uma <b>lista de temas, não um modelo de valor</b>: não se projeta uma tela contra "minimizar a probabilidade de selecionar a instituição errada". O refino está em <code>docs/modelo-valor-outcomes.md</code>, que desenvolve a dúzia completa em três etapas (36 outcomes) e propõe promover E1 a etapa transversal. Esta seção será reescrita quando o refino for validado.</p>
-</div>
+
 
 <p class="caption">Intensidade emocional estimada por etapa (hipótese a validar com dados de abandono)</p>
 <div class="strip-wrap" role="img" aria-label="Intensidade emocional por etapa: Definir média, Localizar média, Preparar alta, Confirmar alta, Executar pico, Monitorar alta, Modificar média, Concluir baixa">
@@ -456,9 +451,9 @@ code{font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;font-size:.88em
 </ul>
 <p>Dimensões de segmentação: trilho (Open Finance ou conector direto), instituição, quem está no widget (titular ou operador), dispositivo e cliente ERP.</p>
 <div class="box">
-  <h3>Inversão da v0.4: medir satisfação de graça, gastar o acesso escasso com importância <span class="tag t-new">novo v0.4</span></h3>
-  <p>Os três exemplos de outcome da Figura 2.4 são todos de tempo — e tempo é observável. Depois do refino, <b>vários outcomes têm proxy comportamental já instrumentado ou a um evento de distância</b>: o intervalo entre <code>SUBMITTED_CONSENT</code> e <code>SELECTED_INSTITUTION</code> mede o tempo para localizar a instituição; <code>SELECTED_INSTITUTION</code> emitido duas vezes com <code>connector</code> diferente mede a re-escolha; seleção sem <code>SUBMITTED_LOGIN</code> subsequente mede o pré-requisito descoberto tarde.</p>
-  <p style="margin:0">Isso ataca de frente a restrição do B2B2B. <b>Satisfação sai do comportamento, sem pesquisa. A importância é o que exige o empresário</b> — e um questionário sobre 36 outcomes refinados cabe num instrumento único, o que 80 não caberiam. Tabela completa de proxies em <code>docs/modelo-valor-outcomes.md</code>, seção 5.</p>
+  <h3>Satisfação sai do comportamento; entrevista mede importância <span class="tag t-new">v0.5</span></h3>
+  <p>Outcomes escritos como tempo têm uma vantagem prática: tempo é observável. <b>Vários já têm proxy comportamental instrumentado ou a um evento de distância</b> — o intervalo entre <code>SUBMITTED_CONSENT</code> e <code>SELECTED_INSTITUTION</code> mede quanto custa localizar a instituição; <code>SELECTED_INSTITUTION</code> emitido duas vezes com <code>connector</code> diferente mede a re-escolha; seleção sem <code>SUBMITTED_LOGIN</code> subsequente mede o pré-requisito descoberto tarde.</p>
+  <p style="margin:0">Isso ataca a restrição do B2B2B por outro lado: <b>a insatisfação pode ser estimada de graça, no funil, e o acesso escasso ao empresário fica reservado para a importância</b> — que é o que só ele sabe dizer.</p>
 </div>
 
 <h2>10. Diretrizes para os experimentos de UX</h2>
@@ -467,7 +462,7 @@ code{font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;font-size:.88em
 <ul style="margin:0">
   <li><span class="tag t-new">confirmado v0.2</span> Pelas regras do Open Finance, só o handoff para o banco é regulado. Nada dentro do widget está fora do espaço de teste por esse motivo.</li>
   <li>A LGPD continua valendo dentro do widget: o consentimento precisa ser livre, informado e inequívoco. Mudanças na tela de boas-vindas e termos, que é a principal candidata a experimento, devem passar pelo jurídico, mesmo não sendo reguladas pelo Open Finance.</li>
-  <li><span class="tag t-new">v0.4</span> <b>A métrica primária de cada experimento é o outcome que ele mira, não a conversão.</b> Conversão é o resultado do conjunto. Um experimento pode acertar o outcome e não mover a conversão — isso é informação, não fracasso. O mapeamento hipótese → outcomes → métrica está em <code>docs/modelo-valor-outcomes.md</code>, seção 6.</li>
+  <li><span class="tag t-new">v0.5</span> <b>A métrica primária de cada experimento é o outcome que ele mira, não a conversão.</b> Conversão é o resultado do conjunto. Um experimento pode acertar o outcome e não mover a conversão — isso é informação, não fracasso.</li>
   <li>Métricas de guarda além da conversão: revogações precoces, tickets e conexões na conta errada.</li>
   <li>Intervir nos picos, não em todas as telas. Reassurance espalhada vira ruído.</li>
 </ul>
@@ -572,7 +567,7 @@ code{font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;font-size:.88em
   <li>Qual é a lista de conectores que cada cliente de fato exibe? O universo documentado não é o que o empresário vê.</li>
 </ul>
 
-<footer>Versão 0.4 confronta o modelo com a Figura 2.4 de Ulwick: os outcomes estão subespecificados em cerca de seis vezes, E1 é candidato a etapa transversal, e a satisfação pode sair de proxy comportamental em vez de pesquisa. O refino vive em <code>docs/modelo-valor-outcomes.md</code> e ainda não foi validado com o time — por isso as seções 5 e 9 seguem na formulação anterior. Versão 0.1 consolidou a análise inicial. Versão 0.2 incorporou o funil do Amplitude e as respostas sobre customização e regulação. Versão 0.3 incorpora o mapa do widget (<code>docs/mapa-widget.md</code>), corrige a premissa de customização, eleva O6 e H3, acrescenta O16 e as hipóteses H7 a H9, e reordena os próximos passos para pôr o saneamento de dados antes dos experimentos. O mapa foi derivado da documentação, não da observação da tela — a leitura tela a tela continua pendente. Itens marcados como proposta ainda precisam de validação.</footer>
+<footer><b>Decisão da v0.5:</b> o job map segue com a granularidade atual, cerca de dois outcomes por etapa. A Figura 2.4 de Ulwick sugere uma dúzia por etapa, e a v0.4 chegou a tratar isso como déficit — mas a granularidade fina virá das entrevistas com empresários de PME, não de dedução em cima de documentação. Os 36 outcomes já escritos ficam na aba Modelo de valor como <b>banco de hipóteses para orientar o roteiro das entrevistas</b>, não como modelo a adotar. A proposta de promover E1 a etapa transversal também aguarda as entrevistas. Versão 0.1 consolidou a análise inicial. Versão 0.2 incorporou o funil do Amplitude e as respostas sobre customização e regulação. Versão 0.3 incorpora o mapa do widget (<code>docs/mapa-widget.md</code>), corrige a premissa de customização, eleva O6 e H3, acrescenta O16 e as hipóteses H7 a H9, e reordena os próximos passos para pôr o saneamento de dados antes dos experimentos. O mapa foi derivado da documentação, não da observação da tela — a leitura tela a tela continua pendente. Itens marcados como proposta ainda precisam de validação.</footer>
 </section>
 
 <section class="panel" id="panel-mapa" role="tabpanel" aria-labelledby="tab-mapa" hidden>
@@ -887,7 +882,11 @@ code{font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;font-size:.88em
 </section>
 
 <section class="panel" id="panel-modelo" role="tabpanel" aria-labelledby="tab-modelo" hidden>
-  <p class="lede">Confronto do modelo com a Figura 2.4 de Ulwick, o customer value model da serra circular Bosch. Três das quatro exigências da figura não eram atendidas. Refino dos outcomes, do conceito de segurança e da métrica dos experimentos.</p>
+  <p class="lede">Banco de hipóteses de outcome, escrito a partir da Figura 2.4 de Ulwick e do mapa do widget. <b>Não é o modelo a adotar</b> — serve de roteiro para as entrevistas com empresários de PME, que é de onde a granularidade fina deve vir.</p>
+  <div class="box warn">
+    <h3>Como usar esta aba</h3>
+    <p style="margin:0">A Figura 2.4 sugere cerca de uma dúzia de outcomes por etapa, e uma versão anterior tratou isso como déficit do nosso job map. <b>A decisão foi outra:</b> o documento central segue com a granularidade atual, de cerca de dois por etapa, e os outcomes finos virão das entrevistas — não de dedução em cima de documentação. O que está abaixo permanece como <b>material de apoio</b>: formato de referência, 36 formulações para testar em entrevista e a tabela de proxies comportamentais, que é útil de imediato.</p>
+  </div>
   <div class="legend">
     <span><span class="tag t-doc">mapa</span> deriva de achado do mapa do widget</span>
     <span><span class="tag t-neu">decomp</span> decomposição dos outcomes atuais</span>
@@ -906,17 +905,17 @@ code{font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;font-size:.88em
   </table></div>
 
   <div class="statrow">
-    <div class="stat"><span class="v">16</span><span class="k">outcomes hoje</span></div>
-    <div class="stat"><span class="v">2</span><span class="k">por etapa, na média</span></div>
-    <div class="stat"><span class="v">~12</span><span class="k">por etapa, exigidos</span></div>
-    <div class="stat"><span class="v">~80</span><span class="k">alvo para o job inteiro</span></div>
+    <div class="stat"><span class="v">16</span><span class="k">outcomes no documento central</span></div>
+    <div class="stat"><span class="v">2</span><span class="k">por etapa, na média — mantido</span></div>
+    <div class="stat"><span class="v">~12</span><span class="k">por etapa em Ulwick, como referência</span></div>
+    <div class="stat"><span class="v">36</span><span class="k">formulações para testar em entrevista</span></div>
   </div>
 
   <div class="box accent">
-    <h3>O ponto crítico</h3>
-    <p>Com dois outcomes por etapa, <b>não temos um modelo de valor — temos uma lista de temas.</b> "O6 minimizar a probabilidade de selecionar a instituição ou a conta errada" não é algo contra o que se projeta uma tela; é um assunto.</p>
-    <p style="margin:0">Priorização por oportunidade aplicada a temas produz um <b>ranking de assuntos, não uma fila de trabalho</b>. Ulwick trabalha com 50 a 150 outcomes para um job completo. Oito etapas a uma dúzia dá 96.</p>
-  </div>
+  <h3>O que vale guardar da Figura 2.4</h3>
+  <p>Não a cota, e sim o <b>formato</b>: os três exemplos da Bosch são todos <i>minimizar o tempo para [ação observável]</i>. Direção, unidade de medida, objeto e clarificador. É o molde para escrever o que sair das entrevistas.</p>
+  <p style="margin:0">E a observação que vem junto: outcome de tempo é observável, o que abre a porta da seção 5 — medir insatisfação pelo comportamento, sem pesquisa.</p>
+</div>
 
   <h2>2. Auditoria de formato dos 16 outcomes atuais</h2>
   <p>Formato canônico: <b>[direção] + [unidade de medida] + [objeto de controle] + [clarificador contextual]</b>. Um outcome precisa ser algo que o próprio executor consegue medir.</p>
@@ -988,8 +987,8 @@ code{font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;font-size:.88em
     </tbody>
   </table></div>
 
-  <h2>4. Outcomes refinados: três conjuntos completos</h2>
-  <p>Desenvolvi a dúzia completa nas três etapas onde o mapa do widget produziu evidência. As demais seguem pendentes — fazê-las sem evidência seria inventar.</p>
+  <h2>4. Trinta e seis formulações para testar em entrevista</h2>
+  <p>Escritas nas três etapas onde o mapa do widget produziu evidência. <b>São hipóteses de redação, não outcomes validados</b> — o roteiro da entrevista deve testá-las, descartar as que não ressoam e capturar as que faltam. As etiquetas de procedência dizem quanto lastro cada uma tem.</p>
 
   <h3>4.1 Transversal · Garantir que não está sendo golpeado</h3>
   <p class="caption">Substitui E1 e O7.</p>
@@ -1125,6 +1124,191 @@ code{font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;font-size:.88em
   </ol>
 
   <footer>Modelo de valor versão 1.0 · 19 de setembro de 2026. Deriva da Figura 2.4 de Ulwick, <i>What Customers Want</i>, aplicada ao estudo e ao mapa do widget. Fonte em <code>docs/modelo-valor-outcomes.md</code>. O refino ainda não foi validado com o time — por isso as seções 5 e 9 do estudo seguem na formulação anterior.</footer>
+
+</section>
+
+<section class="panel" id="panel-gates" role="tabpanel" aria-labelledby="tab-gates" hidden>
+  <p class="lede">Cruzamento do modelo de gates — oito unidades de orientação sobre dezesseis conectores — com o job map e os outcomes do estudo. Onde os dois se encaixam, onde há lacuna e o que precisa de dado antes de virar prioridade.</p>
+
+  <h2>1. Onde cada modelo vive</h2>
+  <p>A primeira coisa a fixar, porque confundir isso desmonta os dois modelos.</p>
+  <div class="tw"><table>
+    <thead><tr><th></th><th>Job map e outcomes</th><th>Modelo de gates</th></tr></thead>
+    <tbody>
+      <tr><td><b>Responde</b></td><td>o que o empresário tenta conseguir, e como julga se conseguiu</td><td>o que o produto diz e pergunta, e quando</td></tr>
+      <tr><td><b>Natureza</b></td><td>critério, estável</td><td>solução, substituível</td></tr>
+      <tr><td><b>Vem de</b></td><td>o executor</td><td>os fluxos dos conectores</td></tr>
+      <tr><td><b>Muda quando</b></td><td>o job muda — quase nunca</td><td>um banco muda a tela, ou se acha um jeito melhor</td></tr>
+    </tbody>
+  </table></div>
+  <div class="box accent">
+    <p style="margin:0"><b>Gates são solução; outcomes são o critério contra o qual a solução é julgada.</b> A v0.1 já tinha estabelecido que outcome não cita solução — é a mesma disciplina, na direção inversa. Se o time passar a tratar os gates como o modelo, perde a pergunta "existe forma melhor de atender este outcome do que um gate?". O acoplamento correto: todo gate responde por pelo menos um outcome, e todo outcome que importa tem gate ou tem lacuna conhecida.</p>
+  </div>
+
+  <h2>2. A convergência: duas análises independentes, mesma etapa</h2>
+  <p>O mapa do widget saiu da documentação. Os gates saíram das telas de referência dos conectores. Nenhum dos dois olhou para o outro.</p>
+  <div class="tw"><table>
+    <thead><tr><th>Gate</th><th>O que faz</th><th>Etapa</th><th>Outcomes</th></tr></thead>
+    <tbody>
+      <tr><td class="oid">Raiz</td><td>banco + tipo de conexão define o kit de credenciais</td><td>3 Preparar</td><td class="oid">O6</td></tr>
+      <tr><td class="oid">G1</td><td>pergunta se a pessoa tem perfil admin ou master</td><td><b>2 Localizar</b></td><td class="oid">O5 O4</td></tr>
+      <tr><td class="oid">G2</td><td>avisa que o Inter Direct é tarefa de TI</td><td><b>2 Localizar</b></td><td class="oid">O4</td></tr>
+      <tr><td class="oid">G3</td><td>avisa que a autorização de dispositivo leva de 30 min a 24h</td><td><b>2</b>, 6</td><td class="oid">O4 O12 O13</td></tr>
+      <tr><td class="oid">G4</td><td>pede o celular por perto para gerar o token</td><td><b>2 Localizar</b></td><td class="oid">O4 O8</td></tr>
+      <tr><td class="oid">G5</td><td>manda abrir o app antes, porque o código expira</td><td>5 Executar</td><td class="oid">O8 O10</td></tr>
+      <tr><td class="oid">G6</td><td>explica que o consentimento termina no celular</td><td>5 (pico)</td><td class="oid">O8 O9</td></tr>
+      <tr><td class="oid">G7</td><td>antecipa o resumo de compartilhamento</td><td>1 Definir</td><td class="oid">O1 O2 O3</td></tr>
+      <tr><td class="oid">G8</td><td>pergunta se a conta exige dupla aprovação</td><td><b>2</b>, 6</td><td class="oid">O5 O12 O16</td></tr>
+    </tbody>
+  </table></div>
+  <div class="box accent">
+    <h3>Cinco dos oito gates atendem a etapa 2 Localizar</h3>
+    <p style="margin:0">Os outcomes dessa etapa são exatamente dois no estudo — O4 e O5. O mapa do widget já tinha chegado lá por outro caminho: seis dos catorze tutoriais PJ da Pluggy são sobre provisionar acesso no banco antes de conectar. <b>Três análises independentes apontando para a mesma etapa é a evidência mais forte que este estudo tem de onde está a oportunidade.</b></p>
+  </div>
+
+  <h2>3. Os gates são a decomposição empírica de O4 e O5</h2>
+  <p>Vale registrar, porque fecha uma discussão anterior. A v0.4 tentou decompor os outcomes deduzindo uma dúzia por etapa a partir de Ulwick, e a decisão foi não seguir por ali — a granularidade viria das entrevistas, não de dedução em cima de documentação.</p>
+  <p><b>Os gates fazem exatamente essa decomposição, e por um caminho melhor.</b> "Minimizar a probabilidade de iniciar sem ter em mãos o que será exigido" (O4) se decompõe, na prática dos fluxos, em: sem o celular por perto (G4), sem o dispositivo autorizado (G3), sem as credenciais técnicas (G2), sem tempo antes do código expirar (G5). Isso não é dedução — é observação de dezesseis conectores.</p>
+  <p>O banco de hipóteses da aba Modelo de valor continua útil como roteiro de entrevista. Mas <b>o que já pode virar backlog é o que os gates sustentam</b>, porque tem lastro em fluxo real.</p>
+
+  <h2>4. A taxonomia de propriedade resolve um problema do estudo</h2>
+  <p>O estudo registra, entre as premissas, que "o pico de ansiedade acontece em boa parte dentro do app do banco; as janelas de intervenção da Pluggy ficam antes e depois". Verdade, mas vago demais para orientar desenho. O modelo de gates operacionaliza isso em três classes.</p>
+  <div class="tw"><table>
+    <thead><tr><th>Classe</th><th>Significado</th><th>O que a Pluggy pode fazer</th></tr></thead>
+    <tbody>
+      <tr><td><b>Alavanca da Pluggy</b></td><td>atrito que o widget consegue antecipar</td><td>verificar ou perguntar antes da tela do banco</td></tr>
+      <tr><td><b>Do banco</b></td><td>atrito que a instituição controla</td><td>só criar expectativa, para não parecer erro</td></tr>
+      <tr><td><b>Compartilhado</b></td><td>responsabilidade dividida</td><td>explicar antes, para a tela do banco não surpreender</td></tr>
+    </tbody>
+  </table></div>
+  <div class="box accent">
+    <h3>O melhor ganho conceitual deste cruzamento</h3>
+    <p><b>Há outcomes que a Pluggy pode satisfazer e outcomes que ela só pode tornar esperados.</b></p>
+    <p style="margin:0">Para atrito do banco, escrever "minimizar o tempo da autorização de dispositivo" é escrever um outcome que a Pluggy não pode mover — a Caixa leva o que leva. O outcome atendível é outro: <b>minimizar o tempo para saber que a espera é normal e quanto ela dura</b>. Não é firula de redação: muda qual métrica o experimento persegue e evita prometer o que não se entrega.</p>
+  </div>
+  <div class="tw"><table>
+    <thead><tr><th>Outcome atual</th><th>Classe</th><th>Reescrita proposta</th></tr></thead>
+    <tbody>
+      <tr><td class="oid">O10</td><td>do banco</td><td>de "minimizar o tempo para concluir a autorização" para <b>minimizar o tempo para saber quanto a autorização vai levar</b></td></tr>
+      <tr><td class="oid">O12</td><td>do banco</td><td>mantido — já está escrito sobre o saber, não sobre o pendente</td></tr>
+      <tr><td class="oid">O13</td><td>compartilhado</td><td>mantido</td></tr>
+    </tbody>
+  </table></div>
+
+  <h2>5. Onde os gates cobrem hipóteses que já existiam</h2>
+  <div class="tw"><table>
+    <thead><tr><th>Hipótese</th><th>O que os gates trazem</th></tr></thead>
+    <tbody>
+      <tr><td><b>H1</b> preparar antes do redirecionamento</td><td><b>Deixa de ser hipótese e vira especificação.</b> O modelo de gates é H1 inteira, com oito unidades, ordem fixa e texto por banco.</td></tr>
+      <tr><td><b>H3</b> checklist do que ter em mãos</td><td>É o "pacote de preparação montado" — só os gates que dispararam para aquele banco × tipo × perfil × canal.</td></tr>
+      <tr><td><b>H5</b> recuperação por tipo de erro</td><td>A seção "Depois — se não concluiu" cobre G3, G6 e G8 com orientação pós-falha. Combina com as oito famílias de erro do mapa do widget.</td></tr>
+      <tr><td><b>H2</b> confirmação imediata no retorno</td><td>A mensagem universal dos <b>5 minutos</b> para o banco começar a enviar dados é a peça que faltava: a tela de sucesso deve oferecer seguir trabalhando, em vez de parecer travada.</td></tr>
+      <tr><td><b>H8</b> roteamento por poderes</td><td>É o G1, já especificado, com o comportamento por banco levantado.</td></tr>
+    </tbody>
+  </table></div>
+
+  <h2>6. Três lacunas do modelo de gates</h2>
+  <p>Nenhuma invalida o modelo. Todas são trabalho que não está coberto e que alguém vai supor que está.</p>
+
+  <div class="box warn">
+    <h3>6.1 A escolha do trilho está a montante dos gates</h3>
+    <p>O nó raiz é "o usuário escolhe banco + tipo de conexão". O modelo <b>começa depois da escolha</b>, tratando-a como entrada dada.</p>
+    <p>Mas o mapa do widget identificou justamente aí a maior oportunidade aparente da zona A: num widget só de PJ a lista chega a 77 entradas, e nove marcas aparecem nos dois trilhos — Itaú com quatro. E a escolha muda quem pode autorizar: o trilho direto aceita operador, o Open Finance exige todos os aprovadores.</p>
+    <p><b>O G1 pergunta "você tem acesso admin?" depois de a pessoa já ter escolhido um trilho que talvez fosse evitável.</b> Se a resposta for "só operador" e o banco for o Santander, o Direct funciona e o Open Finance não — mas a escolha já foi feita. H7 e H8 são o mesmo problema atacado em dois momentos, e o momento mais barato é antes.</p>
+    <p style="margin:0"><b>Proposta:</b> um gate zero, antes da lista ou embutido nela, que use a resposta de poderes para ordenar ou rotular as entradas duplicadas. Converte a pergunta do G1 de triagem em roteamento.</p>
+  </div>
+
+  <div class="box warn">
+    <h3>6.2 Não há gate para pop-up bloqueado</h3>
+    <p style="margin:0">O G6 cobre a passagem para o app do banco. Não cobre o caso em que <b>o navegador bloqueia o pop-up do handoff</b> — que a base de suporte registra como recorrente, a ponto de a Pluggy recusar pedidos de clientes para remover o aviso. É atrito de uma quarta classe: não é da Pluggy nem do banco, é do navegador. E o aviso atual chega no pico de E1 com forma indistinguível de um alerta de golpe. Era a H9 e continua sem dono no modelo.</p>
+  </div>
+
+  <div class="box warn">
+    <h3>6.3 A etapa 8 Concluir não tem gate</h3>
+    <p style="margin:0">O modelo termina em "início do fluxo do banco", mais a mensagem dos 5 minutos. O que acontece depois da conexão bem-sucedida — O15, ser surpreendido com o que o sistema faz com o acesso, e O14, saber como revogar — fica de fora. É coerente com o escopo declarado, que é preparação; vale só não confundir cobertura de preparação com cobertura do job.</p>
+  </div>
+
+  <h2>7. O risco que precisa de métrica de guarda desde o primeiro teste</h2>
+  <p>O estudo é explícito: o job é instrumental, ninguém quer conectar conta, e "a tolerância a esforço, dúvida e risco percebido é baixa". <b>Oito gates são oito oportunidades de desistir antes de chegar ao banco.</b></p>
+  <p>O modelo já mitiga isso ao ser uma espinha dorsal que acumula num único pacote, em vez de 64 caminhos. Mas o risco é real e é quantificável com o funil que já existe.</p>
+  <div class="tw"><table>
+    <thead><tr><th>Janela do funil</th><th>Perda hoje</th><th>Relação com os gates</th></tr></thead>
+    <tbody>
+      <tr><td>Clique na instituição → formulário enviado</td><td class="big">7.976</td><td>onde vivem os gates de preparação — G1, G2, G4, G8</td></tr>
+      <tr><td>Login bem-sucedido → polling com sucesso</td><td class="big">15.570</td><td>onde vivem os gates de fluxo — G3, G5, G6, G7 — e onde a preparação deveria pagar</td></tr>
+    </tbody>
+  </table></div>
+  <div class="box accent">
+    <p style="margin:0"><b>O orçamento do modelo é este:</b> os gates de preparação precisam custar, na primeira janela, menos do que economizam na segunda. Como métrica de guarda, a transição clique → formulário enviado, hoje em <b>85,9%</b>, não deve cair. É um teste honesto e barato de montar — e tem um desdobramento útil: <b>se um gate custa mais do que economiza, ele não vira tela; vira texto dentro de uma tela que já existe.</b></p>
+  </div>
+
+  <h2>8. Uma crítica ao G1, que é o gate mais importante</h2>
+  <p>O G1 pergunta: <i>"Você tem acesso de administrador ou master neste banco?"</i> Duas objeções.</p>
+  <div class="box">
+    <h3>A pessoa pode não saber responder</h3>
+    <p style="margin:0">"Admin", "master" e "operador" são nomes de perfil do internet banking, não vocabulário do empresário. Quem usa o banco todo dia para pagar fornecedor não necessariamente sabe sob qual perfil está logado. <b>Uma pergunta que o executor não consegue responder com confiança não atende O5</b> — só transfere o erro para mais cedo, com aparência de rigor.</p>
+  </div>
+  <div class="box">
+    <h3>Uma pergunta de comportamento seria mais confiável que uma de nomenclatura</h3>
+    <p style="margin:0">Algo como <i>"no site do banco, você consegue cadastrar um novo pagamento sozinho, sem que outra pessoa precise aprovar?"</i> — o empresário sabe responder isso. E a resposta cobre de uma vez o perfil (G1) e a dupla aprovação (G8), que hoje são <b>dois gates perguntando facetas do mesmo fato</b>.</p>
+  </div>
+  <div class="box">
+    <h3>Melhor ainda seria não perguntar</h3>
+    <p style="margin:0">Verificar vale mais que perguntar. <code>USER_NOT_SUPPORTED</code> e o warning 002 são sinais que a Pluggy já recebe. Não servem para a primeira tentativa, mas servem para a segunda — e para dizer ao cliente, antes de o usuário abrir o widget, que aquele CNPJ já falhou por perfil.</p>
+  </div>
+
+  <h2>9. Duas afirmações que precisam de dado antes de virar prioridade</h2>
+  <div class="box warn">
+    <h3>"G1 é a maior fonte isolada de perda silenciosa de conversão"</h3>
+    <p style="margin:0">É conclusão de análise de fluxo, não de medição. O estudo tem essa mesma pergunta em aberto desde a v0.2 — "com que frequência quem está no widget não é o titular ou não tem poderes na conta?" — e ela segue sem resposta. Verificável: contagem de <code>USER_NOT_SUPPORTED</code> por conector, mais a decomposição da zona B. <b>Enquanto não medido, G1 é a hipótese mais promissora, não o fato estabelecido.</b></p>
+  </div>
+  <div class="box warn">
+    <h3>A cobertura é parcial, e a amostra não é aleatória</h3>
+    <p style="margin:0">São <b>16 conectores revisados</b>, contra 11 diretos PJ e 66 instituições de Open Finance com contexto empresarial no universo documentado. Os revisados são os grandes, o que é a escolha certa — mas a afirmação "o Open Finance tem o mesmo formato em toda instituição revisada" tem alcance de 16, não de 66. O próprio artefato reconhece isso ao listar Banrisul como nunca analisado e o Banco do Nordeste como sem documentação.</p>
+  </div>
+
+  <h2>10. Outcomes que os gates sugerem e o job map não tem</h2>
+  <p>Três candidatos, para o banco de hipóteses das entrevistas.</p>
+  <div class="tw"><table>
+    <thead><tr><th>Candidato</th><th>Por quê</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><b>Compartilhamento em bloco</b></td>
+        <td>"Todas as contas da empresa naquele banco são compartilhadas de uma vez — o usuário não escolhe." Golpe direto em <b>O2</b>, autorizar mais acesso do que pretendia. E é <b>inegociável</b>: vem do desenho do Open Finance. É o exemplo mais puro de outcome que a Pluggy só pode tornar esperado, nunca satisfazer. Vale medir a importância na entrevista justamente por isso — se for alta, é argumento para o trilho direto em certos casos.</td>
+      </tr>
+      <tr>
+        <td><b>Assinatura eletrônica</b></td>
+        <td>A Unicred pede uma antes do consentimento, e nenhum outro fluxo revisado pede. Se aparecer em mais cooperativas, é gate novo.</td>
+      </tr>
+      <tr>
+        <td><b>Saber que a espera acabou</b></td>
+        <td>Os 5 minutos do Open Finance não pertencem a nenhum gate e são o que separa "conectado" de "conectado e funcionando". Reforça <b>O11</b>.</td>
+      </tr>
+    </tbody>
+  </table></div>
+
+  <h2>11. Instrumentação: os gates são eventos</h2>
+  <p>Cada gate é tela mais ação, ou seja, <b>cada gate é instrumentável</b>. E é isso que resolve um problema que o funil tem hoje: <b>não há nenhuma visibilidade entre <code>SELECTED_INSTITUTION</code> e <code>SUBMITTED_LOGIN</code></b> — exatamente onde os gates de preparação vão viver, e onde se perdem 7.976 pessoas.</p>
+  <p>Recomendação: cada variante de gate emite um evento com o próprio ID estável — o esquema de 5 caracteres do artefato, <code>G1001</code> e afins. Com isso:</p>
+  <ul>
+    <li>a perda passa a ser atribuível ao gate, não à transição inteira;</li>
+    <li>a resposta do G1 vira dimensão de segmentação de todo o funil, o que <b>responde a pergunta aberta nº 4 sem pesquisa</b>;</li>
+    <li>o custo de cada gate fica mensurável isoladamente, o que permite remover os que não pagam.</li>
+  </ul>
+  <p>O esquema de IDs foi pensado para design, conteúdo e engenharia. <b>Vale estendê-lo a analytics desde o início</b> — é barato agora e caro depois.</p>
+
+  <h2>12. Próximos passos</h2>
+  <ol>
+    <li>Instrumentar os gates como eventos, usando os IDs estáveis, <b>antes</b> de desenhar as telas.</li>
+    <li>Fixar a transição clique → formulário enviado (85,9%) como métrica de guarda do modelo inteiro.</li>
+    <li>Medir o G1 antes de construí-lo: <code>USER_NOT_SUPPORTED</code> por conector e decomposição da zona B.</li>
+    <li>Testar a formulação comportamental do G1 contra a de nomenclatura, e avaliar a fusão de G1 e G8 numa pergunta só.</li>
+    <li>Decidir o gate zero — usar a resposta de poderes para ordenar ou rotular a lista, unindo H7 e H8.</li>
+    <li>Escrever o gate que falta para pop-up bloqueado, ou registrar que fica fora do modelo.</li>
+    <li>Levar os três candidatos da seção 10 para o roteiro das entrevistas com PME.</li>
+  </ol>
+
+  <footer>Gates × jobs versão 1.0 · 19 de setembro de 2026. Cruza <i>A lógica dos gates · Guided Connect</i> — 8 gates sobre 16 conectores — com o job map e os outcomes deste estudo. Fonte em <code>docs/gates-jobs.md</code>.</footer>
 
 </section>
 

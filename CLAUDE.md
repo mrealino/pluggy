@@ -2,9 +2,10 @@
 
 Contexto migrado de uma conversa no claude.ai (18–19 set 2026). Este arquivo resume o que já foi alinhado.
 
-- Documento vivo: `docs/estudo-jtbd-widget.html` (versão 0.4)
-- Mapa do widget: `docs/mapa-widget.md` (versão 1.0)
-- Refino dos outcomes: `docs/modelo-valor-outcomes.md` (versão 1.0)
+- Documento vivo: `docs/estudo-jtbd-widget.html` (versão 0.5) — publicado em abas
+- Mapa do widget: `docs/mapa-widget.md` (v1.0)
+- Banco de outcomes: `docs/modelo-valor-outcomes.md` (v1.1)
+- Gates × jobs: `docs/gates-jobs.md` (v1.0)
 
 ## Quem sou e o objetivo
 
@@ -101,21 +102,32 @@ Use `claude --chrome` ou `/chrome` numa sessão local, não nesta.
 7. Não concluir conexões reais nem submeter credenciais reais.
 8. Atualizar `docs/mapa-widget.md` para a v1.1 e o estudo para a v0.4.
 
-#### Próxima tarefa C: fechar o modelo de valor
+#### Decisão sobre granularidade de outcomes
 
-`docs/modelo-valor-outcomes.md` v1.0 confronta o modelo com a Figura 2.4 e conclui que os outcomes estão subespecificados em cerca de seis vezes (2 por etapa contra a dúzia que Ulwick estabelece). Já desenvolveu a dúzia completa em três etapas — 36 outcomes:
+**O job map segue com cerca de dois outcomes por etapa.** A Figura 2.4 de Ulwick sugere uma dúzia, e a v0.4 chegou a tratar isso como déficit — a decisão foi não seguir por ali. A granularidade fina virá das **entrevistas com empresários de PME**, não de dedução em cima de documentação. Não reintroduzir a cota de 12 no documento central.
 
-- `G1–G12` etapa transversal "Garantir que não está sendo golpeado" (substitui E1 e O7)
-- `R1–R12` etapa 2 "Reunir acesso e poderes" (substitui O4, O5)
-- `P1–P12` etapa 3 "Escolher por onde conectar" (substitui O6)
+Os 36 outcomes de `docs/modelo-valor-outcomes.md` ficam como **banco de hipóteses para o roteiro das entrevistas**. O que vale guardar da Figura 2.4 é o formato (*minimizar o tempo para [ação observável]*), não a quantidade.
+
+Os gates são a exceção útil: eles decompõem O4 e O5 empiricamente, a partir de dezesseis fluxos reais, e por isso já podem virar backlog.
+
+### Próxima tarefa C: gates
+
+`docs/gates-jobs.md` cruza o modelo de gates (8 gates, 16 conectores) com o job map. Achados:
+
+- **Cinco dos oito gates atendem a etapa 2 Localizar.** Somado aos seis tutoriais PJ de provisionamento, são três análises independentes apontando para a mesma etapa.
+- **Gates são solução, outcomes são critério.** Não deixar o time tratar os gates como o modelo.
+- **Há outcomes que a Pluggy só pode tornar esperados, não satisfazer** (atrito do banco). Isso muda a redação de O10.
+- **Lacunas:** a escolha do trilho está a montante dos gates (H7); não há gate para pop-up bloqueado (H9); a etapa 8 Concluir não tem gate.
+- **Métrica de guarda:** os gates de preparação vivem na transição clique → formulário enviado (85,9%, perde 7.976) e precisam pagar na zona B (perde 15.570). Se um gate custa mais do que economiza, vira texto numa tela existente, não tela nova.
 
 Pendente:
 
-1. Desenvolver ~44 outcomes nas cinco etapas restantes. Depende de evidência nova — não inventar.
-2. Validar com produto e design a promoção de E1 a etapa transversal e a dissolução da etapa 4 antes de reescrever a seção 5 do documento vivo.
-3. Decidir o destino de E2 a E5. Suspeita: E5 não é emoção, é a etapa "Acompanhar a conclusão" mal especificada.
-4. Confirmar os proxies comportamentais no Amplitude antes de usá-los como satisfação.
-5. Montar o questionário de importância sobre os 36 outcomes refinados.
+1. Instrumentar os gates como eventos, com os IDs estáveis, **antes** de desenhar telas.
+2. Medir o G1 antes de construí-lo: `USER_NOT_SUPPORTED` por conector.
+3. Testar a formulação comportamental do G1 ("você consegue cadastrar um pagamento sozinho?") contra a de nomenclatura ("você tem acesso admin?"), e avaliar fundir G1 e G8.
+4. Decidir o gate zero, que une H7 e H8 na própria lista de instituições.
+5. Confirmar os proxies comportamentais no Amplitude antes de usá-los como satisfação.
+6. Montar o roteiro das entrevistas com PME, usando os 36 como banco de hipóteses.
 
 ## Próxima tarefa B: saneamento de dados, antes de qualquer experimento
 
