@@ -1,9 +1,4 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Estudo JTBD — conexão da conta no widget</title>
+<title>Conversão no widget pela lente de Jobs to be Done</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Serif:wght@500;600&display=swap" rel="stylesheet">
@@ -89,14 +84,48 @@ footer{margin-top:3rem;padding-top:1.25rem;border-top:1px solid var(--rule);colo
   .step{grid-template-columns:1fr}
   .num{font-size:1.4rem;margin-bottom:.35rem}
 }
+
+/* --- abas --- */
+.tabs{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;display:flex;gap:.25rem;
+  margin:1.25rem 0 0;padding:.4rem 0 0;background:var(--bg);border-bottom:1px solid var(--rule)}
+.tab{appearance:none;background:none;border:0;border-bottom:2px solid transparent;margin-bottom:-1px;
+  padding:.6rem .85rem;font:inherit;font-size:.95rem;color:var(--muted);cursor:pointer;
+  border-radius:4px 4px 0 0;white-space:nowrap}
+.tab:hover{color:var(--ink)}
+.tab[aria-selected="true"]{color:var(--fn);border-bottom-color:var(--fn);font-weight:600}
+.tab:focus-visible{outline:2px solid var(--fn);outline-offset:-2px}
+.panel{padding-top:1.5rem}
+.panel > h2:first-of-type{margin-top:1.5rem}
+/* --- procedência --- */
+.t-doc{background:var(--fn-soft);color:var(--fn)}
+.t-qa{background:var(--em-soft);color:var(--em)}
+.t-inf{background:var(--new-soft);color:var(--new)}
+/* --- variantes de box --- */
+.box.warn{border-left:3px solid var(--new)}
+.box.accent{border-left:3px solid var(--fn)}
+/* --- números --- */
+.statrow{display:grid;grid-template-columns:repeat(auto-fit,minmax(8.5rem,1fr));gap:.6rem;margin:0 0 1rem}
+.stat{background:var(--paper);border:1px solid var(--rule);border-radius:6px;padding:.8rem .9rem}
+.stat .v{display:block;font-family:var(--serif);font-size:1.9rem;font-weight:600;color:var(--fn);
+  line-height:1;font-variant-numeric:tabular-nums}
+.stat .k{display:block;font-size:.8rem;color:var(--muted);margin-top:.3rem;line-height:1.3}
+td.big{font-family:var(--serif);font-weight:600;font-size:1.1rem;font-variant-numeric:tabular-nums}
+code{font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;font-size:.88em;
+  background:var(--fn-soft);color:var(--fn);padding:.05rem .3rem;border-radius:3px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 </style>
-</head>
-<body>
 <main>
 
 <header>
   <h1>Conversão no widget pela lente de Jobs to be Done</h1>
-  <p class="meta">Documento vivo · versão 0.4 · 19 de setembro de 2026</p>
+  <p class="meta">Estudo JTBD · documento vivo · 19 de setembro de 2026</p>
+  <div class="tabs" role="tablist" aria-label="Documentos">
+    <button class="tab" id="tab-estudo" role="tab" aria-selected="true" aria-controls="panel-estudo">Estudo · v0.4</button>
+    <button class="tab" id="tab-mapa" role="tab" aria-selected="false" aria-controls="panel-mapa" tabindex="-1">Mapa do widget · v1.0</button>
+  </div>
+</header>
+
+<section class="panel" id="panel-estudo" role="tabpanel" aria-labelledby="tab-estudo">
   <p class="lede">Base de trabalho para melhorar a conversão do empresário da PME no fluxo de conexão da Pluggy. O objetivo é que ele chegue ao fim do fluxo informado e sem dúvidas, e que os experimentos de UX ataquem primeiro os outcomes mais desatendidos.</p>
   <div class="legend">
     <span><span class="tag t-fn">funcional</span> job ou outcome funcional</span>
@@ -104,8 +133,6 @@ footer{margin-top:3rem;padding-top:1.25rem;border-top:1px solid var(--rule);colo
     <span><span class="tag t-new">proposta</span> formulação nova, ainda não discutida</span>
     <span><span class="tag t-new">v0.3</span> vem do mapa do widget</span>
   </div>
-</header>
-
 <h2>1. Escopo</h2>
 <p>O executor analisado é o empresário da PME: quem conecta de fato, ou quem detém a conta sobre a qual o acesso será concedido. Jobs de ERPs, contadores, bancos e os jobs de consumo do produto Pluggy ficam fora desta versão. Jobs emocionais sociais também ficam de fora; aqui entram só os pessoais.</p>
 <p>O consentimento, como contrato de delegação de agência, é tratado mais adiante. Nesta fase, o foco é a experiência de UI no widget.</p>
@@ -540,6 +567,353 @@ footer{margin-top:3rem;padding-top:1.25rem;border-top:1px solid var(--rule);colo
 </ul>
 
 <footer>Versão 0.4 confronta o modelo com a Figura 2.4 de Ulwick: os outcomes estão subespecificados em cerca de seis vezes, E1 é candidato a etapa transversal, e a satisfação pode sair de proxy comportamental em vez de pesquisa. O refino vive em <code>docs/modelo-valor-outcomes.md</code> e ainda não foi validado com o time — por isso as seções 5 e 9 seguem na formulação anterior. Versão 0.1 consolidou a análise inicial. Versão 0.2 incorporou o funil do Amplitude e as respostas sobre customização e regulação. Versão 0.3 incorpora o mapa do widget (<code>docs/mapa-widget.md</code>), corrige a premissa de customização, eleva O6 e H3, acrescenta O16 e as hipóteses H7 a H9, e reordena os próximos passos para pôr o saneamento de dados antes dos experimentos. O mapa foi derivado da documentação, não da observação da tela — a leitura tela a tela continua pendente. Itens marcados como proposta ainda precisam de validação.</footer>
+</section>
+
+<section class="panel" id="panel-mapa" role="tabpanel" aria-labelledby="tab-mapa" hidden>
+  <p class="lede">Reconstrução do fluxo de conexão da Pluggy, tela a tela, cruzada com as etapas do job, os outcomes e os eventos do funil. Insumo da versão 0.3 do estudo.</p>
+  <div class="legend">
+    <span><span class="tag t-doc">DOC</span> guia oficial da documentação viva</span>
+    <span><span class="tag t-qa">QA</span> base de suporte da Pluggy</span>
+    <span><span class="tag t-inf">INFERÊNCIA</span> leitura minha, precisa de validação</span>
+  </div>
+
+  <div class="box warn">
+    <h3>Este mapa não saiu do Chrome</h3>
+    <p>A tarefa previa percorrer <code>demo-connect.pluggy.dev</code> com a integração do Chrome. <b>Não foi possível:</b> o ambiente remoto bloqueia a saída de rede para <code>connect.pluggy.ai</code>, <code>demo-connect.pluggy.dev</code> e <code>api.pluggy.ai</code> — o proxy responde 403 no CONNECT, por política da organização. Não é falta de credencial, é egresso bloqueado.</p>
+    <p style="margin:0">O mapa foi reconstruído a partir da documentação viva e da base de Q&amp;A do suporte. <b>Ele descreve a especificação do fluxo, não a interface observada.</b> As ferramentas de dashboard (<code>list_connectors</code>, <code>get_stats</code>) pedem re-autenticação e não puderam ser usadas — nenhuma contagem aqui vem da aplicação real, só do universo documentado. A leitura tela a tela segue pendente, na seção 10.</p>
+  </div>
+
+  <h2>1. Três camadas de variação, antes de qualquer experimento</h2>
+  <p>Este é o achado que mais muda o desenho dos experimentos, e ele contradiz em parte o que a v0.2 registrava como confirmado.</p>
+
+  <h3>Camada 1 — Personalização via Dashboard <span class="tag t-doc">DOC</span></h3>
+  <div class="tw"><table>
+    <thead><tr><th>Item</th><th>Escopo</th><th>Situação</th></tr></thead>
+    <tbody>
+      <tr><td>Nome da empresa</td><td>20 caracteres, tela de boas-vindas</td><td>já mapeado</td></tr>
+      <tr><td>Logo</td><td>telas principais</td><td>já mapeado</td></tr>
+      <tr><td>Cor primária</td><td>telas, botões, componentes interativos</td><td>já mapeado</td></tr>
+      <tr><td>Raio de borda dos botões</td><td>todos os botões</td><td><b>novo</b></td></tr>
+      <tr><td><b>Texto dos botões</b></td><td>primeira tela e tela de credenciais</td><td><b>novo — o CTA não é centralizado</b></td></tr>
+      <tr><td><b>Seleção de conectores</b></td><td>liga e desliga por tipo</td><td><b>novo — a lista de bancos varia por cliente</b></td></tr>
+      <tr><td><b>Textos de consentimento</b></td><td>termos e privacidade na 1ª tela; passa por Vendas e jurídico</td><td><b>novo — a tela candidata nº 1 já é variável</b></td></tr>
+    </tbody>
+  </table></div>
+  <p class="caption">Disponível na assinatura Pro e no Free Trial — ou seja, nem todo cliente customiza, o que cria uma variação a mais, não a menos.</p>
+
+  <h3>Camada 2 — Parâmetros do SDK, escolhidos no código do ERP <span class="tag t-doc">DOC</span></h3>
+  <p>Esta camada não aparece no Dashboard e é invisível para quem olha só o funil.</p>
+  <div class="tw"><table>
+    <thead><tr><th>Parâmetro</th><th>O que faz</th><th>Por que importa</th></tr></thead>
+    <tbody>
+      <tr><td><code>selectedConnectorId</code></td><td><b>pula a etapa de seleção de conector</b>, indo direto ao login após os termos</td><td><b>sessões assim podem nunca emitir <code>SELECTED_INSTITUTION</code></b></td></tr>
+      <tr><td><code>updateItem</code></td><td>abre direto no formulário de credenciais</td><td>pula boas-vindas e lista</td></tr>
+      <tr><td><code>connectorTypes</code>, <code>connectorIds</code>, <code>countries</code></td><td>filtram a lista exibida</td><td>mudam tamanho e composição da lista</td></tr>
+      <tr><td><code>products</code></td><td>restringe os produtos coletados</td><td>muda o que é consentido (O1–O3)</td></tr>
+      <tr><td><code>openFinanceParameters</code></td><td>pré-preenche CPF e CNPJ</td><td>remove uma etapa de digitação</td></tr>
+      <tr><td><code>language</code>, <code>theme</code></td><td>idioma e tema claro ou escuro</td><td>variação visual não controlada</td></tr>
+      <tr><td><code>allowFullscreen</code>, <code>allowConnectInBackground</code></td><td>modal ou tela cheia; permite minimizar</td><td>muda a experiência no celular</td></tr>
+      <tr><td><code>forceOauthInBrowser</code></td><td>força OAuth no navegador do sistema</td><td><b>mitigação direta de perda no handoff</b></td></tr>
+      <tr><td><code>includeSandbox</code></td><td>exibe conectores sandbox</td><td>contaminação de dados se ligado em produção</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>Camada 3 — Estado dos conectores na hora da sessão <span class="tag t-qa">QA</span></h3>
+  <p>O widget exibe aviso de instabilidade quando um conector está com a saúde degradada. A tela de lista não é estável nem para o mesmo cliente ao longo do tempo.</p>
+
+  <div class="box">
+    <h3>O que isso implica</h3>
+    <ol style="margin:0">
+      <li><b>A premissa "quase todo o widget é testável de forma centralizada" não se sustenta.</b> O CTA da primeira tela, o da tela de credenciais, os textos de consentimento e a própria lista de bancos variam por cliente. Central mesmo são a estrutura do fluxo e as telas de MFA, espera e erro.</li>
+      <li><b>Estratificar por cliente não basta.</b> Dois clientes com o mesmo logo podem ter widgets funcionalmente diferentes se um usa <code>selectedConnectorId</code> e o outro não.</li>
+      <li><span class="tag t-inf">INFERÊNCIA</span> <b>Parte dos 23.402 da zona A pode ser artefato de instrumentação.</b> Sessões que pulam a seleção entram em <i>Widget Loaded</i> e nunca podem chegar a <i>List Item Clicked</i>. Segmentar por esses parâmetros vem antes de tratar a zona A como oportunidade de UX.</li>
+    </ol>
+  </div>
+
+  <h2>2. As telas do fluxo</h2>
+  <p>Cada tela cruzada com a etapa do job, os outcomes e o evento correspondente.</p>
+
+  <h3>Trilho comum</h3>
+  <div class="tw"><table>
+    <thead><tr><th>#</th><th>Tela</th><th>Etapa</th><th>Outcomes</th><th>Evento</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td><b>Boas-vindas e termos</b> — nome da empresa, logo, termos, política, CTA customizável</td><td>1, 2, 4</td><td>O1–O5, O7</td><td><code>SUBMITTED_CONSENT</code></td></tr>
+      <tr><td>2</td><td><b>Lista de instituições</b> — agrupada por tipo; exibe aviso de instabilidade; pulável via <code>selectedConnectorId</code></td><td>3 Preparar</td><td><b>O6</b></td><td><code>SELECTED_INSTITUTION</code></td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>Trilho A — Conector direto</h3>
+  <div class="tw"><table>
+    <thead><tr><th>#</th><th>Tela</th><th>Etapa</th><th>Outcomes</th><th>Evento</th></tr></thead>
+    <tbody>
+      <tr><td>3A</td><td><b>Formulário de credenciais</b> — campos variam por conector; CTA customizável</td><td>4, 5</td><td>O4, O5, O7, O10</td><td><code>SUBMITTED_LOGIN</code></td></tr>
+      <tr><td>3A'</td><td><b>Conta única ou conjunta</b> — padrão Bradesco; conta conjunta abre depois a seleção de qual conta</td><td>3 Preparar</td><td><b>O6</b></td><td>—</td></tr>
+      <tr><td>4A</td><td><b>MFA</b> — 1 ou 2 etapas. Variantes: token, <b>imagem QR</b>, <b>lista de opções</b>, <b>seleção de telefone</b>, <b>seleção de empresa depois do MFA</b></td><td>5 Executar</td><td>O8, O10</td><td><code>SUBMITTED_MFA</code></td></tr>
+      <tr><td>4A'</td><td><b>Login por QR</b> — sem credenciais; QR que muda rápido; padrão Inter</td><td>5 Executar</td><td>O8, O9</td><td>—</td></tr>
+      <tr><td>5A</td><td><b>Espera e polling</b> — <code>LOGIN_IN_PROGRESS</code> <b>pode levar até 5 minutos</b></td><td>6 Monitorar</td><td><b>O11, O12</b></td><td><code>LOGIN_STEP_COMPLETED</code></td></tr>
+    </tbody>
+  </table></div>
+  <p>A <b>seleção de empresa depois do MFA</b> é uma tela de O6 que não estava no mapa: o operador de um escritório contábil ou de um grupo com várias CNPJs escolhe ali qual empresa conectar. Errar produz uma conexão bem-sucedida na empresa errada — perda invisível para o funil, que a conta como sucesso.</p>
+
+  <h3>Trilho B — Open Finance</h3>
+  <div class="tw"><table>
+    <thead><tr><th>#</th><th>Tela</th><th>Etapa</th><th>Outcomes</th><th>Evento</th></tr></thead>
+    <tbody>
+      <tr><td>3B</td><td><b>Formulário de CPF ou CNPJ</b> — só isso; pré-preenchível</td><td>4 Confirmar</td><td>O7</td><td><code>SUBMITTED_LOGIN</code></td></tr>
+      <tr><td>4B</td><td><b>Handoff: pop-up para a instituição</b> — o widget avisa quando o pop-up está bloqueado</td><td>5 (pico)</td><td><b>O8, O9</b></td><td>—</td></tr>
+      <tr><td>5B</td><td><b>Fora do widget</b> — login na instituição (QR, deep link ou credenciais) e <b>seleção do que compartilhar</b></td><td>5 (pico)</td><td>O1–O3, O10</td><td>—</td></tr>
+      <tr><td>6B</td><td><b>Retorno</b> — desktop tenta fechar a janela; mobile redireciona. Sem <code>oauthRedirectUri</code>, <b>o usuário fica numa página concluída sem caminho de volta</b></td><td>6 Monitorar</td><td><b>O9, O11</b></td><td>—</td></tr>
+      <tr><td>7B</td><td><b>Espera e polling</b></td><td>6 Monitorar</td><td>O11, O12</td><td><code>ITEM_RESPONSE</code></td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>Telas terminais</h3>
+  <div class="tw"><table>
+    <thead><tr><th>Tela</th><th>Etapa</th><th>Outcomes</th></tr></thead>
+    <tbody>
+      <tr><td><b>Sucesso</b> — <code>SUCCESS</code> ou <code>PARTIAL_SUCCESS</code></td><td>8 Concluir</td><td>O15</td></tr>
+      <tr><td><b>Erro</b> — 17 <code>executionStatus</code> distintos</td><td>7 Modificar</td><td><b>O13</b></td></tr>
+      <tr><td><b>Pendente</b> — Caixa exige autorização de dispositivo com <b>~30 min</b> de espera; <code>onSuccess</code> não é chamado</td><td>6, 7</td><td><b>O12, O13</b></td></tr>
+    </tbody>
+  </table></div>
+
+  <h2>3. Conectores e trilhos: os números</h2>
+  <div class="statrow">
+    <div class="stat"><span class="v">27</span><span class="k">conectores diretos</span></div>
+    <div class="stat"><span class="v">143</span><span class="k">instituições Open Finance</span></div>
+    <div class="stat"><span class="v">77</span><span class="k">entradas num widget só de PJ</span></div>
+    <div class="stat"><span class="v">9</span><span class="k">marcas nos dois trilhos</span></div>
+  </div>
+  <p class="caption">Conectores diretos: 8 pessoais, <b>11 empresariais</b>, 7 de investimento, 1 outro. Open Finance: <b>66 com contexto empresarial</b>, 70 só pessoal, 7 só investimentos.</p>
+
+  <h3>A lista que o empresário da PME vê</h3>
+  <div class="tw"><table>
+    <thead><tr><th>Marca</th><th>Entradas Open Finance</th><th>Entradas diretas</th><th>Entradas na lista</th></tr></thead>
+    <tbody>
+      <tr><td><b>Itaú</b></td><td>3 — Itaú, Itaú BBA, Itaú Emps</td><td>1 — Itaú Empresas</td><td class="big">4</td></tr>
+      <tr><td><b>Caixa</b></td><td>2 — Caixa Econômica, clientes sem conta</td><td>1 — Caixa Empresas</td><td class="big">3</td></tr>
+      <tr><td><b>Santander</b></td><td>2 — Santander, Santander Cartões</td><td>1 — Santander Empresas</td><td class="big">3</td></tr>
+      <tr><td>BB, Bradesco, Inter, Sicredi, Banrisul, BNB</td><td>1 cada</td><td>1 cada</td><td class="big">2</td></tr>
+      <tr><td>Cora, Efí Bank</td><td>—</td><td>1 cada</td><td class="big">1</td></tr>
+    </tbody>
+  </table></div>
+
+  <div class="box accent">
+    <h3>O achado mais acionável do mapa</h3>
+    <p>Um empresário do Itaú que procura "Itaú" encontra quatro opções, sem nenhuma informação que permita escolher. A diferença entre elas é o trilho regulatório, que não é vocabulário dele.</p>
+    <p style="margin:0">E a escolha tem consequência real: <b>o trilho direto aceita usuário operador, que muitas empresas já têm configurado; o Open Finance exige a aprovação de todos os aprovadores da conta.</b> Para uma PME com dois sócios que assinam em conjunto, um trilho pode ser inviável e o outro viável — e a lista não diz. Por isso O6 subiu de intensidade baixa para alta.</p>
+  </div>
+
+  <h3>O que cada trilho entrega melhor <span class="tag t-qa">QA</span></h3>
+  <div class="tw"><table>
+    <thead><tr><th>Critério</th><th>Melhor trilho</th></tr></thead>
+    <tbody>
+      <tr><td>Qualidade de datas, descrições de transação, detalhe de boleto</td><td><b>Direto</b></td></tr>
+      <tr><td>CPF/CNPJ da contraparte, alcance de produtos</td><td><b>Open Finance</b></td></tr>
+      <tr><td>Login em Caixa e Banco do Brasil</td><td><b>Open Finance</b></td></tr>
+      <tr><td>Login nos demais, se bem configurado</td><td><b>Direto</b></td></tr>
+      <tr><td><b>Quem pode autorizar</b></td><td><b>Direto</b> — aceita operador. OF exige todos os aprovadores</td></tr>
+    </tbody>
+  </table></div>
+
+  <h2>4. Credenciais pedidas por conector direto PJ <span class="tag t-doc">DOC</span></h2>
+  <div class="tw"><table>
+    <thead><tr><th>Conector</th><th>O que é pedido no formulário</th></tr></thead>
+    <tbody>
+      <tr><td>Caixa Empresas</td><td>usuário e senha do Internet Banking</td></tr>
+      <tr><td>Sicredi Empresas</td><td>CNPJ, usuário, senha</td></tr>
+      <tr><td>Sicoob PJ</td><td>número da cooperativa, chave de acesso, senha do IB</td></tr>
+      <tr><td>Santander Empresas</td><td>agência, conta, usuário, senha</td></tr>
+      <tr><td>Itaú Empresas</td><td>agência, conta, senha, CPF</td></tr>
+      <tr><td>Banco do Brasil Empresas</td><td>chave J, senha J, senha de 8 dígitos</td></tr>
+      <tr><td>Bradesco Empresas</td><td>usuário, senha, <b>chave de segurança gerada no app</b></td></tr>
+      <tr><td>Inter MEI</td><td>login no app com o número da conta MEI + <b>leitura de QR</b></td></tr>
+      <tr><td><b>Inter Empresas</b></td><td><b>Client ID, Client Secret, chave e certificado</b> de uma integração de API</td></tr>
+      <tr><td><b>Efí Bank</b></td><td><b>Client ID, Client Secret e certificado</b> de uma aplicação de API</td></tr>
+    </tbody>
+  </table></div>
+
+  <div class="box accent">
+    <h3>O que os tutoriais revelam sobre O4 e O5</h3>
+    <p>A Pluggy mantém <b>catorze tutoriais para conectores PJ</b>. Seis deles não ensinam a conectar — ensinam a provisionar acesso no banco <i>antes</i> de o widget servir para alguma coisa: autorizar dispositivo no BB, habilitar acesso móvel no Bradesco, criar usuário secundário no Santander, criar operador sem token no Itaú, criar integração de API no Inter Empresas e no Efí.</p>
+    <p style="margin:0"><b>Quase metade do esforço de documentação PJ da Pluggy está na etapa 2 Localizar, não na 5 Executar.</b> Nenhum desses pré-requisitos é comunicado antes da seleção da instituição: o empresário descobre que precisa de certificado digital depois de ter aceitado os termos e escolhido o banco. É a evidência mais forte deste ciclo a favor de H3.</p>
+  </div>
+
+  <h2>5. Eventos do widget × funil do Amplitude</h2>
+  <div class="tw"><table>
+    <thead><tr><th>Evento do widget</th><th>Significado documentado</th><th>Evento do funil</th></tr></thead>
+    <tbody>
+      <tr><td><code>SUBMITTED_CONSENT</code></td><td>confirmou termos e privacidade na primeira tela</td><td><b>não está no funil</b></td></tr>
+      <tr><td><code>SELECTED_INSTITUTION</code></td><td>selecionou uma instituição; traz o objeto <code>connector</code></td><td><code>List Item Clicked</code></td></tr>
+      <tr><td><code>SUBMITTED_LOGIN</code></td><td>enviou credenciais para criar o item</td><td><code>Form Submitted</code></td></tr>
+      <tr><td><code>SUBMITTED_MFA</code></td><td>enviou parâmetro extra</td><td>—</td></tr>
+      <tr><td><code>LOGIN_SUCCESS</code></td><td>enviou credenciais com sucesso</td><td>candidato a <code>Login Step Success</code></td></tr>
+      <tr><td><code>LOGIN_STEP_COMPLETED</code></td><td>"efetivamente fez login na instituição"</td><td>candidato a <code>Login Step Success</code></td></tr>
+      <tr><td><code>ITEM_RESPONSE</code></td><td>cada leitura do item na API — o batimento do polling</td><td>base do <code>Item Polling Finished</code></td></tr>
+    </tbody>
+  </table></div>
+
+  <div class="box">
+    <h3>1. A zona A já pode ser dividida hoje, e melhor que por page view</h3>
+    <p style="margin:0">O estudo propunha adicionar as visualizações <code>welcomePage</code> e <code>connectorsList</code>. Existe algo mais forte: <code>SUBMITTED_CONSENT</code> é uma <b>ação</b>, não uma visualização. Inserido no funil, separa com precisão <i>carregou → aceitou os termos</i> (abandono nas boas-vindas: O1–O5, O7; E1, E3) de <i>aceitou → clicou numa instituição</i> (abandono na lista: O6; E2). Dois problemas de produto diferentes, hoje somados em 23.402.</p>
+  </div>
+
+  <div class="box">
+    <h3>2. <code>Login Step Success</code> provavelmente significa coisas diferentes em cada trilho</h3>
+    <p>No <b>trilho direto</b>, as credenciais vão no formulário do widget — é um login de verdade no banco. No <b>Open Finance</b>, o que se submete é <b>apenas o CPF ou CNPJ</b>; o login acontece depois, no pop-up.</p>
+    <p><span class="tag t-inf">INFERÊNCIA</span> Se o evento do funil for <code>LOGIN_SUCCESS</code>, ele dispara <b>antes do handoff</b> no Open Finance — e a zona B contém o redirecionamento regulado inteiro. Ela deixa de ser majoritariamente ansiedade de espera (E5) para ser majoritariamente a ida e volta ao banco (O9, E1).</p>
+    <p style="margin:0"><b>Como resolver em uma consulta:</b> segmentar <i>Form Submitted → Login Step Success</i> por trilho. Se os 94,5% se mantiverem parecidos nos dois, o evento dispara antes do handoff — é improvável que 94,5% das pessoas completem a autorização no banco.</p>
+  </div>
+
+  <h2>6. Modos de falha: dezessete estados, oito famílias</h2>
+  <p>O estudo tratava a zona B como "erro técnico, erro do usuário e abandono". A documentação é mais granular, e cada família pede uma recuperação diferente. Isso dá corpo a H5.</p>
+  <div class="tw"><table>
+    <thead><tr><th>Família</th><th><code>executionStatus</code></th><th>O que a UI precisa dizer</th></tr></thead>
+    <tbody>
+      <tr><td>Credencial errada</td><td><code>INVALID_CREDENTIALS</code>, <code>INVALID_CREDENTIALS_MFA</code></td><td>qual campo, e que precisa recomeçar</td></tr>
+      <tr><td>Conta bloqueada ou exigindo ação</td><td><code>ACCOUNT_LOCKED</code>, <code>ACCOUNT_NEEDS_ACTION</code>, <code>ACCOUNT_CREDENTIALS_RESET</code></td><td><b>a ação é no banco</b>; <code>providerMessage</code> traz a instrução da instituição</td></tr>
+      <tr><td>Pessoa ou conta errada</td><td><code>USER_NOT_SUPPORTED</code></td><td><b>O5 puro</b> — quem está no widget não pode fazer isto</td></tr>
+      <tr><td>Autorização pendente</td><td><code>USER_AUTHORIZATION_PENDING</code>, <code>..._NOT_GRANTED</code></td><td><b>esperar, e quanto</b> — a Caixa leva ~30 min</td></tr>
+      <tr><td>Consentimento revogado</td><td><code>USER_AUTHORIZATION_REVOKED</code></td><td>foi revogado no app do banco</td></tr>
+      <tr><td>Instituição fora do ar</td><td><code>SITE_NOT_AVAILABLE</code>, <code>CONNECTION_ERROR</code>, <code>ALREADY_LOGGED_IN</code></td><td>não é culpa do usuário</td></tr>
+      <tr><td>Timeout de MFA</td><td><code>USER_INPUT_TIMEOUT</code></td><td>o código expirou</td></tr>
+      <tr><td>Falha da Pluggy</td><td><code>ERROR</code>, <code>MERGE_ERROR</code></td><td>não é culpa do usuário</td></tr>
+    </tbody>
+  </table></div>
+
+  <h2>7. Três mecanismos estruturais de perda</h2>
+  <p>Não são problemas de persuasão nem de reassurance. São mecânicos, e provavelmente respondem por fração relevante da zona B.</p>
+
+  <div class="box">
+    <h3>7.1 <code>oauthRedirectUri</code> não configurado pelo cliente <span class="tag t-doc">DOC</span> <span class="tag t-qa">QA</span></h3>
+    <p>Alguns navegadores móveis não deixam a janela de autorização se fechar sozinha. Sem <code>oauthRedirectUri</code>, <b>o usuário fica olhando uma página de autorização concluída sem caminho de volta</b>. A autorização funcionou; a conexão consta como não concluída.</p>
+    <p style="margin:0">É item recorrente no suporte, e o parâmetro é responsabilidade do ERP — <b>parte da conversão de cada cliente é função de uma linha na integração dele</b>. <b>Ação imediata, sem experimento:</b> levantar quais clientes criam tokens sem o parâmetro e cruzar com a conversão da zona B. Mais barato e mais rápido que qualquer teste A/B.</p>
+  </div>
+
+  <div class="box">
+    <h3>7.2 Pop-up bloqueado <span class="tag t-qa">QA</span></h3>
+    <p style="margin:0">O handoff abre um pop-up; bloqueadores o impedem. O widget já mostra uma mensagem, e a Pluggy <b>se recusa a removê-la a pedido de clientes</b> — o que confirma que o problema é frequente. Essa mensagem chega no <b>pico exato de E1</b> e é, em forma, indistinguível de um alerta de golpe. É a melhor candidata a experimento de copy de todo o fluxo: intervém no pico, é centralizada, não é regulada e não passa pelo jurídico.</p>
+  </div>
+
+  <div class="box">
+    <h3>7.3 O ciclo vicioso: ansiedade → nova tentativa → limite de taxa → falha <span class="tag t-doc">DOC</span></h3>
+    <p>Os limites do Open Finance são <b>mensais, por CPF/CNPJ + instituição + produto</b>, e contam <b>entre itens diferentes</b>. Os mais apertados:</p>
+    <div class="tw"><table>
+      <thead><tr><th>Produto</th><th>Requisições por mês</th></tr></thead>
+      <tbody>
+        <tr><td><b>Lista e detalhes da conta</b></td><td class="big">4</td></tr>
+        <tr><td>Transações de 7 a 365 dias</td><td class="big">4</td></tr>
+        <tr><td>Identidade, empréstimos</td><td class="big">4</td></tr>
+      </tbody>
+    </table></div>
+    <p>Um empresário que, sem saber se deu certo (E5, O11), <b>tenta conectar o mesmo banco cinco vezes no mês, esgota a cota</b> — e a quinta tentativa retorna <code>PARTIAL_SUCCESS</code> com warning 423.</p>
+    <p style="margin:0">Duas consequências. A ansiedade <b>não custa só abandono: degrada o produto de quem persiste</b>, o que eleva a importância de O11 e O12 e fortalece H2. E como <b><code>PARTIAL_SUCCESS</code> conta como sucesso</b> na definição atual do funil, parte dos 30.230 pode ser conexão degradada por retentativa — <b>o baseline de 37,9% é, nesse ponto, otimista</b>.</p>
+  </div>
+
+  <h2>8. Múltipla alçada <span class="tag t-qa">QA</span></h2>
+  <ul>
+    <li><b>É observável:</b> o <code>statusDetail</code> traz o <b>warning código 002, "Conta pendente de autorização"</b>. Contar itens PJ de Open Finance com esse warning dimensiona o problema. Falta rodar a consulta.</li>
+    <li><b>O outro aprovador não recebe notificação pela Pluggy.</b> Depende do banco. O fluxo simplesmente para, e a UI não tem como saber de quem se espera.</li>
+    <li><b>Há proposta oficial no conselho do Open Finance para mudar isso:</b> aprovadores notificados pelo app do banco, <b>basta um aprovador consentir</b>, e qualquer operador pode fazer o login inicial. Se aprovada, remove boa parte do problema — argumento para detectar e explicar o estado agora, e não investir em UI de fluxo multi-aprovador.</li>
+    <li>O sandbox já simula os três casos (aprovado, rejeitado, autenticação lenta), então dá para prototipar sem conta real.</li>
+  </ul>
+  <p><b>Consequência para o job map:</b> existe um estado, hoje ausente, em que o job <b>não pode ser concluído pelo executor sozinho</b>. Daí O16 — minimizar o tempo para saber que a conclusão depende de outra pessoa, e de quem.</p>
+
+  <h2>9. Efeito sobre as hipóteses</h2>
+  <div class="tw"><table>
+    <thead><tr><th>Hipótese</th><th>Situação após o mapa</th></tr></thead>
+    <tbody>
+      <tr><td><b>H1</b> preparar antes do redirect</td><td><b>Reforçada e mais concreta.</b> Agora se sabe o que preparar: pop-up, modo de login do banco e a tela de seleção de compartilhamento.</td></tr>
+      <tr><td><b>H2</b> confirmação no retorno</td><td><b>Reforçada, com novo argumento.</b> Não é só conforto: reduz retentativa, que consome cota e degrada o resultado.</td></tr>
+      <tr><td><b>H3</b> checklist do que ter em mãos</td><td><b>Promovida a prioridade alta.</b> Seis dos catorze tutoriais PJ são sobre provisionar acesso antes de começar.</td></tr>
+      <tr><td><b>H4</b> resumo de permissões</td><td>Mantida. No Open Finance a seleção acontece <b>no banco</b> — o resumo teria de ser antecipatório, não substituto.</td></tr>
+      <tr><td><b>H5</b> recuperação por tipo de erro</td><td><b>Mais concreta.</b> 17 estados em 8 famílias, e <code>providerMessage</code> como fonte de texto.</td></tr>
+      <tr><td><b>H6</b> mostrar como revogar</td><td>Mantida, com precisão nova: consentimentos de OF <b>não expiram por padrão</b> e se revogam <b>no app do banco</b>. Inter PJ expira em um ano.</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>Hipóteses novas</h3>
+  <div class="hyp">
+    <h3>H7 · Desambiguar instituições duplicadas na lista</h3>
+    <p>Quando a mesma marca aparece nos dois trilhos, rotular pela consequência para o usuário — quem pode autorizar, o que muda nos dados — e não pelo trilho regulatório.</p>
+    <p class="caption">Outcomes: O6 · Emocional: E2 · <b>Maior oportunidade aparente da zona A</b></p>
+  </div>
+  <div class="hyp">
+    <h3>H8 · Roteamento por poderes antes da lista</h3>
+    <p>Perguntar se a pessoa pode autorizar sozinha em nome da empresa e, quando não, sugerir o trilho direto com usuário operador.</p>
+    <p class="caption">Outcomes: O5, O6 · Emocional: E2 · Depende de confirmar a frequência</p>
+  </div>
+  <div class="hyp">
+    <h3>H9 · Tratar o aviso de pop-up bloqueado como tela de pico</h3>
+    <p>Reescrever a mensagem para que não pareça alerta de golpe e diga o próximo passo concreto.</p>
+    <p class="caption">Outcomes: O8, O9 · Emocional: E1 · Menor custo de implementação de todas</p>
+  </div>
+  <div class="box">
+    <h3>Não é hipótese: correção de configuração</h3>
+    <p style="margin:0">O <code>oauthRedirectUri</code> ausente não deve virar experimento. É defeito de integração — vira trabalho de CS, documentação e talvez um aviso no Dashboard. Convém medir antes de experimentar em cima de um ruído que se resolve sem UI.</p>
+  </div>
+
+  <h2>10. O que continua pendente</h2>
+  <h3>Depende de desbloqueio de rede, ou de rodar o Chrome localmente</h3>
+  <ol>
+    <li>Percorrer o widget tela a tela e registrar o texto real de cada uma. Todo este mapa descreve a especificação, não a interface.</li>
+    <li>Verificar a ordem e a redação da tela de boas-vindas, e como os termos são apresentados.</li>
+    <li>Conferir se a lista tem busca, como agrupa e como exibe marcas duplicadas.</li>
+    <li>Ler a redação exata do aviso de pop-up bloqueado — insumo de H9.</li>
+    <li>Percorrer os fluxos sintéticos do sandbox: <code>user-ok-multi-company</code>, <code>user-ok-phone</code>, <code>user-ok-select</code>, QR, conta conjunta e Open Finance com CPF <code>761.092.776-73</code>. Dados sintéticos, sem credencial nem conexão real.</li>
+  </ol>
+  <h3>Depende de re-autenticar o dashboard</h3>
+  <ol start="6">
+    <li><code>list_connectors</code> para a lista real da aplicação, em vez do universo documentado.</li>
+    <li><code>get_stats</code> com <code>items-by-connector</code> para distribuir a zona B por conector e por <code>executionStatus</code>.</li>
+    <li>Contagem de itens PJ de Open Finance com warning 002.</li>
+  </ol>
+  <h3>Depende de consulta no Amplitude</h3>
+  <ol start="9">
+    <li>Segmentar o funil por presença de <code>selectedConnectorId</code> e <code>updateItem</code>.</li>
+    <li>Inserir <code>SUBMITTED_CONSENT</code> no funil para dividir a zona A.</li>
+    <li>Segmentar <i>Form Submitted → Login Step Success</i> por trilho.</li>
+    <li>Proporção <code>SUCCESS</code> e <code>PARTIAL_SUCCESS</code> nos 30.230, e distribuição de warnings.</li>
+  </ol>
+
+  <footer>Mapa do widget versão 1.0 · 19 de setembro de 2026. Derivado da documentação viva da Pluggy e da base de Q&amp;A do suporte, não da observação da tela. Fonte em <code>docs/mapa-widget.md</code>.</footer>
+
+</section>
+
 </main>
-</body>
-</html>
+
+<script>
+(function () {
+  var tabs = Array.prototype.slice.call(document.querySelectorAll('.tab'));
+  var KEY = 'jtbd-aba';
+
+  function show(id, focus) {
+    tabs.forEach(function (t) {
+      var on = t.id === id;
+      t.setAttribute('aria-selected', on ? 'true' : 'false');
+      t.tabIndex = on ? 0 : -1;
+      document.getElementById(t.getAttribute('aria-controls')).hidden = !on;
+      if (on && focus) t.focus();
+    });
+    try { localStorage.setItem(KEY, id); } catch (e) {}
+  }
+
+  tabs.forEach(function (t, i) {
+    t.addEventListener('click', function () {
+      show(t.id, false);
+      window.scrollTo({ top: 0, behavior: 'instant' });
+    });
+    t.addEventListener('keydown', function (e) {
+      var d = e.key === 'ArrowRight' ? 1 : e.key === 'ArrowLeft' ? -1 : 0;
+      if (!d) return;
+      e.preventDefault();
+      show(tabs[(i + d + tabs.length) % tabs.length].id, true);
+    });
+  });
+
+  try {
+    var saved = localStorage.getItem(KEY);
+    if (saved && document.getElementById(saved)) show(saved, false);
+  } catch (e) {}
+})();
+</script>
