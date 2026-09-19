@@ -87,7 +87,9 @@ footer{margin-top:3rem;padding-top:1.25rem;border-top:1px solid var(--rule);colo
 
 /* --- abas --- */
 .tabs{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;display:flex;gap:.25rem;
-  margin:1.25rem 0 0;padding:.4rem 0 0;background:var(--bg);border-bottom:1px solid var(--rule)}
+  margin:1.25rem 0 0;padding:.4rem 0 0;background:var(--bg);border-bottom:1px solid var(--rule);
+  overflow-x:auto;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
 .tab{appearance:none;background:none;border:0;border-bottom:2px solid transparent;margin-bottom:-1px;
   padding:.6rem .85rem;font:inherit;font-size:.95rem;color:var(--muted);cursor:pointer;
   border-radius:4px 4px 0 0;white-space:nowrap}
@@ -100,6 +102,9 @@ footer{margin-top:3rem;padding-top:1.25rem;border-top:1px solid var(--rule);colo
 .t-doc{background:var(--fn-soft);color:var(--fn)}
 .t-qa{background:var(--em-soft);color:var(--em)}
 .t-inf{background:var(--new-soft);color:var(--new)}
+.t-neu{background:var(--rule);color:var(--muted)}
+td.oid{font-weight:600;color:var(--fn);font-size:.9rem;white-space:nowrap;
+  font-variant-numeric:tabular-nums}
 /* --- variantes de box --- */
 .box.warn{border-left:3px solid var(--new)}
 .box.accent{border-left:3px solid var(--fn)}
@@ -122,6 +127,7 @@ code{font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;font-size:.88em
   <div class="tabs" role="tablist" aria-label="Documentos">
     <button class="tab" id="tab-estudo" role="tab" aria-selected="true" aria-controls="panel-estudo">Estudo · v0.4</button>
     <button class="tab" id="tab-mapa" role="tab" aria-selected="false" aria-controls="panel-mapa" tabindex="-1">Mapa do widget · v1.0</button>
+    <button class="tab" id="tab-modelo" role="tab" aria-selected="false" aria-controls="panel-modelo" tabindex="-1">Modelo de valor · v1.0</button>
   </div>
 </header>
 
@@ -877,6 +883,248 @@ code{font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;font-size:.88em
   </ol>
 
   <footer>Mapa do widget versão 1.0 · 19 de setembro de 2026. Derivado da documentação viva da Pluggy e da base de Q&amp;A do suporte, não da observação da tela. Fonte em <code>docs/mapa-widget.md</code>.</footer>
+
+</section>
+
+<section class="panel" id="panel-modelo" role="tabpanel" aria-labelledby="tab-modelo" hidden>
+  <p class="lede">Confronto do modelo com a Figura 2.4 de Ulwick, o customer value model da serra circular Bosch. Três das quatro exigências da figura não eram atendidas. Refino dos outcomes, do conceito de segurança e da métrica dos experimentos.</p>
+  <div class="legend">
+    <span><span class="tag t-doc">mapa</span> deriva de achado do mapa do widget</span>
+    <span><span class="tag t-neu">decomp</span> decomposição dos outcomes atuais</span>
+    <span><span class="tag t-inf">novo</span> hipótese, ainda a validar</span>
+  </div>
+
+  <h2>1. O que a Figura 2.4 cobra do nosso modelo</h2>
+  <div class="tw"><table>
+    <thead><tr><th>O que a figura estabelece</th><th>Onde estamos</th></tr></thead>
+    <tbody>
+      <tr><td>"In most cases <b>a dozen or so outcomes define success at each step</b>"</td><td><b>2 por etapa.</b> 16 outcomes em 8 etapas. Uma etapa tem 3, três etapas têm 1.</td></tr>
+      <tr><td>Os três exemplos são todos de <b>uma única etapa</b> (Plan the cut), e todos no formato <i>Minimize the time it takes to [ação observável]</i></td><td>Nossos outcomes misturam tempo, probabilidade e, em três casos, o próprio sucesso do job</td></tr>
+      <tr><td>As etapas têm <b>nomes do job</b>: Plan the cut, Adjust the saw, Start the cut, Operate the saw, Complete the cut, Maintain the saw</td><td>Usamos os rótulos genéricos do job map universal: Definir, Localizar, Preparar…</td></tr>
+      <tr><td><b>"Ensure Safety" é uma etapa transversal</b>, desenhada fora da cadeia com uma seta apontando para o job inteiro</td><td>Tratamos segurança como job emocional E1 pendurado em duas etapas</td></tr>
+    </tbody>
+  </table></div>
+
+  <div class="statrow">
+    <div class="stat"><span class="v">16</span><span class="k">outcomes hoje</span></div>
+    <div class="stat"><span class="v">2</span><span class="k">por etapa, na média</span></div>
+    <div class="stat"><span class="v">~12</span><span class="k">por etapa, exigidos</span></div>
+    <div class="stat"><span class="v">~80</span><span class="k">alvo para o job inteiro</span></div>
+  </div>
+
+  <div class="box accent">
+    <h3>O ponto crítico</h3>
+    <p>Com dois outcomes por etapa, <b>não temos um modelo de valor — temos uma lista de temas.</b> "O6 minimizar a probabilidade de selecionar a instituição ou a conta errada" não é algo contra o que se projeta uma tela; é um assunto.</p>
+    <p style="margin:0">Priorização por oportunidade aplicada a temas produz um <b>ranking de assuntos, não uma fila de trabalho</b>. Ulwick trabalha com 50 a 150 outcomes para um job completo. Oito etapas a uma dúzia dá 96.</p>
+  </div>
+
+  <h2>2. Auditoria de formato dos 16 outcomes atuais</h2>
+  <p>Formato canônico: <b>[direção] + [unidade de medida] + [objeto de controle] + [clarificador contextual]</b>. Um outcome precisa ser algo que o próprio executor consegue medir.</p>
+  <div class="tw"><table>
+    <thead><tr><th>Outcome</th><th>Problema</th><th>Veredito</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><b>O7</b> "minimizar a probabilidade de <b>desconfiar</b> da legitimidade do pedido <b>e desistir</b>"</td>
+        <td>Composto, e "desistir" é a métrica de conversão. Repete na escala da etapa o erro que a v0.1 já corrigiu em "maximizar a probabilidade de conectar com sucesso". Além disso, o executor não mede a própria desconfiança.</td>
+        <td><b>Reescrever</b></td>
+      </tr>
+      <tr>
+        <td><b>O10</b> "minimizar o tempo para concluir a autorização"</td>
+        <td>É a duração da etapa inteira. Mede o resultado, não um passo do resultado. Não indica onde intervir.</td>
+        <td><b>Vira roll-up, não outcome</b></td>
+      </tr>
+      <tr>
+        <td><b>O1</b> "quais <b>dados ou operações</b> o sistema terá acesso"</td>
+        <td>Composto. Dados e operações são coisas distintas, com ansiedades distintas.</td>
+        <td>Dividir</td>
+      </tr>
+      <tr>
+        <td><b>O16</b> "saber que a conclusão depende de outra pessoa, <b>e de quem</b>"</td>
+        <td>Composto.</td>
+        <td>Dividir</td>
+      </tr>
+      <tr>
+        <td>O2, O4, O5, O6, O11, O12, O13, O14</td>
+        <td>Formato válido, granularidade insuficiente</td>
+        <td>Decompor</td>
+      </tr>
+    </tbody>
+  </table></div>
+  <p class="caption">Nenhum outcome cita solução — isso a v0.1 já tinha acertado.</p>
+
+  <h2>3. "Garantir a legitimidade" é etapa transversal, não emoção</h2>
+  <p>Este é o ganho estrutural que a figura entrega.</p>
+  <p>Na Bosch, segurança não é atributo nem sentimento: é <b>uma etapa do job map com outcomes próprios</b>, que atravessa todas as outras. O desenho é literal — a caixa fica fora da cadeia, com uma seta apontando para o job inteiro.</p>
+
+  <div class="box accent">
+    <h3>O sintoma já estava no nosso modelo</h3>
+    <p style="margin:0">O estudo trata a legitimidade como job emocional E1, pendurado na etapa 4 (alta) e na etapa 5 (pico). <b>Que o mesmo item apareça em duas etapas com intensidades diferentes já é o sintoma: não é uma etapa, é algo que atravessa.</b> O empresário pergunta "isso é golpe?" na tela de boas-vindas, na lista de bancos, no formulário de credenciais, no aviso de pop-up e no redirecionamento. Cinco momentos, um único job.</p>
+  </div>
+
+  <div class="tw"><table>
+    <thead><tr><th>Antes</th><th>Depois</th></tr></thead>
+    <tbody>
+      <tr><td>Etapa 4 "Confirmar" (verificar legitimidade e poderes)</td><td><b>Dissolvida.</b> A verificação de poderes vai para a etapa 2; a de legitimidade vira transversal</td></tr>
+      <tr><td>Job emocional E1</td><td><b>Promovido a etapa transversal</b> "Garantir que não está sendo golpeado", com outcomes funcionais próprios</td></tr>
+      <tr><td>Job map de 8 etapas lineares</td><td><b>7 etapas lineares + 1 transversal</b></td></tr>
+    </tbody>
+  </table></div>
+
+  <p>Isso <b>não</b> contradiz o insight de "intervir nos picos, não em todas as telas". Bosch não põe proteção redundante em cada etapa da serra. Etapa transversal significa que a <i>necessidade</i> atravessa o job, não que a <i>solução</i> deva aparecer em toda tela. A distinção fica mais clara assim do que estava antes.</p>
+
+  <h3>O mapa renomeado na língua do executor</h3>
+  <div class="tw"><table>
+    <thead><tr><th>#</th><th>Antes (genérico)</th><th>Depois (na língua do empresário)</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td>Definir</td><td>Decidir o que liberar</td></tr>
+      <tr><td>2</td><td>Localizar</td><td>Reunir acesso e poderes</td></tr>
+      <tr><td>3</td><td>Preparar</td><td>Escolher por onde conectar</td></tr>
+      <tr><td>4</td><td>Confirmar</td><td><i>dissolvida</i></td></tr>
+      <tr><td>5</td><td>Executar</td><td>Autorizar no banco</td></tr>
+      <tr><td>6</td><td>Monitorar</td><td>Acompanhar a conclusão</td></tr>
+      <tr><td>7</td><td>Modificar</td><td>Corrigir e ajustar</td></tr>
+      <tr><td>8</td><td>Concluir</td><td>Voltar e usar</td></tr>
+      <tr><td>—</td><td><i>era E1</i></td><td><b>Garantir que não está sendo golpeado</b> <i>(transversal)</i></td></tr>
+    </tbody>
+  </table></div>
+
+  <h2>4. Outcomes refinados: três conjuntos completos</h2>
+  <p>Desenvolvi a dúzia completa nas três etapas onde o mapa do widget produziu evidência. As demais seguem pendentes — fazê-las sem evidência seria inventar.</p>
+
+  <h3>4.1 Transversal · Garantir que não está sendo golpeado</h3>
+  <p class="caption">Substitui E1 e O7.</p>
+  <div class="tw"><table>
+    <thead><tr><th>ID</th><th>Outcome</th><th>Proc.</th></tr></thead>
+    <tbody>
+      <tr><td class="oid">G1</td><td>Minimizar o tempo para confirmar que o pedido de acesso partiu do sistema de gestão que a empresa contratou</td><td><span class="tag t-neu">decomp</span></td></tr>
+      <tr><td class="oid">G2</td><td>Minimizar o tempo para confirmar que o nome exibido na tela é o da empresa que enviou o convite</td><td><span class="tag t-doc">mapa</span></td></tr>
+      <tr><td class="oid">G3</td><td>Minimizar o tempo para verificar que o intermediário é autorizado a fazer o que está pedindo</td><td><span class="tag t-inf">novo</span></td></tr>
+      <tr><td class="oid">G4</td><td>Minimizar a probabilidade de informar credenciais fora do ambiente do banco sem perceber que saiu dele</td><td><span class="tag t-doc">mapa</span></td></tr>
+      <tr><td class="oid">G5</td><td><b>Minimizar o tempo para distinguir um aviso legítimo do sistema de um alerta de golpe</b></td><td><span class="tag t-doc">mapa</span></td></tr>
+      <tr><td class="oid">G6</td><td>Minimizar o tempo para confirmar que a janela que se abriu pertence ao banco</td><td><span class="tag t-doc">mapa</span></td></tr>
+      <tr><td class="oid">G7</td><td>Minimizar a probabilidade de interpretar o redirecionamento legítimo como sequestro de sessão</td><td><span class="tag t-neu">decomp</span></td></tr>
+      <tr><td class="oid">G8</td><td>Minimizar o tempo para confirmar que o acesso concedido pode ser retirado depois</td><td><span class="tag t-neu">decomp</span></td></tr>
+      <tr><td class="oid">G9</td><td>Minimizar a probabilidade de precisar confiar num passo sem ter como verificá-lo</td><td><span class="tag t-inf">novo</span></td></tr>
+      <tr><td class="oid">G10</td><td>Minimizar o tempo para saber a quem recorrer ao suspeitar de fraude durante o processo</td><td><span class="tag t-inf">novo</span></td></tr>
+      <tr><td class="oid">G11</td><td>Minimizar o tempo para confirmar que nenhuma senha foi exposta a terceiros</td><td><span class="tag t-inf">novo</span></td></tr>
+      <tr><td class="oid">G12</td><td>Minimizar a probabilidade de abandonar um pedido legítimo por não conseguir distingui-lo de um golpe</td><td><span class="tag t-neu">decomp</span></td></tr>
+    </tbody>
+  </table></div>
+  <p class="caption">G5 e G6 são a tradução exata do achado do aviso de pop-up bloqueado: uma mensagem que, em forma, é indistinguível de um alerta de fraude, entregue no pico. G12 é o que O7 tentava dizer sem a contaminação da métrica de conversão.</p>
+
+  <h3>4.2 Etapa 2 · Reunir acesso e poderes</h3>
+  <p class="caption">Substitui O4 e O5.</p>
+  <div class="tw"><table>
+    <thead><tr><th>ID</th><th>Outcome</th><th>Proc.</th></tr></thead>
+    <tbody>
+      <tr><td class="oid">R1</td><td>Minimizar o tempo para saber tudo o que será exigido antes de começar</td><td><span class="tag t-neu">decomp</span></td></tr>
+      <tr><td class="oid">R2</td><td>Minimizar o tempo para descobrir se quem está diante da tela pode autorizar em nome da empresa</td><td><span class="tag t-neu">decomp</span></td></tr>
+      <tr><td class="oid">R3</td><td>Minimizar a probabilidade de começar sem ter em mãos a credencial que será pedida</td><td><span class="tag t-neu">decomp</span></td></tr>
+      <tr><td class="oid">R4</td><td><b>Minimizar a probabilidade de começar sem o dispositivo previamente autorizado no banco</b></td><td><span class="tag t-doc">mapa</span></td></tr>
+      <tr><td class="oid">R5</td><td><b>Minimizar a probabilidade de começar sem o certificado digital que a instituição exige</b></td><td><span class="tag t-doc">mapa</span></td></tr>
+      <tr><td class="oid">R6</td><td>Minimizar o tempo para providenciar, no banco, o acesso que falta</td><td><span class="tag t-doc">mapa</span></td></tr>
+      <tr><td class="oid">R7</td><td>Minimizar o tempo para saber a quem pedir, dentro da empresa, quando falta poder para autorizar</td><td><span class="tag t-inf">novo</span></td></tr>
+      <tr><td class="oid">R8</td><td><b>Minimizar a probabilidade de descobrir um pré-requisito depois de já ter começado</b></td><td><span class="tag t-doc">mapa</span></td></tr>
+      <tr><td class="oid">R9</td><td>Minimizar o tempo para retomar de onde parou depois de providenciar o que faltava</td><td><span class="tag t-inf">novo</span></td></tr>
+      <tr><td class="oid">R10</td><td>Minimizar a probabilidade de precisar de uma segunda pessoa sem saber disso de antemão</td><td><span class="tag t-doc">mapa</span></td></tr>
+      <tr><td class="oid">R11</td><td>Minimizar o tempo para estimar quanto o processo inteiro vai tomar</td><td><span class="tag t-inf">novo</span></td></tr>
+      <tr><td class="oid">R12</td><td>Minimizar a probabilidade de começar num dispositivo que não permite concluir</td><td><span class="tag t-doc">mapa</span></td></tr>
+    </tbody>
+  </table></div>
+  <p class="caption">R4, R5 e R8 vêm dos seis tutoriais PJ que ensinam a provisionar acesso antes de conectar. R12 vem dos problemas de webview e pop-up no celular.</p>
+
+  <h3>4.3 Etapa 3 · Escolher por onde conectar</h3>
+  <p class="caption">Substitui O6.</p>
+  <div class="tw"><table>
+    <thead><tr><th>ID</th><th>Outcome</th><th>Proc.</th></tr></thead>
+    <tbody>
+      <tr><td class="oid">P1</td><td>Minimizar o tempo para localizar a instituição da empresa na lista</td><td><span class="tag t-neu">decomp</span></td></tr>
+      <tr><td class="oid">P2</td><td><b>Minimizar o tempo para decidir entre duas entradas da mesma instituição</b></td><td><span class="tag t-doc">mapa</span></td></tr>
+      <tr><td class="oid">P3</td><td><b>Minimizar a probabilidade de escolher uma entrada que exige mais aprovadores do que a empresa consegue reunir</b></td><td><span class="tag t-doc">mapa</span></td></tr>
+      <tr><td class="oid">P4</td><td><b>Minimizar a probabilidade de escolher uma entrada que exige credencial que a empresa não possui</b></td><td><span class="tag t-doc">mapa</span></td></tr>
+      <tr><td class="oid">P5</td><td>Minimizar a probabilidade de conectar uma empresa do grupo que não era a pretendida</td><td><span class="tag t-doc">mapa</span></td></tr>
+      <tr><td class="oid">P6</td><td>Minimizar o tempo para saber quais contas da empresa serão alcançadas pela escolha</td><td><span class="tag t-neu">decomp</span></td></tr>
+      <tr><td class="oid">P7</td><td>Minimizar o tempo para saber se a instituição está operando normalmente agora</td><td><span class="tag t-doc">mapa</span></td></tr>
+      <tr><td class="oid">P8</td><td>Minimizar o tempo para saber o que muda nos dados conforme a entrada escolhida</td><td><span class="tag t-doc">mapa</span></td></tr>
+      <tr><td class="oid">P9</td><td>Minimizar a probabilidade de precisar refazer a escolha depois de iniciar</td><td><span class="tag t-neu">decomp</span></td></tr>
+      <tr><td class="oid">P10</td><td>Minimizar o tempo para trocar de instituição sem recomeçar o processo</td><td><span class="tag t-inf">novo</span></td></tr>
+      <tr><td class="oid">P11</td><td>Minimizar o tempo para confirmar que a escolha feita é a adequada ao caso da empresa</td><td><span class="tag t-inf">novo</span></td></tr>
+      <tr><td class="oid">P12</td><td>Minimizar a probabilidade de escolher pela familiaridade da marca em vez da adequação ao caso</td><td><span class="tag t-inf">novo</span></td></tr>
+    </tbody>
+  </table></div>
+  <p class="caption">P2, P3 e P4 são o achado das quatro entradas do Itaú traduzido em medida. P12 é a armadilha específica: quatro entradas "Itaú" e o empresário escolhe a primeira.</p>
+
+  <div class="statrow">
+    <div class="stat"><span class="v">36</span><span class="k">outcomes refinados, em 3 etapas</span></div>
+    <div class="stat"><span class="v">44</span><span class="k">por desenvolver, em 5 etapas</span></div>
+    <div class="stat"><span class="v">~80</span><span class="k">total projetado</span></div>
+  </div>
+
+  <h2>5. O desbloqueio: outcomes de tempo já têm proxy no funil</h2>
+  <p>Os três exemplos da Bosch são todos de tempo, e não por acaso — tempo é observável. <b>Vários dos outcomes refinados já têm medida comportamental disponível hoje</b>, sem pesquisa com o empresário. Isso ataca de frente a restrição do B2B2B registrada no estudo.</p>
+  <div class="tw"><table>
+    <thead><tr><th>Outcome</th><th>Proxy comportamental</th><th>Disponível</th></tr></thead>
+    <tbody>
+      <tr><td class="oid">P1</td><td>intervalo <code>SUBMITTED_CONSENT</code> → <code>SELECTED_INSTITUTION</code></td><td>após inserir o evento no funil</td></tr>
+      <tr><td class="oid">P2</td><td>mesmo intervalo, segmentado por marcas com entrada duplicada</td><td>idem</td></tr>
+      <tr><td class="oid">P9 P10</td><td><code>SELECTED_INSTITUTION</code> emitido mais de uma vez com <code>connector</code> diferente</td><td><b>hoje</b> — o evento carrega o objeto</td></tr>
+      <tr><td class="oid">P4</td><td><code>SELECTED_INSTITUTION</code> sem <code>SUBMITTED_LOGIN</code> subsequente, por conector</td><td><b>hoje</b></td></tr>
+      <tr><td class="oid">P3</td><td>itens de Open Finance PJ com warning 002</td><td>após re-autenticar o dashboard</td></tr>
+      <tr><td class="oid">R8</td><td>abandono no formulário concentrado em conectores de certificado (Inter Empresas, Efí)</td><td><b>hoje</b></td></tr>
+      <tr><td class="oid">G5</td><td>tempo entre exibir o aviso de pop-up e o clique seguinte, e abandono nesse ponto</td><td>requer instrumentar o aviso</td></tr>
+      <tr><td class="oid">G12</td><td>abandono antes de <code>SUBMITTED_CONSENT</code></td><td>após inserir o evento</td></tr>
+    </tbody>
+  </table></div>
+
+  <div class="box accent">
+    <h3>A inversão prática</h3>
+    <p style="margin:0"><b>A insatisfação de boa parte dos outcomes pode ser estimada por comportamento; a importância é o que realmente exige pesquisa.</b> Isso inverte a ordem de trabalho — mede-se satisfação primeiro, de graça, e gasta-se o acesso escasso ao empresário só com importância. E 36 outcomes cabem num questionário único, coisa que 80 não caberiam.</p>
+  </div>
+
+  <h2>6. Refino dos experimentos</h2>
+  <p>Cada hipótese passa a mirar outcomes nomeados, com métrica primária derivada do outcome — não da conversão global.</p>
+  <div class="tw"><table>
+    <thead><tr><th>Hip.</th><th>Outcomes-alvo</th><th>Métrica primária</th><th>Antes</th></tr></thead>
+    <tbody>
+      <tr><td><b>H7</b> desambiguar entradas duplicadas</td><td class="oid">P2 P3 P4 P8 P12</td><td>tempo <code>SUBMITTED_CONSENT</code> → <code>SELECTED_INSTITUTION</code> em marcas duplicadas, e taxa de re-seleção</td><td>"O6"</td></tr>
+      <tr><td><b>H3</b> checklist do que ter em mãos</td><td class="oid">R1 R3 R4 R5 R8 R10</td><td>taxa de <code>SELECTED_INSTITUTION</code> sem <code>SUBMITTED_LOGIN</code>, por conector</td><td>"O4, O5"</td></tr>
+      <tr><td><b>H9</b> aviso de pop-up</td><td class="oid">G5 G6</td><td>tempo até o clique seguinte ao aviso; abandono nesse ponto</td><td>"O8, O9"</td></tr>
+      <tr><td><b>H8</b> roteamento por poderes</td><td class="oid">R2 R7 R10 P3</td><td>incidência de warning 002; conclusão em PJ multi-aprovador</td><td>"O5, O6"</td></tr>
+      <tr><td><b>H1</b> preparar antes do redirect</td><td class="oid">G4 G6 G7 R12</td><td>retorno do banco por dispositivo</td><td>"O7, O8, O9"</td></tr>
+      <tr><td><b>H2</b> confirmação no retorno</td><td class="oid">O11 O12 <i>(a refinar)</i></td><td>retentativas por CPF/CNPJ + instituição no mês</td><td>"O11, O12"</td></tr>
+    </tbody>
+  </table></div>
+
+  <div class="box">
+    <h3>Duas consequências de desenho</h3>
+    <ol style="margin:0">
+      <li><b>A métrica primária deixa de ser conversão.</b> Conversão vira métrica de resultado do conjunto; cada experimento responde pelo seu outcome. Isso torna possível declarar um experimento bem-sucedido no outcome e mal-sucedido na conversão — o que é informação, não fracasso.</li>
+      <li><b>H7 ganha uma variante barata que não estava no radar.</b> Se P12 for real, <b>ordenar ou agrupar as entradas duplicadas já move o outcome, sem mudar texto nenhum</b> — não passa pelo jurídico e não depende de customização por cliente.</li>
+    </ol>
+  </div>
+
+  <h2>7. O que muda nos objetivos do estudo</h2>
+  <div class="tw"><table>
+    <thead><tr><th>Antes</th><th>Depois</th></tr></thead>
+    <tbody>
+      <tr><td>"Rodar experimentos de UX no widget para aumentar a conversão"</td><td>Aumentar a conversão <b>atacando outcomes nomeados e medidos</b>, com a conversão como resultado, não como alvo de cada teste</td></tr>
+      <tr><td>Priorizar por oportunidade sobre 16 temas</td><td>Priorizar sobre ~80 outcomes, começando pelos 36 refinados</td></tr>
+      <tr><td>Importância e satisfação por pesquisa com o empresário</td><td><b>Satisfação por proxy comportamental primeiro; pesquisa reservada à importância</b></td></tr>
+      <tr><td>Segurança como job emocional E1</td><td>Etapa transversal com 12 outcomes funcionais próprios</td></tr>
+      <tr><td>8 etapas genéricas</td><td>7 etapas na língua do executor + 1 transversal</td></tr>
+    </tbody>
+  </table></div>
+
+  <h2>8. Pendências</h2>
+  <ol>
+    <li>Desenvolver a dúzia de outcomes nas cinco etapas restantes — Decidir o que liberar, Autorizar no banco, Acompanhar a conclusão, Corrigir e ajustar, Voltar e usar. Cerca de 44 outcomes. Depende de evidência: entrevistas, tickets e a leitura tela a tela ainda pendente.</li>
+    <li>Validar com produto e design a promoção de E1 a etapa transversal antes de reescrever o documento vivo inteiro.</li>
+    <li><b>Decidir o destino de E2 a E5.</b> A mesma pergunta se aplica: E5, a ansiedade de não saber se deu certo, é emoção ou é a etapa "Acompanhar a conclusão" mal especificada? Minha suspeita é a segunda, mas não desenvolvi.</li>
+    <li>Montar o questionário de importância sobre os 36 outcomes refinados — é o tamanho que cabe num instrumento único.</li>
+    <li>Confirmar os proxies da seção 5 no Amplitude antes de usá-los como satisfação.</li>
+  </ol>
+
+  <footer>Modelo de valor versão 1.0 · 19 de setembro de 2026. Deriva da Figura 2.4 de Ulwick, <i>What Customers Want</i>, aplicada ao estudo e ao mapa do widget. Fonte em <code>docs/modelo-valor-outcomes.md</code>. O refino ainda não foi validado com o time — por isso as seções 5 e 9 do estudo seguem na formulação anterior.</footer>
 
 </section>
 
