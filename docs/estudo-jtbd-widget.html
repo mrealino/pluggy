@@ -96,7 +96,7 @@ footer{margin-top:3rem;padding-top:1.25rem;border-top:1px solid var(--rule);colo
 
 <header>
   <h1>Conversão no widget pela lente de Jobs to be Done</h1>
-  <p class="meta">Documento vivo · versão 0.3 · 19 de setembro de 2026</p>
+  <p class="meta">Documento vivo · versão 0.4 · 19 de setembro de 2026</p>
   <p class="lede">Base de trabalho para melhorar a conversão do empresário da PME no fluxo de conexão da Pluggy. O objetivo é que ele chegue ao fim do fluxo informado e sem dúvidas, e que os experimentos de UX ataquem primeiro os outcomes mais desatendidos.</p>
   <div class="legend">
     <span><span class="tag t-fn">funcional</span> job ou outcome funcional</span>
@@ -144,12 +144,20 @@ footer{margin-top:3rem;padding-top:1.25rem;border-top:1px solid var(--rule);colo
   </tbody>
 </table></div>
 <div class="box">
+  <h3>Proposta da v0.4: E1 não é emoção, é etapa transversal <span class="tag t-new">novo v0.4</span></h3>
+  <p style="margin:0">Na Figura 2.4 de Ulwick, "Ensure Safety" não é atributo nem sentimento — é uma <b>etapa do job map desenhada fora da cadeia, com uma seta apontando para o job inteiro</b>, e com outcomes próprios. Que E1 apareça hoje em duas etapas com intensidades diferentes (4 alta, 5 pico) já é o sintoma de que atravessa o job em vez de ocupar uma posição nele. A proposta é promover E1 a etapa transversal <b>"Garantir que não está sendo golpeado"</b>, com doze outcomes funcionais próprios (G1–G12 em <code>docs/modelo-valor-outcomes.md</code>), e dissolver a etapa 4. Isso não contradiz "intervir nos picos": etapa transversal significa que a necessidade atravessa o job, não que a solução deva aparecer em toda tela.</p>
+</div>
+<div class="box">
   <h3>O fluxo legítimo parece golpe</h3>
   <p style="margin:0">Os bancos ensinaram o cliente a nunca informar senha fora do app e a desconfiar de redirecionamentos e pedidos de acesso inesperados. O fluxo de conexão pede exatamente esses comportamentos. E1 não se resolve com selos de segurança; exige romper um reflexo treinado, com razão. Excesso de reassurance espalhado por todas as telas vira ruído e pode aumentar a desconfiança, porque "confie, é seguro" também é padrão de golpe.</p>
 </div>
 
 <h2>5. Mapa do job em oito etapas</h2>
 <p>Estrutura do job map universal do ODI. As versões anteriores da conversa agrupavam algumas etapas; aqui elas foram separadas, e as etapas Preparar e Modificar receberam um mapeamento emocional novo.</p>
+<div class="box">
+  <h3>Aviso da v0.4: este mapa está subespecificado <span class="tag t-new">novo v0.4</span></h3>
+  <p style="margin:0">Ulwick estabelece que <b>cerca de uma dúzia de outcomes define o sucesso em cada etapa</b>. Temos 16 outcomes em 8 etapas — média de dois, com três etapas a um único outcome. O que está abaixo é uma <b>lista de temas, não um modelo de valor</b>: não se projeta uma tela contra "minimizar a probabilidade de selecionar a instituição errada". O refino está em <code>docs/modelo-valor-outcomes.md</code>, que desenvolve a dúzia completa em três etapas (36 outcomes) e propõe promover E1 a etapa transversal. Esta seção será reescrita quando o refino for validado.</p>
+</div>
 
 <p class="caption">Intensidade emocional estimada por etapa (hipótese a validar com dados de abandono)</p>
 <div class="strip-wrap" role="img" aria-label="Intensidade emocional por etapa: Definir média, Localizar média, Preparar alta, Confirmar alta, Executar pico, Monitorar alta, Modificar média, Concluir baixa">
@@ -414,6 +422,11 @@ footer{margin-top:3rem;padding-top:1.25rem;border-top:1px solid var(--rule);colo
   <li><b>Entrevistas</b> com empresários, para calibrar importância.</li>
 </ul>
 <p>Dimensões de segmentação: trilho (Open Finance ou conector direto), instituição, quem está no widget (titular ou operador), dispositivo e cliente ERP.</p>
+<div class="box">
+  <h3>Inversão da v0.4: medir satisfação de graça, gastar o acesso escasso com importância <span class="tag t-new">novo v0.4</span></h3>
+  <p>Os três exemplos de outcome da Figura 2.4 são todos de tempo — e tempo é observável. Depois do refino, <b>vários outcomes têm proxy comportamental já instrumentado ou a um evento de distância</b>: o intervalo entre <code>SUBMITTED_CONSENT</code> e <code>SELECTED_INSTITUTION</code> mede o tempo para localizar a instituição; <code>SELECTED_INSTITUTION</code> emitido duas vezes com <code>connector</code> diferente mede a re-escolha; seleção sem <code>SUBMITTED_LOGIN</code> subsequente mede o pré-requisito descoberto tarde.</p>
+  <p style="margin:0">Isso ataca de frente a restrição do B2B2B. <b>Satisfação sai do comportamento, sem pesquisa. A importância é o que exige o empresário</b> — e um questionário sobre 36 outcomes refinados cabe num instrumento único, o que 80 não caberiam. Tabela completa de proxies em <code>docs/modelo-valor-outcomes.md</code>, seção 5.</p>
+</div>
 
 <h2>10. Diretrizes para os experimentos de UX</h2>
 <div class="box">
@@ -421,6 +434,7 @@ footer{margin-top:3rem;padding-top:1.25rem;border-top:1px solid var(--rule);colo
 <ul style="margin:0">
   <li><span class="tag t-new">confirmado v0.2</span> Pelas regras do Open Finance, só o handoff para o banco é regulado. Nada dentro do widget está fora do espaço de teste por esse motivo.</li>
   <li>A LGPD continua valendo dentro do widget: o consentimento precisa ser livre, informado e inequívoco. Mudanças na tela de boas-vindas e termos, que é a principal candidata a experimento, devem passar pelo jurídico, mesmo não sendo reguladas pelo Open Finance.</li>
+  <li><span class="tag t-new">v0.4</span> <b>A métrica primária de cada experimento é o outcome que ele mira, não a conversão.</b> Conversão é o resultado do conjunto. Um experimento pode acertar o outcome e não mover a conversão — isso é informação, não fracasso. O mapeamento hipótese → outcomes → métrica está em <code>docs/modelo-valor-outcomes.md</code>, seção 6.</li>
   <li>Métricas de guarda além da conversão: revogações precoces, tickets e conexões na conta errada.</li>
   <li>Intervir nos picos, não em todas as telas. Reassurance espalhada vira ruído.</li>
 </ul>
@@ -525,7 +539,7 @@ footer{margin-top:3rem;padding-top:1.25rem;border-top:1px solid var(--rule);colo
   <li>Qual é a lista de conectores que cada cliente de fato exibe? O universo documentado não é o que o empresário vê.</li>
 </ul>
 
-<footer>Versão 0.1 consolidou a análise inicial. Versão 0.2 incorporou o funil do Amplitude e as respostas sobre customização e regulação. Versão 0.3 incorpora o mapa do widget (<code>docs/mapa-widget.md</code>), corrige a premissa de customização, eleva O6 e H3, acrescenta O16 e as hipóteses H7 a H9, e reordena os próximos passos para pôr o saneamento de dados antes dos experimentos. O mapa foi derivado da documentação, não da observação da tela — a leitura tela a tela continua pendente. Itens marcados como proposta ainda precisam de validação.</footer>
+<footer>Versão 0.4 confronta o modelo com a Figura 2.4 de Ulwick: os outcomes estão subespecificados em cerca de seis vezes, E1 é candidato a etapa transversal, e a satisfação pode sair de proxy comportamental em vez de pesquisa. O refino vive em <code>docs/modelo-valor-outcomes.md</code> e ainda não foi validado com o time — por isso as seções 5 e 9 seguem na formulação anterior. Versão 0.1 consolidou a análise inicial. Versão 0.2 incorporou o funil do Amplitude e as respostas sobre customização e regulação. Versão 0.3 incorpora o mapa do widget (<code>docs/mapa-widget.md</code>), corrige a premissa de customização, eleva O6 e H3, acrescenta O16 e as hipóteses H7 a H9, e reordena os próximos passos para pôr o saneamento de dados antes dos experimentos. O mapa foi derivado da documentação, não da observação da tela — a leitura tela a tela continua pendente. Itens marcados como proposta ainda precisam de validação.</footer>
 </main>
 </body>
 </html>

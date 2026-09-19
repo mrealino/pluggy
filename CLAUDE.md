@@ -2,14 +2,15 @@
 
 Contexto migrado de uma conversa no claude.ai (18–19 set 2026). Este arquivo resume o que já foi alinhado.
 
-- Documento vivo: `docs/estudo-jtbd-widget.html` (versão 0.3)
+- Documento vivo: `docs/estudo-jtbd-widget.html` (versão 0.4)
 - Mapa do widget: `docs/mapa-widget.md` (versão 1.0)
+- Refino dos outcomes: `docs/modelo-valor-outcomes.md` (versão 1.0)
 
 ## Quem sou e o objetivo
 
 Sou Product Manager na Pluggy (Open Finance, conecta ERPs, plataformas contábeis e BPOs a instituições financeiras). Objetivo desta fase: rodar experimentos de UX no widget de conexão (Pluggy Connect) para aumentar a conversão do empresário da PME, de modo que ele chegue ao fim do fluxo informado e sem dúvidas. Os experimentos devem atacar primeiro os outcomes com maior oportunidade (importância alta e satisfação baixa).
 
-Trabalho com Jobs to be Done na abordagem Outcome-Driven Innovation (ODI). O trabalho sobre consentimento (definido como contrato para delegar agência) vem depois; agora o foco é a UI do widget.
+Trabalho com Jobs to be Done na abordagem Outcome-Driven Innovation (ODI). Referência de método: Ulwick, *What Customers Want* — em particular a Figura 2.4 (customer value model da serra circular Bosch), que fixa o padrão de granularidade e formato dos outcomes. O trabalho sobre consentimento (definido como contrato para delegar agência) vem depois; agora o foco é a UI do widget.
 
 ## Como quero que você trabalhe
 
@@ -100,7 +101,23 @@ Use `claude --chrome` ou `/chrome` numa sessão local, não nesta.
 7. Não concluir conexões reais nem submeter credenciais reais.
 8. Atualizar `docs/mapa-widget.md` para a v1.1 e o estudo para a v0.4.
 
-### Próxima tarefa B: saneamento de dados, antes de qualquer experimento
+#### Próxima tarefa C: fechar o modelo de valor
+
+`docs/modelo-valor-outcomes.md` v1.0 confronta o modelo com a Figura 2.4 e conclui que os outcomes estão subespecificados em cerca de seis vezes (2 por etapa contra a dúzia que Ulwick estabelece). Já desenvolveu a dúzia completa em três etapas — 36 outcomes:
+
+- `G1–G12` etapa transversal "Garantir que não está sendo golpeado" (substitui E1 e O7)
+- `R1–R12` etapa 2 "Reunir acesso e poderes" (substitui O4, O5)
+- `P1–P12` etapa 3 "Escolher por onde conectar" (substitui O6)
+
+Pendente:
+
+1. Desenvolver ~44 outcomes nas cinco etapas restantes. Depende de evidência nova — não inventar.
+2. Validar com produto e design a promoção de E1 a etapa transversal e a dissolução da etapa 4 antes de reescrever a seção 5 do documento vivo.
+3. Decidir o destino de E2 a E5. Suspeita: E5 não é emoção, é a etapa "Acompanhar a conclusão" mal especificada.
+4. Confirmar os proxies comportamentais no Amplitude antes de usá-los como satisfação.
+5. Montar o questionário de importância sobre os 36 outcomes refinados.
+
+## Próxima tarefa B: saneamento de dados, antes de qualquer experimento
 
 Ver a lista reordenada na seção 11 do estudo. Os quatro primeiros itens (segmentar por configuração, levantar `oauthRedirectUri` ausente, inserir `SUBMITTED_CONSENT` no funil, resolver o significado de Login Step Success) precedem qualquer teste A/B: hoje não se sabe quanto da perda é comportamento e quanto é instrumentação ou configuração.
 
@@ -118,4 +135,8 @@ Ver a lista reordenada na seção 11 do estudo. Os quatro primeiros itens (segme
 
 Não é hipótese: `oauthRedirectUri` ausente na integração do ERP é defeito de configuração, trabalho de CS, não experimento.
 
-Priorização: Oportunidade = Importância + máx(Importância − Satisfação, 0). Fontes: funil por etapa, micropesquisa no ponto de abandono, tickets e entrevistas. Segmentar por trilho, instituição, titular ou operador, dispositivo e cliente.
+Priorização: Oportunidade = Importância + máx(Importância − Satisfação, 0). Segmentar por trilho, instituição, titular ou operador, dispositivo e cliente.
+
+**Inversão da v0.4:** satisfação sai de proxy comportamental no funil (de graça); o acesso escasso ao empresário fica reservado para medir importância. Tabela de proxies em `docs/modelo-valor-outcomes.md`, seção 5.
+
+**Métrica primária de cada experimento é o outcome que ele mira, não a conversão.**
