@@ -168,3 +168,14 @@ Priorização: Oportunidade = Importância + máx(Importância − Satisfação,
 **Inversão da v0.4:** satisfação sai de proxy comportamental no funil (de graça); o acesso escasso ao empresário fica reservado para medir importância. Tabela de proxies em `docs/modelo-valor-outcomes.md`, seção 5.
 
 **Métrica primária de cada experimento é o outcome que ele mira, não a conversão.**
+
+## Exportar uma aba
+
+`scripts/export-aba.py` gera um HTML autocontido de uma aba (o documento publicado é um fragmento; o export carrega o próprio esqueleto, abre com duplo clique e imprime).
+
+```
+python3 scripts/export-aba.py estudo          # -> docs/export/estudo.html
+python3 scripts/export-aba.py gates caminho.html
+```
+
+Abas: `main`, `estudo`, `mapa`, `modelo`, `gates`. Reexportar depois de mudar o documento — os arquivos em `docs/export/` são derivados e não devem ser editados à mão.
