@@ -1,9 +1,4 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Estudo JTBD — conexão da conta no widget</title>
+<title>Conversão no widget pela lente de Jobs to be Done</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Serif:wght@500;600&display=swap" rel="stylesheet">
@@ -89,22 +84,262 @@ footer{margin-top:3rem;padding-top:1.25rem;border-top:1px solid var(--rule);colo
   .step{grid-template-columns:1fr}
   .num{font-size:1.4rem;margin-bottom:.35rem}
 }
+
+/* --- abas --- */
+.tabs{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;display:flex;gap:.25rem;
+  margin:1.25rem 0 0;padding:.4rem 0 0;background:var(--bg);border-bottom:1px solid var(--rule);
+  overflow-x:auto;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tab{appearance:none;background:none;border:0;border-bottom:2px solid transparent;margin-bottom:-1px;
+  padding:.6rem .85rem;font:inherit;font-size:.95rem;color:var(--muted);cursor:pointer;
+  border-radius:4px 4px 0 0;white-space:nowrap}
+.tab:hover{color:var(--ink)}
+.tab[aria-selected="true"]{color:var(--fn);border-bottom-color:var(--fn);font-weight:600}
+.tab:focus-visible{outline:2px solid var(--fn);outline-offset:-2px}
+.panel{padding-top:1.5rem}
+.panel > h2:first-of-type{margin-top:1.5rem}
+/* --- procedência --- */
+.t-doc{background:var(--fn-soft);color:var(--fn)}
+.t-qa{background:var(--em-soft);color:var(--em)}
+.t-inf{background:var(--new-soft);color:var(--new)}
+.t-neu{background:var(--rule);color:var(--muted)}
+.t-src{background:var(--fn);color:var(--paper);font-weight:600;min-width:1.15rem;text-align:center;
+  padding:.05rem .3rem;margin-right:.1rem}
+.tab-main[aria-selected="false"]{color:var(--ink)}
+.tab-sep{flex:0 0 1px;background:var(--rule);margin:.45rem .4rem .35rem;align-self:stretch}
+td.oid{font-weight:600;color:var(--fn);font-size:.9rem;white-space:nowrap;
+  font-variant-numeric:tabular-nums}
+/* --- variantes de box --- */
+.box.warn{border-left:3px solid var(--new)}
+.box.accent{border-left:3px solid var(--fn)}
+/* --- números --- */
+.statrow{display:grid;grid-template-columns:repeat(auto-fit,minmax(8.5rem,1fr));gap:.6rem;margin:0 0 1rem}
+.stat{background:var(--paper);border:1px solid var(--rule);border-radius:6px;padding:.8rem .9rem}
+.stat .v{display:block;font-family:var(--serif);font-size:1.9rem;font-weight:600;color:var(--fn);
+  line-height:1;font-variant-numeric:tabular-nums}
+.stat .k{display:block;font-size:.8rem;color:var(--muted);margin-top:.3rem;line-height:1.3}
+td.big{font-family:var(--serif);font-weight:600;font-size:1.1rem;font-variant-numeric:tabular-nums}
+td.big .caption{font-family:var(--sans);font-weight:400;font-size:.78rem}
+code{font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;font-size:.88em;
+  background:var(--fn-soft);color:var(--fn);padding:.05rem .3rem;border-radius:3px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 </style>
-</head>
-<body>
 <main>
 
 <header>
   <h1>Conversão no widget pela lente de Jobs to be Done</h1>
-  <p class="meta">Documento vivo · versão 0.2 · 19 de setembro de 2026</p>
+  <p class="meta">Estudo JTBD · documento vivo · 19 de setembro de 2026 · síntese na aba Main, dados nas demais</p>
+  <div class="tabs" role="tablist" aria-label="Documentos">
+    <button class="tab tab-main" id="tab-main" role="tab" aria-selected="true" aria-controls="panel-main">Main · síntese</button>
+    <span class="tab-sep" aria-hidden="true"></span>
+    <button class="tab" id="tab-estudo" role="tab" aria-selected="false" aria-controls="panel-estudo" tabindex="-1">Estudo · v0.5</button>
+    <button class="tab" id="tab-mapa" role="tab" aria-selected="false" aria-controls="panel-mapa" tabindex="-1">Mapa do widget · v1.0</button>
+    <button class="tab" id="tab-modelo" role="tab" aria-selected="false" aria-controls="panel-modelo" tabindex="-1">Banco de outcomes · v1.1</button>
+    <button class="tab" id="tab-gates" role="tab" aria-selected="false" aria-controls="panel-gates" tabindex="-1">Gates × jobs · v1.0</button>
+  </div>
+</header>
+
+<section class="panel" id="panel-main" role="tabpanel" aria-labelledby="tab-main">
+  <p class="lede">Análise cruzada das quatro fontes deste documento. Aqui está o que só aparece quando o job map, o mapa do widget, o banco de outcomes e o modelo de gates são lidos juntos — a conclusão, a ordem de trabalho e o que ainda não se sabe. As outras abas guardam os dados de cada análise.</p>
+  <div class="legend">
+    <span><span class="tag t-src">E</span> Estudo</span>
+    <span><span class="tag t-src">M</span> Mapa do widget</span>
+    <span><span class="tag t-src">B</span> Banco de outcomes</span>
+    <span><span class="tag t-src">G</span> Gates × jobs</span>
+  </div>
+
+  <h2>1. A conclusão que muda a ordem do trabalho</h2>
+  <div class="box accent">
+    <h3>O 37,9% ainda não é um baseline <span class="tag t-src">E</span><span class="tag t-src">M</span></h3>
+    <p style="margin:0">O funil perde 49.600 pessoas. Lidas juntas, as quatro análises identificam <b>quatro causas de natureza diferente</b> dentro desse número — e apenas uma delas é problema de UX no sentido que o estudo assumia.</p>
+  </div>
+  <div class="tw"><table>
+    <thead><tr><th>Causa</th><th>Natureza</th><th>Onde bate</th><th>Dimensionada?</th></tr></thead>
+    <tbody>
+      <tr><td><b>Instrumentação</b> — sessões com <code>selectedConnectorId</code> ou <code>updateItem</code> pulam a seleção e nunca podem emitir <code>List Item Clicked</code></td><td>artefato de medição</td><td class="big">23.402</td><td><b>não</b></td></tr>
+      <tr><td><b>Configuração do cliente</b> — <code>oauthRedirectUri</code> ausente deixa o usuário sem caminho de volta do banco</td><td>defeito de integração do ERP</td><td class="big">15.570</td><td><b>não</b></td></tr>
+      <tr><td><b>Mecânico</b> — pop-up bloqueado, limite de taxa por retentativa, múltipla alçada pendente, espera de autorização de dispositivo</td><td>estrutural, não persuasivo</td><td class="big">15.570<br><span class="caption">+ parte de 7.976</span></td><td><b>não</b></td></tr>
+      <tr><td><b>Outcome desatendido</b> — O4, O5, O6</td><td>UX, o alvo original</td><td class="big">23.402<br><span class="caption">+ 7.976</span></td><td>parcial</td></tr>
+    </tbody>
+  </table></div>
+  <p>Três das quatro não têm tamanho. Enquanto não tiverem, <b>não se sabe quanto dos 49.600 é sequer endereçável por experimento de UX</b> — e qualquer teste A/B roda sobre um denominador contaminado.</p>
+  <p>Isso não paralisa o trabalho: dimensionar as três primeiras é barato, usa dados que já existem e não depende de pesquisa com o empresário. É a fase 0 da seção 8.</p>
+
+  <h2>2. A convergência: três análises independentes, mesma etapa</h2>
+  <p>O sinal mais forte de todo o material, e o mais fácil de perder porque está espalhado.</p>
+  <div class="tw"><table>
+    <thead><tr><th>Fonte</th><th>O que encontrou</th><th>Aponta para</th></tr></thead>
+    <tbody>
+      <tr><td><span class="tag t-src">E</span> Estudo</td><td>O4 e O5 são os únicos outcomes da etapa 2, e H3 estava apenas como proposta</td><td><b>etapa 2 Localizar</b></td></tr>
+      <tr><td><span class="tag t-src">M</span> Mapa</td><td>6 dos 14 tutoriais PJ não ensinam a conectar — ensinam a provisionar acesso no banco antes</td><td><b>etapa 2 Localizar</b></td></tr>
+      <tr><td><span class="tag t-src">G</span> Gates</td><td>5 dos 8 gates atendem à etapa 2</td><td><b>etapa 2 Localizar</b></td></tr>
+      <tr><td><span class="tag t-src">B</span> Banco</td><td>o conjunto R é o mais lastreado: 5 das 12 formulações vêm de achado documentado</td><td><b>etapa 2 Localizar</b></td></tr>
+    </tbody>
+  </table></div>
+  <div class="box accent">
+    <p>Nenhuma das três olhou para as outras. O mapa saiu da documentação, os gates saíram das telas de referência dos conectores, o estudo saiu do funil.</p>
+    <p style="margin:0"><b>A etapa 2 Localizar — reunir dispositivo, credenciais, app do banco e poderes na conta — é onde começar.</b> O estudo original a tratava como intensidade média, com dois outcomes e uma hipótese não priorizada. E há um reforço: a etapa 2 é a única em que a Pluggy pode agir <b>antes de o banco entrar em cena</b>. Tudo depois é atrito do banco, que só se consegue tornar esperado.</p>
+  </div>
+
+  <h2>3. A maior oportunidade isolada não pertence a nenhum dos modelos</h2>
+  <p>Num widget só de PJ a lista chega a 77 entradas, e nove marcas aparecem nos dois trilhos — Itaú com quatro, Caixa e Santander com três. A escolha entre elas muda <b>quem pode autorizar</b>: o trilho direto aceita usuário operador, que muitas empresas já têm; o Open Finance exige a aprovação de todos os aprovadores.</p>
+  <p>Cruzando as quatro fontes, essa escolha cai num vão:</p>
+  <div class="tw"><table>
+    <tbody>
+      <tr><td><span class="tag t-src">E</span></td><td>classificava O6 como intensidade baixa</td></tr>
+      <tr><td><span class="tag t-src">M</span></td><td>identificou o problema e o chamou de maior oportunidade aparente da zona A</td></tr>
+      <tr><td><span class="tag t-src">G</span></td><td>começa explicitamente <b>depois</b> da escolha — o nó raiz é "o usuário escolhe banco + tipo"</td></tr>
+      <tr><td><span class="tag t-src">B</span></td><td>tem P2, P3, P4 e P12 escritos, mas nenhum gate os cobre</td></tr>
+    </tbody>
+  </table></div>
+  <div class="box accent">
+    <h3>Ninguém olha para o momento mais barato de resolver o problema mais caro</h3>
+    <p>O G1 pergunta "você tem acesso admin?" depois de a pessoa já ter escolhido um trilho que talvez fosse evitável. Se ela é operador e o banco é o Santander, o Direct funciona e o Open Finance não — mas a escolha já foi feita.</p>
+    <p style="margin:0"><b>H7 e H8 são o mesmo problema atacado em dois momentos.</b> A proposta que sai deste cruzamento é um <b>gate zero</b>: usar a resposta de poderes para ordenar ou rotular as entradas duplicadas na própria lista, convertendo a pergunta de triagem em roteamento.</p>
+  </div>
+
+  <h2>4. Três classes de outcome, e uma regra de triagem</h2>
+  <p>O modelo de gates classifica o atrito por propriedade. Aplicada aos outcomes do estudo, essa taxonomia produz uma distinção que nenhuma fonte enuncia sozinha. <span class="tag t-src">G</span><span class="tag t-src">E</span></p>
+  <div class="tw"><table>
+    <thead><tr><th>Classe</th><th>O que a Pluggy pode fazer</th><th>Exemplos</th></tr></thead>
+    <tbody>
+      <tr><td><b>Satisfazível</b></td><td>mover o número</td><td class="oid">O4 O5 O6 O13 — verificar, perguntar, ordenar antes do banco</td></tr>
+      <tr><td><b>Apenas esperável</b></td><td>fazer com que não pareça erro</td><td class="oid">O10 O12 — a Caixa leva 30 min, e isso não muda</td></tr>
+      <tr><td><b>Inegociável</b></td><td>apenas divulgar</td><td class="oid">O2 — no Open Finance todas as contas da empresa naquele banco vão de uma vez, e o usuário não escolhe</td></tr>
+    </tbody>
+  </table></div>
+  <div class="box">
+    <p><b>Regra prática:</b> para outcome apenas esperável, reescreva o outcome sobre o <i>saber</i>, não sobre o <i>fato</i>. "Minimizar o tempo para concluir a autorização" (O10) é um outcome que a Pluggy não pode atender; "minimizar o tempo para saber quanto a autorização vai levar" é. A diferença decide qual métrica o experimento persegue.</p>
+    <p style="margin:0">O caso de O2 merece atenção própria: é impossível de satisfazer por desenho do Open Finance. Se a importância for alta nas entrevistas, vira <b>argumento de produto para o trilho direto em certos casos</b> — não um problema de copy.</p>
+  </div>
+
+  <h2>5. A teoria implícita dos gates sobre os jobs emocionais</h2>
+  <p>Vale explicitar, porque é uma divergência silenciosa entre as fontes — e é testável.</p>
+  <p>O <b>modelo de gates é inteiramente funcional</b>. Não há gate de segurança, de confiança ou de tranquilidade. E, no entanto, o próprio artefato diz: <i>"uma etapa normal do banco que chega sem aviso é lida como erro; antecipada, é lida como progresso"</i>.</p>
+  <div class="tw"><table>
+    <thead><tr><th>Tese</th><th>De onde vem</th><th>O que implica</th></tr></thead>
+    <tbody>
+      <tr><td>A ansiedade de legitimidade é <b>subproduto de expectativa não atendida</b>. Some quando os gates fazem o trabalho.</td><td><span class="tag t-src">G</span> implícita no modelo</td><td>basta prever bem; nenhuma reassurance é necessária</td></tr>
+      <tr><td>E1 é <b>job emocional com peso próprio</b>. Os bancos treinaram o cliente a desconfiar de redirecionamentos — reflexo que existiria mesmo com expectativa calibrada.</td><td><span class="tag t-src">E</span> explícita no estudo</td><td>há um trabalho de legitimidade que nenhum aviso de preparação resolve</td></tr>
+    </tbody>
+  </table></div>
+  <div class="box accent">
+    <p style="margin:0"><b>As duas teses levam a produtos diferentes</b>, e a pergunta é barata de fazer em entrevista: perguntar sobre uma conexão que deu certo e entender se o desconforto sumiu por saber o que ia acontecer, ou se permaneceu apesar disso.</p>
+  </div>
+
+  <h2>6. O que a instrumentação dos gates desbloqueia</h2>
+  <p>Três peças de fontes diferentes que só funcionam juntas.</p>
+  <div class="tw"><table>
+    <tbody>
+      <tr><td><span class="tag t-src">B</span></td><td>outcomes escritos como tempo têm proxy comportamental — satisfação pode sair do funil, sem pesquisa</td></tr>
+      <tr><td><span class="tag t-src">M</span></td><td>o funil não tem nenhum evento entre <code>SELECTED_INSTITUTION</code> e <code>SUBMITTED_LOGIN</code></td></tr>
+      <tr><td><span class="tag t-src">G</span></td><td>os gates vivem exatamente nesse vão, e cada um é tela mais ação — instrumentável, com esquema de ID estável</td></tr>
+    </tbody>
+  </table></div>
+  <div class="box accent">
+    <h3>Os IDs de gate são a instrumentação que faz os proxies funcionarem</h3>
+    <p>Nenhum dos três documentos diz isso sozinho. Consequências diretas:</p>
+    <ul style="margin:0">
+      <li>a perda passa a ser atribuível ao gate, não à transição inteira de 7.976;</li>
+      <li>a resposta do G1 vira dimensão de segmentação do funil inteiro — o que <b>responde a pergunta aberta nº 4 do estudo sem pesquisa nenhuma</b>;</li>
+      <li>o custo de cada gate fica isolável, o que permite remover os que não pagam.</li>
+    </ul>
+  </div>
+  <p>Por isso a recomendação é instrumentar <b>antes</b> de desenhar as telas. O esquema de IDs foi pensado para design, conteúdo e engenharia; estendê-lo a analytics é barato agora e caro depois.</p>
+
+  <h2>7. A tensão que precisa de métrica de guarda</h2>
+  <p>O estudo é explícito: o job é instrumental, ninguém quer conectar conta, e <b>"reassurance espalhada por todas as telas vira ruído"</b>. O modelo de gates propõe oito unidades de orientação antes do banco. <span class="tag t-src">E</span><span class="tag t-src">G</span></p>
+  <p>A contradição é real, e o modelo já a mitiga ao ser uma espinha dorsal que acumula num pacote único em vez de 64 caminhos. Mas o cruzamento permite quantificar o limite:</p>
+  <div class="tw"><table>
+    <thead><tr><th>Janela</th><th>Perda hoje</th><th>Papel</th></tr></thead>
+    <tbody>
+      <tr><td>Clique na instituição → formulário enviado</td><td class="big">7.976<br><span class="caption">85,9%</span></td><td>onde vivem os gates de preparação</td></tr>
+      <tr><td>Login bem-sucedido → polling com sucesso</td><td class="big">15.570<br><span class="caption">66,0%</span></td><td>onde a preparação precisa pagar</td></tr>
+    </tbody>
+  </table></div>
+  <div class="box accent">
+    <p style="margin:0"><b>Os gates de preparação precisam custar menos na primeira janela do que economizam na segunda.</b> A transição de 85,9% é a métrica de guarda do modelo inteiro, desde o primeiro teste. Com um corolário de desenho: <b>se um gate custa mais do que economiza, ele não vira tela — vira texto dentro de uma tela que já existe.</b></p>
+  </div>
+
+  <h2>8. Plano sequenciado</h2>
+
+  <h3>Fase 0 · Saneamento <span class="tag t-neu">nenhum experimento antes disto</span></h3>
+  <p class="caption">Tudo aqui usa dados existentes e não depende do empresário.</p>
+  <ol>
+    <li>Segmentar o funil por presença de <code>selectedConnectorId</code> e <code>updateItem</code>.</li>
+    <li>Levantar clientes que criam connect tokens sem <code>oauthRedirectUri</code> e cruzar com a conversão da zona B.</li>
+    <li>Inserir <code>SUBMITTED_CONSENT</code> no funil para separar abandono nas boas-vindas do abandono na lista.</li>
+    <li>Resolver o significado de <code>Login Step Success</code> segmentando a transição anterior por trilho.</li>
+    <li>Medir <code>SUCCESS</code> contra <code>PARTIAL_SUCCESS</code> nos 30.230, e a distribuição de warnings.</li>
+    <li>Contar <code>USER_NOT_SUPPORTED</code> por conector e itens PJ de Open Finance com warning 002.</li>
+  </ol>
+  <p class="caption"><b>Saída:</b> um baseline confiável, e o tamanho real da oportunidade de UX.</p>
+
+  <h3>Fase 1 · Instrumentação</h3>
+  <ol start="7">
+    <li>Emitir um evento por variante de gate, com o ID estável, <b>antes</b> de desenhar qualquer tela.</li>
+    <li>Fixar a transição clique → formulário enviado (85,9%) como métrica de guarda.</li>
+  </ol>
+
+  <h3>Fase 2 · Entrevistas com PME</h3>
+  <ol start="9">
+    <li>Roteiro sobre importância, usando as 36 formulações do banco de outcomes como material de apoio — descartar as que não ressoam, capturar as que faltam.</li>
+    <li>Testar a tese de E1 da seção 5: a ansiedade some com expectativa calibrada, ou persiste?</li>
+    <li>Testar a formulação comportamental do G1 contra a de nomenclatura.</li>
+    <li>Medir a importância de O2, o compartilhamento em bloco, que é inegociável e pode virar argumento de trilho.</li>
+  </ol>
+
+  <h3>Fase 3 · Experimentos, nesta ordem</h3>
+  <ol start="13">
+    <li><b>Gate zero</b> — ordenar ou rotular as entradas duplicadas usando poderes (H7 + H8). Maior oportunidade, e a montante de tudo.</li>
+    <li><b>Pacote de preparação</b> — os gates da etapa 2 (H1 + H3), onde as três análises convergem.</li>
+    <li><b>Aviso de pop-up</b> (H9) — menor custo de implementação de todas, e no pico de E1.</li>
+    <li><b>Recuperação por tipo de erro</b> (H5) — 17 estados em 8 famílias, com <code>providerMessage</code> como fonte de texto.</li>
+  </ol>
+
+  <h2>9. Tensões não resolvidas entre as fontes</h2>
+  <p>Registradas em vez de conciliadas por suposição.</p>
+  <div class="tw"><table>
+    <thead><tr><th>Tensão</th><th>Entre</th><th>Como resolver</th></tr></thead>
+    <tbody>
+      <tr><td>"G1 é o maior fator de perda" é conclusão de análise de fluxo; o estudo tem a mesma pergunta em aberto desde a v0.2</td><td><span class="tag t-src">G</span><span class="tag t-src">E</span></td><td><code>USER_NOT_SUPPORTED</code> por conector — fase 0</td></tr>
+      <tr><td>E1 é necessidade própria ou subproduto de expectativa não atendida</td><td><span class="tag t-src">E</span><span class="tag t-src">G</span></td><td>entrevista — fase 2</td></tr>
+      <tr><td>Reassurance espalhada vira ruído × oito gates de orientação</td><td><span class="tag t-src">E</span><span class="tag t-src">G</span></td><td>métrica de guarda — seção 7</td></tr>
+      <tr><td>Cobertura: 16 conectores revisados × 11 diretos PJ e 66 instituições OF no universo documentado</td><td><span class="tag t-src">G</span><span class="tag t-src">M</span></td><td>a generalização do modelo de gates vale para 16, não para 66</td></tr>
+      <tr><td><s>O6 como intensidade baixa × maior oportunidade da zona A</s></td><td><span class="tag t-src">E</span><span class="tag t-src">M</span></td><td><b>resolvido:</b> O6 elevado a alta na v0.3</td></tr>
+      <tr><td><s>Granularidade: 2 outcomes por etapa × uma dúzia em Ulwick</s></td><td><span class="tag t-src">E</span><span class="tag t-src">B</span></td><td><b>resolvido:</b> fica em 2; a granularidade vem das entrevistas</td></tr>
+    </tbody>
+  </table></div>
+
+  <h2>10. O que continua desconhecido</h2>
+  <p>Consolidado das quatro fontes, ordenado pelo que cada resposta destrava.</p>
+  <div class="tw"><table>
+    <thead><tr><th>Pergunta</th><th>Destrava</th><th>Custo</th></tr></thead>
+    <tbody>
+      <tr><td>Quanto da perda da zona A é instrumentação e não abandono</td><td><b>o baseline inteiro</b></td><td>consulta</td></tr>
+      <tr><td>Quantos clientes não configuram <code>oauthRedirectUri</code></td><td>dimensionar a zona B</td><td>consulta</td></tr>
+      <tr><td>O que <code>Login Step Success</code> significa em cada trilho</td><td>a leitura da zona B</td><td>consulta</td></tr>
+      <tr><td>Com que frequência quem está no widget não tem poderes</td><td>prioridade de G1 e do gate zero</td><td>consulta</td></tr>
+      <tr><td>Qual lista de conectores cada cliente de fato exibe</td><td>validade dos experimentos por cliente</td><td>dashboard</td></tr>
+      <tr><td>A importância de cada outcome</td><td>a priorização por oportunidade</td><td>entrevista</td></tr>
+      <tr><td>Se E1 sobrevive à expectativa calibrada</td><td>o escopo do trabalho de legitimidade</td><td>entrevista</td></tr>
+      <tr><td>O texto real de cada tela do widget</td><td>H9 e toda revisão de copy</td><td>Chrome, pendente</td></tr>
+    </tbody>
+  </table></div>
+  <p>As seis primeiras não dependem do empresário e podem ser respondidas nesta semana. As duas últimas são as que exigem campo.</p>
+
+  <footer>Síntese versão 1.0 · 19 de setembro de 2026. Análise cruzada das quatro abas seguintes, que guardam os dados de cada linha de investigação. Fonte em <code>docs/sintese.md</code>.</footer>
+
+</section>
+
+<section class="panel" id="panel-estudo" role="tabpanel" aria-labelledby="tab-estudo" hidden>
   <p class="lede">Base de trabalho para melhorar a conversão do empresário da PME no fluxo de conexão da Pluggy. O objetivo é que ele chegue ao fim do fluxo informado e sem dúvidas, e que os experimentos de UX ataquem primeiro os outcomes mais desatendidos.</p>
   <div class="legend">
     <span><span class="tag t-fn">funcional</span> job ou outcome funcional</span>
     <span><span class="tag t-em">emocional</span> job emocional pessoal</span>
-    <span><span class="tag t-new">proposta v0.1</span> formulação nova, ainda não discutida</span>
+    <span><span class="tag t-new">proposta</span> formulação nova, ainda não discutida</span>
+    <span><span class="tag t-new">v0.3</span> vem do mapa do widget</span>
   </div>
-</header>
-
 <h2>1. Escopo</h2>
 <p>O executor analisado é o empresário da PME: quem conecta de fato, ou quem detém a conta sobre a qual o acesso será concedido. Jobs de ERPs, contadores, bancos e os jobs de consumo do produto Pluggy ficam fora desta versão. Jobs emocionais sociais também ficam de fora; aqui entram só os pessoais.</p>
 <p>O consentimento, como contrato de delegação de agência, é tratado mais adiante. Nesta fase, o foco é a experiência de UI no widget.</p>
@@ -125,7 +360,7 @@ footer{margin-top:3rem;padding-top:1.25rem;border-top:1px solid var(--rule);colo
   <li><b>Múltiplas alçadas.</b> O consentimento PJ no Open Finance pode exigir aprovação de mais de um representante, o que interrompe o fluxo por razões que a UI sozinha não resolve.</li>
   <li><b>Trilhos diferentes.</b> Open Finance (redirecionamento ao banco) e conectores diretos (credenciais) têm etapas de localizar e executar distintas. Os outcomes prioritários podem mudar por trilho.</li>
   <li><b>Controle limitado da UI.</b> O pico de ansiedade acontece em boa parte dentro do app do banco. As janelas de intervenção da Pluggy ficam antes (preparar o empresário) e depois (a reentrada no sistema).</li>
-  <li><b>Customização pelos clientes.</b> <span class="tag t-new">confirmado v0.2</span> Cada ERP customiza apenas o nome da empresa na primeira página, o logo e a cor dos botões. Quase todo o widget é testável de forma centralizada. Como a marca do ERP aparece justamente na tela de boas-vindas, ela pode influenciar E1; experimentos devem ser estratificados por cliente.</li>
+  <li><b>Customização pelos clientes.</b> <span class="tag t-new">revisado v0.3</span> A v0.2 registrava apenas nome da empresa, logo e cor dos botões. A documentação mostra mais: também são customizáveis o raio de borda, <b>o texto dos botões da primeira tela e da tela de credenciais</b>, <b>a seleção de conectores exibidos</b> e <b>os textos de consentimento</b>. Some-se a isso uma segunda camada invisível no Dashboard: parâmetros do SDK escolhidos no código do ERP, entre eles <code>selectedConnectorId</code>, que pula a etapa de seleção de instituição. A conclusão "quase todo o widget é testável de forma centralizada" não se sustenta: o que é de fato central é a estrutura do fluxo, as telas de MFA, de espera e de erro. Estratificar por cliente não basta — é preciso estratificar por configuração.</li>
   <li><b>Contexto antes do widget.</b> <span class="tag t-new">proposta v0.2</span> O que o ERP comunica antes de abrir o widget está fora do controle da Pluggy e afeta a conversão. É um fator de confusão a controlar, não a testar.</li>
 </ul>
 </div>
@@ -142,6 +377,7 @@ footer{margin-top:3rem;padding-top:1.25rem;border-top:1px solid var(--rule);colo
     <tr><td>E5</td><td>Evitar a ansiedade de não saber se deu certo</td><td>adjacente</td></tr>
   </tbody>
 </table></div>
+
 <div class="box">
   <h3>O fluxo legítimo parece golpe</h3>
   <p style="margin:0">Os bancos ensinaram o cliente a nunca informar senha fora do app e a desconfiar de redirecionamentos e pedidos de acesso inesperados. O fluxo de conexão pede exatamente esses comportamentos. E1 não se resolve com selos de segurança; exige romper um reflexo treinado, com razão. Excesso de reassurance espalhado por todas as telas vira ruído e pode aumentar a desconfiança, porque "confie, é seguro" também é padrão de golpe.</p>
@@ -150,12 +386,13 @@ footer{margin-top:3rem;padding-top:1.25rem;border-top:1px solid var(--rule);colo
 <h2>5. Mapa do job em oito etapas</h2>
 <p>Estrutura do job map universal do ODI. As versões anteriores da conversa agrupavam algumas etapas; aqui elas foram separadas, e as etapas Preparar e Modificar receberam um mapeamento emocional novo.</p>
 
+
 <p class="caption">Intensidade emocional estimada por etapa (hipótese a validar com dados de abandono)</p>
-<div class="strip-wrap" role="img" aria-label="Intensidade emocional por etapa: Definir média, Localizar média, Preparar baixa, Confirmar alta, Executar pico, Monitorar alta, Modificar média, Concluir baixa">
+<div class="strip-wrap" role="img" aria-label="Intensidade emocional por etapa: Definir média, Localizar média, Preparar alta, Confirmar alta, Executar pico, Monitorar alta, Modificar média, Concluir baixa">
   <div class="strip" style="height:7rem">
     <div class="col"><div class="bar" style="height:2.6rem"></div></div>
     <div class="col"><div class="bar" style="height:2.6rem"></div></div>
-    <div class="col"><div class="bar" style="height:1.4rem"></div></div>
+    <div class="col"><div class="bar" style="height:4.0rem"></div></div>
     <div class="col"><div class="bar" style="height:4.4rem"></div></div>
     <div class="col"><div class="bar" style="height:6.2rem"></div></div>
     <div class="col"><div class="bar" style="height:4.4rem"></div></div>
@@ -174,7 +411,7 @@ footer{margin-top:3rem;padding-top:1.25rem;border-top:1px solid var(--rule);colo
     <div class="col"><span class="n">8</span><span class="nm">Concluir</span></div>
   </div>
 </div>
-<p class="caption" style="margin-bottom:2rem">O pico em Executar coincide com a saída para o app do banco, fora do controle direto da Pluggy.</p>
+<p class="caption" style="margin-bottom:2rem">O pico em Executar coincide com a saída para o app do banco, fora do controle direto da Pluggy. <span class="tag t-new">v0.3</span> Preparar subiu de baixa para alta depois do mapa do widget.</p>
 
 <div class="step">
   <div class="num">1</div>
@@ -212,12 +449,13 @@ footer{margin-top:3rem;padding-top:1.25rem;border-top:1px solid var(--rule);colo
   <div class="step-body">
     <h3>Preparar</h3>
     <p class="fnjob"><span class="tag t-fn">funcional</span> <span class="tag t-new">proposta v0.1</span> Escolher a instituição e a conta certas para conectar.</p>
-    <div class="emrow"><b>Emocional:</b> E2 confiança de estar fazendo certo. Intensidade baixa. <span class="tag t-new">proposta v0.1</span></div>
+    <div class="emrow"><b>Emocional:</b> E2 confiança de estar fazendo certo. <span class="tag t-new">revisado v0.3</span> Intensidade reavaliada de baixa para alta.</div>
     <p class="lbl">Outcomes</p>
     <ul class="outs">
       <li><span class="oid">O6</span><span>Minimizar a probabilidade de selecionar a instituição ou a conta errada.</span></li>
     </ul>
-    <p class="sig"><b>Sinal esperado:</b> <span class="tag t-new">proposta v0.1</span> trocas de instituição, uso do voltar, conexões feitas na conta errada.</p>
+    <p class="sig"><b>Sinal esperado:</b> trocas de instituição, uso do voltar, conexões feitas na conta errada.</p>
+    <p class="sig"><b>Por que subiu:</b> num widget só de PJ a lista chega a 77 entradas, e nove marcas aparecem nos dois trilhos — Itaú com quatro entradas, Caixa e Santander com três. A escolha muda quem pode autorizar, e nada na lista comunica isso. Ver seção 7.</p>
   </div>
 </div>
 
@@ -261,8 +499,10 @@ footer{margin-top:3rem;padding-top:1.25rem;border-top:1px solid var(--rule);colo
     <ul class="outs">
       <li><span class="oid">O11</span><span>Minimizar o tempo para saber se a conexão foi concluída.</span></li>
       <li><span class="oid">O12</span><span>Minimizar a probabilidade de a conexão ficar pendente sem saber o que falta.</span></li>
+      <li><span class="oid">O16</span><span><span class="tag t-new">proposta v0.3</span> Minimizar o tempo para saber que a conclusão depende de outra pessoa, e de quem.</span></li>
     </ul>
     <p class="sig"><b>Sinal esperado:</b> tentativas repetidas, conexões duplicadas, tickets.</p>
+    <p class="sig"><b>O16 vem da múltipla alçada:</b> o fluxo para, o outro aprovador não é notificado pela Pluggy, e a UI não tem como dizer de quem se espera. Ver seção 7.</p>
   </div>
 </div>
 
@@ -314,7 +554,7 @@ footer{margin-top:3rem;padding-top:1.25rem;border-top:1px solid var(--rule);colo
 </div>
 <div class="box">
   <h3>Zona B: depois do login até o sucesso</h3>
-  <p style="margin:0">É a maior perda relativa do funil inteiro: 34% de quem tem login bem-sucedido não chega a um polling com sucesso. Aqui se misturam três causas com tratamentos diferentes: falha técnica (conector ou instituição), abandono durante o handoff regulado para o banco e abandono durante a espera. Antes de experimentar, é preciso separar essas causas (seção 11).</p>
+  <p style="margin:0">É a maior perda relativa do funil inteiro: 34% de quem tem login bem-sucedido não chega a um polling com sucesso. Aqui se misturam três causas com tratamentos diferentes: falha técnica (conector ou instituição), abandono durante o handoff regulado para o banco e abandono durante a espera. Antes de experimentar, é preciso separar essas causas (seção 12).</p>
 </div>
 <div class="box">
   <h3>Cuidados antes de usar como baseline</h3>
@@ -325,7 +565,70 @@ footer{margin-top:3rem;padding-top:1.25rem;border-top:1px solid var(--rule);colo
   </ul>
 </div>
 
-<h2>7. De onde vieram os outcomes</h2>
+<h2>7. O que o mapa do widget mostra <span class="tag t-new">novo v0.3</span></h2>
+<p>Detalhamento completo em <code>docs/mapa-widget.md</code>. O mapa foi reconstruído a partir da documentação viva da Pluggy e da base de perguntas e respostas do suporte, não da observação da tela: o ambiente onde o estudo roda bloqueia a saída de rede para o widget. Ele descreve, portanto, a especificação do fluxo, não a interface. A leitura tela a tela continua pendente.</p>
+
+<div class="box">
+  <h3>Três camadas de variação, antes de qualquer experimento</h3>
+  <p>O widget não é um artefato só. Além da personalização pelo Dashboard, o ERP escolhe parâmetros no próprio código — entre eles <code>selectedConnectorId</code>, que <b>pula a etapa de seleção de instituição</b>, e <code>updateItem</code>, que abre direto no formulário de credenciais. Uma terceira camada é o estado dos conectores: o widget exibe aviso de instabilidade quando a saúde do conector está degradada.</p>
+  <p style="margin:0"><b>Consequência para a zona A.</b> Sessões que pulam a seleção de instituição entram no funil em <i>Connect Widget Loaded</i> e nunca podem chegar a <i>List Item Clicked</i>. Parte dos 23.402 pode ser artefato de instrumentação, não abandono. Segmentar por presença desses parâmetros vem antes de tratar a zona A como oportunidade de UX.</p>
+</div>
+
+<h3 style="margin-top:1.5rem">A lista de instituições é o problema mais concreto da zona A</h3>
+<p>São 27 conectores diretos e 143 instituições de Open Finance. Num widget configurado só para PJ, a lista chega a <b>77 entradas</b> — 66 de Open Finance e 11 diretas. Nove das onze marcas diretas têm gêmeas no Open Finance:</p>
+<div class="tw"><table>
+  <thead><tr><th>Marca</th><th>Entradas Open Finance</th><th>Entradas diretas</th><th>Entradas na lista</th></tr></thead>
+  <tbody>
+    <tr><td><b>Itaú</b></td><td>3</td><td>1</td><td><b>4</b></td></tr>
+    <tr><td><b>Caixa</b></td><td>2</td><td>1</td><td><b>3</b></td></tr>
+    <tr><td><b>Santander</b></td><td>2</td><td>1</td><td><b>3</b></td></tr>
+    <tr><td>BB, Bradesco, Inter, Sicredi, Banrisul, BNB</td><td>1 cada</td><td>1 cada</td><td>2 cada</td></tr>
+  </tbody>
+</table></div>
+<p>O empresário do Itaú encontra quatro opções e nenhuma informação que permita escolher. A diferença entre elas é o trilho regulatório, que não é vocabulário dele — e a escolha tem consequência real: <b>o trilho direto aceita usuário operador, que muitas empresas já têm configurado; o Open Finance exige a aprovação de todos os aprovadores da conta</b>. Para uma PME com dois sócios que assinam em conjunto, um trilho pode ser inviável e o outro viável, e a lista não diz.</p>
+<p>Por isso O6 foi reavaliado de intensidade baixa para alta na etapa 3.</p>
+
+<div class="box">
+  <h3>O4 e O5 estão mais subatendidos do que a v0.2 supunha</h3>
+  <p>A Pluggy mantém catorze tutoriais para conectores PJ. <b>Seis deles não ensinam a conectar</b> — ensinam a provisionar acesso no banco antes de o widget servir para alguma coisa: autorizar dispositivo no BB, habilitar acesso móvel no Bradesco, criar usuário secundário no Santander, criar operador sem token no Itaú, criar integração de API e emitir certificado no Inter Empresas e no Efí.</p>
+  <p style="margin:0">Quase metade do esforço de documentação PJ da Pluggy está na etapa 2 Localizar, não na 5 Executar. Nenhum desses pré-requisitos é comunicado antes da seleção da instituição: o empresário descobre que precisa de certificado digital depois de ter aceitado os termos e escolhido o banco. É a evidência mais forte deste ciclo a favor de H3.</p>
+</div>
+
+<h3 style="margin-top:1.5rem">Duas correções à leitura do funil</h3>
+<div class="tw"><table>
+  <thead><tr><th>O que a v0.2 dizia</th><th>O que o mapa mostra</th></tr></thead>
+  <tbody>
+    <tr>
+      <td>Para dividir a zona A, adicionar as visualizações <code>welcomePage</code> e <code>connectorsList</code>.</td>
+      <td>Existe algo melhor: o evento <code>SUBMITTED_CONSENT</code>, disparado quando o usuário confirma os termos. É ação, não visualização. Inserido no funil, separa abandono na tela de boas-vindas de abandono na lista — dois problemas distintos hoje somados em 23.402.</td>
+    </tr>
+    <tr>
+      <td>Zona B mistura erro técnico, abandono no handoff e abandono na espera.</td>
+      <td>No Open Finance o usuário submete <b>apenas CPF ou CNPJ</b> no widget; o login acontece depois, no pop-up do banco. Se o evento do funil for <code>LOGIN_SUCCESS</code>, ele dispara <b>antes do handoff</b>, e a zona B contém o redirecionamento regulado inteiro — deixando de ser majoritariamente ansiedade de espera (E5) para ser majoritariamente a ida e volta ao banco (O9, E1).</td>
+    </tr>
+  </tbody>
+</table></div>
+<p class="caption">Como decidir em uma consulta: segmentar <i>Form Submitted → Login Step Success</i> por trilho. Se os 94,5% se mantiverem parecidos nos dois, o evento dispara antes do handoff no Open Finance — é improvável que 94,5% das pessoas completem a autorização no banco.</p>
+
+<h3 style="margin-top:1.5rem">Três mecanismos de perda que não são de persuasão</h3>
+<div class="box">
+<ul style="margin:0">
+  <li><b>Redirecionamento não configurado.</b> Sem <code>oauthRedirectUri</code>, alguns navegadores móveis deixam o usuário numa página de autorização concluída sem caminho de volta. A autorização funcionou; a conexão consta como não concluída. É item recorrente no suporte, e o parâmetro é responsabilidade do ERP — parte da conversão de cada cliente é função de uma linha na integração dele. <b>Não é experimento, é correção.</b></li>
+  <li><b>Pop-up bloqueado.</b> O handoff abre um pop-up; bloqueadores o impedem. O widget já mostra um aviso, e a Pluggy se recusa a removê-lo a pedido de clientes — sinal de que é frequente. Esse aviso chega no pico exato de E1 e é, em forma, indistinguível de um alerta de golpe. É a melhor candidata a experimento de copy do fluxo: intervém no pico, é central, não é regulada e não passa pelo jurídico.</li>
+  <li><b>Ansiedade que vira degradação.</b> Os limites do Open Finance são mensais por CPF/CNPJ, instituição e produto, e contam entre itens. Listar contas permite <b>4 requisições por mês</b>. Quem não sabe se deu certo e tenta cinco vezes esgota a cota e recebe <code>PARTIAL_SUCCESS</code>. Como o funil conta <code>PARTIAL_SUCCESS</code> como sucesso, parte dos 30.230 pode ser conexão degradada por retentativa — o baseline de 37,9% é, nesse ponto, otimista.</li>
+</ul>
+</div>
+
+<div class="box">
+  <h3>Múltipla alçada: como medir, e por que não construir ainda</h3>
+  <p>É observável: o <code>statusDetail</code> traz o warning de código 002, "Conta pendente de autorização". Contar itens PJ de Open Finance com esse warning responde a pergunta em aberto sobre frequência.</p>
+  <p style="margin:0">O outro aprovador <b>não</b> é notificado pela Pluggy — depende do banco. Mas há proposta oficial no conselho do Open Finance para mudar isso: notificação pelo app do banco, consentimento de um único aprovador e login inicial por qualquer operador. Se aprovada, remove boa parte do problema. Argumento para detectar e explicar o estado agora, e não investir em UI de fluxo multi-aprovador.</p>
+</div>
+
+<h3 style="margin-top:1.5rem">Erros: dezessete estados, oito famílias</h3>
+<p>A zona B não se divide em "técnico, usuário e abandono". São dezessete <code>executionStatus</code> de erro, agrupáveis em oito famílias que pedem recuperações diferentes: credencial errada; conta bloqueada ou exigindo ação no banco; pessoa sem permissão (<code>USER_NOT_SUPPORTED</code>, O5 puro); autorização de dispositivo pendente (a Caixa leva cerca de 30 minutos, e o <code>onSuccess</code> não é chamado); consentimento revogado; instituição fora do ar; timeout de MFA; falha da própria Pluggy. O campo <code>providerMessage</code> já traz instruções da instituição — existe matéria-prima para H5 sem inventar texto.</p>
+
+<h2>8. De onde vieram os outcomes</h2>
 <p>Os dois outcomes iniciais foram mantidos, mas decompostos, porque no formato original não indicavam onde intervir.</p>
 <div class="tw"><table>
   <thead><tr><th>Outcome original</th><th>Problema</th><th>Onde foi parar</th></tr></thead>
@@ -336,7 +639,7 @@ footer{margin-top:3rem;padding-top:1.25rem;border-top:1px solid var(--rule);colo
 </table></div>
 <p>A convenção do ODI é escrever outcomes como minimização de tempo ou de probabilidade de algo indesejado, porque o cliente avalia a execução pelo que dá errado ou demora.</p>
 
-<h2>8. Como priorizar</h2>
+<h2>9. Como priorizar</h2>
 <p>O ODI prioriza por oportunidade, não só por baixa satisfação. Um outcome pouco satisfeito mas pouco importante não é prioridade.</p>
 <div class="formula">Oportunidade = Importância + máx(Importância − Satisfação, 0)</div>
 <p>Importância e satisfação são medidas em escala de 0 a 10 a partir de pesquisa com os executores. Como a Pluggy é B2B2B, o acesso ao empresário em escala é difícil. Proposta de combinação de fontes:</p>
@@ -347,13 +650,19 @@ footer{margin-top:3rem;padding-top:1.25rem;border-top:1px solid var(--rule);colo
   <li><b>Entrevistas</b> com empresários, para calibrar importância.</li>
 </ul>
 <p>Dimensões de segmentação: trilho (Open Finance ou conector direto), instituição, quem está no widget (titular ou operador), dispositivo e cliente ERP.</p>
+<div class="box">
+  <h3>Satisfação sai do comportamento; entrevista mede importância <span class="tag t-new">v0.5</span></h3>
+  <p>Outcomes escritos como tempo têm uma vantagem prática: tempo é observável. <b>Vários já têm proxy comportamental instrumentado ou a um evento de distância</b> — o intervalo entre <code>SUBMITTED_CONSENT</code> e <code>SELECTED_INSTITUTION</code> mede quanto custa localizar a instituição; <code>SELECTED_INSTITUTION</code> emitido duas vezes com <code>connector</code> diferente mede a re-escolha; seleção sem <code>SUBMITTED_LOGIN</code> subsequente mede o pré-requisito descoberto tarde.</p>
+  <p style="margin:0">Isso ataca a restrição do B2B2B por outro lado: <b>a insatisfação pode ser estimada de graça, no funil, e o acesso escasso ao empresário fica reservado para a importância</b> — que é o que só ele sabe dizer.</p>
+</div>
 
-<h2>9. Diretrizes para os experimentos de UX</h2>
+<h2>10. Diretrizes para os experimentos de UX</h2>
 <div class="box">
 <h3>Restrições</h3>
 <ul style="margin:0">
   <li><span class="tag t-new">confirmado v0.2</span> Pelas regras do Open Finance, só o handoff para o banco é regulado. Nada dentro do widget está fora do espaço de teste por esse motivo.</li>
   <li>A LGPD continua valendo dentro do widget: o consentimento precisa ser livre, informado e inequívoco. Mudanças na tela de boas-vindas e termos, que é a principal candidata a experimento, devem passar pelo jurídico, mesmo não sendo reguladas pelo Open Finance.</li>
+  <li><span class="tag t-new">v0.5</span> <b>A métrica primária de cada experimento é o outcome que ele mira, não a conversão.</b> Conversão é o resultado do conjunto. Um experimento pode acertar o outcome e não mover a conversão — isso é informação, não fracasso.</li>
   <li>Métricas de guarda além da conversão: revogações precoces, tickets e conexões na conta errada.</li>
   <li>Intervir nos picos, não em todas as telas. Reassurance espalhada vira ruído.</li>
 </ul>
@@ -362,66 +671,882 @@ footer{margin-top:3rem;padding-top:1.25rem;border-top:1px solid var(--rule);colo
 <h3 style="margin-top:1.5rem">Hipóteses candidatas</h3>
 <p class="caption">Ponto de partida para o backlog. A ordem de execução deve sair da priorização por oportunidade.</p>
 <div class="hyp">
-  <h3>H1 · Preparação antes do redirecionamento</h3>
+  <h3>H1 · Preparação antes do redirecionamento <span class="tag t-new">reforçada v0.3</span></h3>
   <p>Mostrar o que o empresário vai ver no banco, o que será pedido e por quê.</p>
+  <p class="caption">Agora se sabe o que preparar: o pop-up, o modo de login do banco (QR, deep link ou credenciais) e a tela de seleção do que compartilhar.</p>
   <p class="caption">Outcomes: O7, O8, O9 · Emocional: E1</p>
 </div>
 <div class="hyp">
-  <h3>H2 · Confirmação imediata no retorno</h3>
+  <h3>H2 · Confirmação imediata no retorno <span class="tag t-new">reforçada v0.3</span></h3>
   <p>Ao voltar do banco, deixar explícito se deu certo ou o que falta.</p>
+  <p class="caption">Não é só conforto: reduz retentativa, que consome cota mensal do Open Finance e degrada o resultado de quem persiste.</p>
   <p class="caption">Outcomes: O11, O12 · Emocional: E5</p>
 </div>
 <div class="hyp">
-  <h3>H3 · Checklist do que ter em mãos <span class="tag t-new">proposta v0.1</span></h3>
+  <h3>H3 · Checklist do que ter em mãos <span class="tag t-new">prioridade alta v0.3</span></h3>
   <p>Antes de iniciar, listar o que será exigido, incluindo poderes para autorizar em nome da empresa.</p>
+  <p class="caption">Promovida de proposta a prioridade alta: seis dos catorze tutoriais PJ são sobre provisionar acesso antes de começar. É o outcome com mais evidência de subatendimento.</p>
   <p class="caption">Outcomes: O4, O5 · Emocional: E2</p>
 </div>
 <div class="hyp">
-  <h3>H4 · Resumo de permissões em linguagem simples <span class="tag t-new">proposta v0.1</span></h3>
+  <h3>H4 · Resumo de permissões em linguagem simples <span class="tag t-new">proposta</span></h3>
   <p>Mostrar o que será acessado e para quê, em poucas linhas.</p>
+  <p class="caption">Ressalva da v0.3: no Open Finance a seleção do que compartilhar acontece dentro do banco, fora do widget. O resumo teria de ser antecipatório, não substituto.</p>
   <p class="caption">Outcomes: O1, O2, O3 · Emocional: E3</p>
 </div>
 <div class="hyp">
-  <h3>H5 · Recuperação específica por tipo de erro <span class="tag t-new">proposta v0.1</span></h3>
+  <h3>H5 · Recuperação específica por tipo de erro <span class="tag t-new">detalhada v0.3</span></h3>
   <p>Cada falha diz o que aconteceu e o próximo passo concreto.</p>
+  <p class="caption">Dezessete estados de erro em oito famílias, e o campo <code>providerMessage</code> como fonte de texto da própria instituição.</p>
   <p class="caption">Outcomes: O13 · Emocional: E2</p>
 </div>
 <div class="hyp">
-  <h3>H6 · Como revogar, mostrado na conclusão <span class="tag t-new">proposta v0.1</span></h3>
+  <h3>H6 · Como revogar, mostrado na conclusão <span class="tag t-new">proposta</span></h3>
   <p>Informar onde e como alterar ou revogar o acesso.</p>
+  <p class="caption">Precisão da v0.3: consentimentos de Open Finance não expiram por padrão e se revogam no app do banco, não no ERP. Inter PJ é exceção, expira em um ano.</p>
   <p class="caption">Outcomes: O14, O15 · Emocional: E4</p>
 </div>
 
-<h2>10. Próximos passos</h2>
+<h3 style="margin-top:1.5rem">Hipóteses novas, vindas do mapa do widget <span class="tag t-new">v0.3</span></h3>
+<div class="hyp">
+  <h3>H7 · Desambiguar instituições duplicadas na lista</h3>
+  <p>Quando a mesma marca aparece nos dois trilhos, rotular pela consequência para o usuário — quem pode autorizar, o que muda nos dados — e não pelo trilho regulatório.</p>
+  <p class="caption">Outcomes: O6 · Emocional: E2 · <b>Maior oportunidade aparente da zona A</b></p>
+</div>
+<div class="hyp">
+  <h3>H8 · Roteamento por poderes antes da lista</h3>
+  <p>Perguntar se a pessoa pode autorizar sozinha em nome da empresa e, quando não, sugerir o trilho direto com usuário operador.</p>
+  <p class="caption">Outcomes: O5, O6 · Emocional: E2 · Depende de confirmar a frequência do problema</p>
+</div>
+<div class="hyp">
+  <h3>H9 · Tratar o aviso de pop-up bloqueado como tela de pico</h3>
+  <p>Reescrever a mensagem para que não pareça alerta de golpe e diga o próximo passo concreto.</p>
+  <p class="caption">Outcomes: O8, O9 · Emocional: E1 · Menor custo de implementação de todas</p>
+</div>
+<div class="box">
+  <h3>Não é hipótese: correção de configuração</h3>
+  <p style="margin:0">O <code>oauthRedirectUri</code> ausente não deve virar experimento. É defeito de integração, e vira trabalho de CS, documentação e talvez um aviso no Dashboard. Convém medir e corrigir antes de experimentar em cima de um ruído que se resolve sem UI.</p>
+</div>
+
+<h2>11. Próximos passos</h2>
+<p class="caption">Reordenados na v0.3. Os quatro primeiros são saneamento de dados e precedem qualquer experimento: hoje não se sabe quanto da perda é comportamento e quanto é instrumentação ou configuração.</p>
 <ol>
+  <li><b>Segmentar o funil por configuração</b> — presença de <code>selectedConnectorId</code> e <code>updateItem</code>. Sessões que pulam a seleção de instituição não podem chegar a <i>List Item Clicked</i> e podem estar inflando a perda da zona A.</li>
+  <li><b>Levantar quais clientes criam connect tokens sem <code>oauthRedirectUri</code></b> e cruzar com a conversão da zona B por cliente. Se houver correlação, é correção, não experimento.</li>
+  <li><b>Inserir <code>SUBMITTED_CONSENT</code> no funil</b> para separar abandono na tela de boas-vindas de abandono na lista.</li>
+  <li><b>Resolver o significado de <i>Login Step Success</i></b> segmentando a transição anterior por trilho, e só então decompor a zona B por <code>executionStatus</code>.</li>
+  <li>Medir a proporção de <code>SUCCESS</code> e <code>PARTIAL_SUCCESS</code> nos 30.230 e a distribuição de warnings, antes de fixar o baseline.</li>
+  <li>Contar itens PJ de Open Finance com warning 002 para dimensionar a múltipla alçada.</li>
+  <li>Percorrer o widget tela a tela com o Chrome, incluindo os fluxos sintéticos do sandbox, e confirmar a redação real de cada tela — em especial o aviso de pop-up bloqueado, insumo de H9.</li>
   <li>Revisar este mapa com produto, design e CS e ajustar as formulações marcadas como proposta.</li>
-  <li>Adicionar ao funil do Amplitude as visualizações de welcomePage e connectorsList, para separar a perda da zona A, e fixar o baseline.</li>
-  <li>Agrupar o funil por trilho (Open Finance ou conector direto) e por cliente.</li>
-  <li>Decompor a zona B: distribuição de executionStatus entre os que não têm sucesso e contagem dos que nunca chegam ao fim do polling.</li>
-  <li>Mapear o widget atual tela a tela, com conectores e credenciais pedidas, e cruzar com as etapas do job.</li>
   <li>Coletar sinais de importância e satisfação por outcome.</li>
   <li>Calcular oportunidade e escolher os primeiros outcomes-alvo.</li>
   <li>Desenhar cada experimento com hipótese, outcome-alvo, métrica primária e métricas de guarda.</li>
   <li>Rodar, registrar aprendizados e atualizar este documento.</li>
 </ol>
 
-<h2>11. Perguntas em aberto</h2>
+<h2>12. Perguntas em aberto</h2>
+<h3>Respondidas na v0.3</h3>
+<ul>
+  <li><b>Divisão entre trilhos e credenciais pedidas.</b> 27 conectores diretos (11 empresariais) e 143 instituições de Open Finance (66 com contexto empresarial). Credenciais por conector direto PJ estão tabeladas em <code>docs/mapa-widget.md</code> — de usuário e senha até Client ID, Client Secret e certificado digital, no Inter Empresas e no Efí.</li>
+  <li><b>Como medir a múltipla alçada.</b> Warning de código 002 no <code>statusDetail</code>. Falta rodar a contagem.</li>
+</ul>
 <h3>Respondidas na v0.2</h3>
 <ul>
   <li>Abandono segmentado por etapa: existe (seção 6). Ainda falta isolar a saída para o banco e o retorno.</li>
-  <li>Customização pelos ERPs: nome da empresa na primeira página, logo e cor dos botões. Não limita os testes.</li>
+  <li>Customização pelos ERPs: revisado na v0.3 — é mais ampla do que se registrou, e há uma camada de parâmetros do SDK além do Dashboard (seções 3 e 7).</li>
   <li>Elementos regulados: apenas o handoff para o banco.</li>
 </ul>
 <h3>Ainda abertas</h3>
 <ul>
-  <li>Qual é a divisão atual entre Open Finance e conectores diretos no widget? Quais conectores existem e quais credenciais cada um pede?</li>
-  <li>O que o evento Login Step Success significa em cada trilho? No Open Finance, ele dispara antes ou depois do handoff para o banco?</li>
+  <li>O que o evento Login Step Success significa em cada trilho? A v0.3 propõe um teste barato para decidir (seção 7), mas a consulta ainda não foi rodada.</li>
   <li>Entre os 15.570 que têm login bem-sucedido sem sucesso final, quanto é erro técnico, quanto é erro do usuário e quanto é abandono?</li>
+  <li>Quanto da perda da zona A é abandono e quanto é sessão que nunca teve a etapa de seleção de instituição?</li>
   <li>Com que frequência quem está no widget não é o titular ou não tem poderes na conta?</li>
-  <li>Com que frequência o consentimento PJ fica parado em múltiplas alçadas?</li>
+  <li>Quantos clientes não configuram <code>oauthRedirectUri</code>, e quanto isso explica da perda da zona B?</li>
+  <li>Qual é a lista de conectores que cada cliente de fato exibe? O universo documentado não é o que o empresário vê.</li>
 </ul>
 
-<footer>Versão 0.1 consolidou a análise inicial. Versão 0.2 incorpora o funil do Amplitude e as respostas sobre customização e regulação. Itens marcados como proposta ainda precisam de validação.</footer>
+<footer><b>Decisão da v0.5:</b> o job map segue com a granularidade atual, cerca de dois outcomes por etapa. A Figura 2.4 de Ulwick sugere uma dúzia por etapa, e a v0.4 chegou a tratar isso como déficit — mas a granularidade fina virá das entrevistas com empresários de PME, não de dedução em cima de documentação. Os 36 outcomes já escritos ficam na aba Modelo de valor como <b>banco de hipóteses para orientar o roteiro das entrevistas</b>, não como modelo a adotar. A proposta de promover E1 a etapa transversal também aguarda as entrevistas. Versão 0.1 consolidou a análise inicial. Versão 0.2 incorporou o funil do Amplitude e as respostas sobre customização e regulação. Versão 0.3 incorpora o mapa do widget (<code>docs/mapa-widget.md</code>), corrige a premissa de customização, eleva O6 e H3, acrescenta O16 e as hipóteses H7 a H9, e reordena os próximos passos para pôr o saneamento de dados antes dos experimentos. O mapa foi derivado da documentação, não da observação da tela — a leitura tela a tela continua pendente. Itens marcados como proposta ainda precisam de validação.</footer>
+</section>
+
+<section class="panel" id="panel-mapa" role="tabpanel" aria-labelledby="tab-mapa" hidden>
+  <p class="lede">Reconstrução do fluxo de conexão da Pluggy, tela a tela, cruzada com as etapas do job, os outcomes e os eventos do funil. Insumo da versão 0.3 do estudo.</p>
+  <div class="legend">
+    <span><span class="tag t-doc">DOC</span> guia oficial da documentação viva</span>
+    <span><span class="tag t-qa">QA</span> base de suporte da Pluggy</span>
+    <span><span class="tag t-inf">INFERÊNCIA</span> leitura minha, precisa de validação</span>
+  </div>
+
+  <div class="box warn">
+    <h3>Este mapa não saiu do Chrome</h3>
+    <p>A tarefa previa percorrer <code>demo-connect.pluggy.dev</code> com a integração do Chrome. <b>Não foi possível:</b> o ambiente remoto bloqueia a saída de rede para <code>connect.pluggy.ai</code>, <code>demo-connect.pluggy.dev</code> e <code>api.pluggy.ai</code> — o proxy responde 403 no CONNECT, por política da organização. Não é falta de credencial, é egresso bloqueado.</p>
+    <p style="margin:0">O mapa foi reconstruído a partir da documentação viva e da base de Q&amp;A do suporte. <b>Ele descreve a especificação do fluxo, não a interface observada.</b> As ferramentas de dashboard (<code>list_connectors</code>, <code>get_stats</code>) pedem re-autenticação e não puderam ser usadas — nenhuma contagem aqui vem da aplicação real, só do universo documentado. A leitura tela a tela segue pendente, na seção 10.</p>
+  </div>
+
+  <h2>1. Três camadas de variação, antes de qualquer experimento</h2>
+  <p>Este é o achado que mais muda o desenho dos experimentos, e ele contradiz em parte o que a v0.2 registrava como confirmado.</p>
+
+  <h3>Camada 1 — Personalização via Dashboard <span class="tag t-doc">DOC</span></h3>
+  <div class="tw"><table>
+    <thead><tr><th>Item</th><th>Escopo</th><th>Situação</th></tr></thead>
+    <tbody>
+      <tr><td>Nome da empresa</td><td>20 caracteres, tela de boas-vindas</td><td>já mapeado</td></tr>
+      <tr><td>Logo</td><td>telas principais</td><td>já mapeado</td></tr>
+      <tr><td>Cor primária</td><td>telas, botões, componentes interativos</td><td>já mapeado</td></tr>
+      <tr><td>Raio de borda dos botões</td><td>todos os botões</td><td><b>novo</b></td></tr>
+      <tr><td><b>Texto dos botões</b></td><td>primeira tela e tela de credenciais</td><td><b>novo — o CTA não é centralizado</b></td></tr>
+      <tr><td><b>Seleção de conectores</b></td><td>liga e desliga por tipo</td><td><b>novo — a lista de bancos varia por cliente</b></td></tr>
+      <tr><td><b>Textos de consentimento</b></td><td>termos e privacidade na 1ª tela; passa por Vendas e jurídico</td><td><b>novo — a tela candidata nº 1 já é variável</b></td></tr>
+    </tbody>
+  </table></div>
+  <p class="caption">Disponível na assinatura Pro e no Free Trial — ou seja, nem todo cliente customiza, o que cria uma variação a mais, não a menos.</p>
+
+  <h3>Camada 2 — Parâmetros do SDK, escolhidos no código do ERP <span class="tag t-doc">DOC</span></h3>
+  <p>Esta camada não aparece no Dashboard e é invisível para quem olha só o funil.</p>
+  <div class="tw"><table>
+    <thead><tr><th>Parâmetro</th><th>O que faz</th><th>Por que importa</th></tr></thead>
+    <tbody>
+      <tr><td><code>selectedConnectorId</code></td><td><b>pula a etapa de seleção de conector</b>, indo direto ao login após os termos</td><td><b>sessões assim podem nunca emitir <code>SELECTED_INSTITUTION</code></b></td></tr>
+      <tr><td><code>updateItem</code></td><td>abre direto no formulário de credenciais</td><td>pula boas-vindas e lista</td></tr>
+      <tr><td><code>connectorTypes</code>, <code>connectorIds</code>, <code>countries</code></td><td>filtram a lista exibida</td><td>mudam tamanho e composição da lista</td></tr>
+      <tr><td><code>products</code></td><td>restringe os produtos coletados</td><td>muda o que é consentido (O1–O3)</td></tr>
+      <tr><td><code>openFinanceParameters</code></td><td>pré-preenche CPF e CNPJ</td><td>remove uma etapa de digitação</td></tr>
+      <tr><td><code>language</code>, <code>theme</code></td><td>idioma e tema claro ou escuro</td><td>variação visual não controlada</td></tr>
+      <tr><td><code>allowFullscreen</code>, <code>allowConnectInBackground</code></td><td>modal ou tela cheia; permite minimizar</td><td>muda a experiência no celular</td></tr>
+      <tr><td><code>forceOauthInBrowser</code></td><td>força OAuth no navegador do sistema</td><td><b>mitigação direta de perda no handoff</b></td></tr>
+      <tr><td><code>includeSandbox</code></td><td>exibe conectores sandbox</td><td>contaminação de dados se ligado em produção</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>Camada 3 — Estado dos conectores na hora da sessão <span class="tag t-qa">QA</span></h3>
+  <p>O widget exibe aviso de instabilidade quando um conector está com a saúde degradada. A tela de lista não é estável nem para o mesmo cliente ao longo do tempo.</p>
+
+  <div class="box">
+    <h3>O que isso implica</h3>
+    <ol style="margin:0">
+      <li><b>A premissa "quase todo o widget é testável de forma centralizada" não se sustenta.</b> O CTA da primeira tela, o da tela de credenciais, os textos de consentimento e a própria lista de bancos variam por cliente. Central mesmo são a estrutura do fluxo e as telas de MFA, espera e erro.</li>
+      <li><b>Estratificar por cliente não basta.</b> Dois clientes com o mesmo logo podem ter widgets funcionalmente diferentes se um usa <code>selectedConnectorId</code> e o outro não.</li>
+      <li><span class="tag t-inf">INFERÊNCIA</span> <b>Parte dos 23.402 da zona A pode ser artefato de instrumentação.</b> Sessões que pulam a seleção entram em <i>Widget Loaded</i> e nunca podem chegar a <i>List Item Clicked</i>. Segmentar por esses parâmetros vem antes de tratar a zona A como oportunidade de UX.</li>
+    </ol>
+  </div>
+
+  <h2>2. As telas do fluxo</h2>
+  <p>Cada tela cruzada com a etapa do job, os outcomes e o evento correspondente.</p>
+
+  <h3>Trilho comum</h3>
+  <div class="tw"><table>
+    <thead><tr><th>#</th><th>Tela</th><th>Etapa</th><th>Outcomes</th><th>Evento</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td><b>Boas-vindas e termos</b> — nome da empresa, logo, termos, política, CTA customizável</td><td>1, 2, 4</td><td>O1–O5, O7</td><td><code>SUBMITTED_CONSENT</code></td></tr>
+      <tr><td>2</td><td><b>Lista de instituições</b> — agrupada por tipo; exibe aviso de instabilidade; pulável via <code>selectedConnectorId</code></td><td>3 Preparar</td><td><b>O6</b></td><td><code>SELECTED_INSTITUTION</code></td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>Trilho A — Conector direto</h3>
+  <div class="tw"><table>
+    <thead><tr><th>#</th><th>Tela</th><th>Etapa</th><th>Outcomes</th><th>Evento</th></tr></thead>
+    <tbody>
+      <tr><td>3A</td><td><b>Formulário de credenciais</b> — campos variam por conector; CTA customizável</td><td>4, 5</td><td>O4, O5, O7, O10</td><td><code>SUBMITTED_LOGIN</code></td></tr>
+      <tr><td>3A'</td><td><b>Conta única ou conjunta</b> — padrão Bradesco; conta conjunta abre depois a seleção de qual conta</td><td>3 Preparar</td><td><b>O6</b></td><td>—</td></tr>
+      <tr><td>4A</td><td><b>MFA</b> — 1 ou 2 etapas. Variantes: token, <b>imagem QR</b>, <b>lista de opções</b>, <b>seleção de telefone</b>, <b>seleção de empresa depois do MFA</b></td><td>5 Executar</td><td>O8, O10</td><td><code>SUBMITTED_MFA</code></td></tr>
+      <tr><td>4A'</td><td><b>Login por QR</b> — sem credenciais; QR que muda rápido; padrão Inter</td><td>5 Executar</td><td>O8, O9</td><td>—</td></tr>
+      <tr><td>5A</td><td><b>Espera e polling</b> — <code>LOGIN_IN_PROGRESS</code> <b>pode levar até 5 minutos</b></td><td>6 Monitorar</td><td><b>O11, O12</b></td><td><code>LOGIN_STEP_COMPLETED</code></td></tr>
+    </tbody>
+  </table></div>
+  <p>A <b>seleção de empresa depois do MFA</b> é uma tela de O6 que não estava no mapa: o operador de um escritório contábil ou de um grupo com várias CNPJs escolhe ali qual empresa conectar. Errar produz uma conexão bem-sucedida na empresa errada — perda invisível para o funil, que a conta como sucesso.</p>
+
+  <h3>Trilho B — Open Finance</h3>
+  <div class="tw"><table>
+    <thead><tr><th>#</th><th>Tela</th><th>Etapa</th><th>Outcomes</th><th>Evento</th></tr></thead>
+    <tbody>
+      <tr><td>3B</td><td><b>Formulário de CPF ou CNPJ</b> — só isso; pré-preenchível</td><td>4 Confirmar</td><td>O7</td><td><code>SUBMITTED_LOGIN</code></td></tr>
+      <tr><td>4B</td><td><b>Handoff: pop-up para a instituição</b> — o widget avisa quando o pop-up está bloqueado</td><td>5 (pico)</td><td><b>O8, O9</b></td><td>—</td></tr>
+      <tr><td>5B</td><td><b>Fora do widget</b> — login na instituição (QR, deep link ou credenciais) e <b>seleção do que compartilhar</b></td><td>5 (pico)</td><td>O1–O3, O10</td><td>—</td></tr>
+      <tr><td>6B</td><td><b>Retorno</b> — desktop tenta fechar a janela; mobile redireciona. Sem <code>oauthRedirectUri</code>, <b>o usuário fica numa página concluída sem caminho de volta</b></td><td>6 Monitorar</td><td><b>O9, O11</b></td><td>—</td></tr>
+      <tr><td>7B</td><td><b>Espera e polling</b></td><td>6 Monitorar</td><td>O11, O12</td><td><code>ITEM_RESPONSE</code></td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>Telas terminais</h3>
+  <div class="tw"><table>
+    <thead><tr><th>Tela</th><th>Etapa</th><th>Outcomes</th></tr></thead>
+    <tbody>
+      <tr><td><b>Sucesso</b> — <code>SUCCESS</code> ou <code>PARTIAL_SUCCESS</code></td><td>8 Concluir</td><td>O15</td></tr>
+      <tr><td><b>Erro</b> — 17 <code>executionStatus</code> distintos</td><td>7 Modificar</td><td><b>O13</b></td></tr>
+      <tr><td><b>Pendente</b> — Caixa exige autorização de dispositivo com <b>~30 min</b> de espera; <code>onSuccess</code> não é chamado</td><td>6, 7</td><td><b>O12, O13</b></td></tr>
+    </tbody>
+  </table></div>
+
+  <h2>3. Conectores e trilhos: os números</h2>
+  <div class="statrow">
+    <div class="stat"><span class="v">27</span><span class="k">conectores diretos</span></div>
+    <div class="stat"><span class="v">143</span><span class="k">instituições Open Finance</span></div>
+    <div class="stat"><span class="v">77</span><span class="k">entradas num widget só de PJ</span></div>
+    <div class="stat"><span class="v">9</span><span class="k">marcas nos dois trilhos</span></div>
+  </div>
+  <p class="caption">Conectores diretos: 8 pessoais, <b>11 empresariais</b>, 7 de investimento, 1 outro. Open Finance: <b>66 com contexto empresarial</b>, 70 só pessoal, 7 só investimentos.</p>
+
+  <h3>A lista que o empresário da PME vê</h3>
+  <div class="tw"><table>
+    <thead><tr><th>Marca</th><th>Entradas Open Finance</th><th>Entradas diretas</th><th>Entradas na lista</th></tr></thead>
+    <tbody>
+      <tr><td><b>Itaú</b></td><td>3 — Itaú, Itaú BBA, Itaú Emps</td><td>1 — Itaú Empresas</td><td class="big">4</td></tr>
+      <tr><td><b>Caixa</b></td><td>2 — Caixa Econômica, clientes sem conta</td><td>1 — Caixa Empresas</td><td class="big">3</td></tr>
+      <tr><td><b>Santander</b></td><td>2 — Santander, Santander Cartões</td><td>1 — Santander Empresas</td><td class="big">3</td></tr>
+      <tr><td>BB, Bradesco, Inter, Sicredi, Banrisul, BNB</td><td>1 cada</td><td>1 cada</td><td class="big">2</td></tr>
+      <tr><td>Cora, Efí Bank</td><td>—</td><td>1 cada</td><td class="big">1</td></tr>
+    </tbody>
+  </table></div>
+
+  <div class="box accent">
+    <h3>O achado mais acionável do mapa</h3>
+    <p>Um empresário do Itaú que procura "Itaú" encontra quatro opções, sem nenhuma informação que permita escolher. A diferença entre elas é o trilho regulatório, que não é vocabulário dele.</p>
+    <p style="margin:0">E a escolha tem consequência real: <b>o trilho direto aceita usuário operador, que muitas empresas já têm configurado; o Open Finance exige a aprovação de todos os aprovadores da conta.</b> Para uma PME com dois sócios que assinam em conjunto, um trilho pode ser inviável e o outro viável — e a lista não diz. Por isso O6 subiu de intensidade baixa para alta.</p>
+  </div>
+
+  <h3>O que cada trilho entrega melhor <span class="tag t-qa">QA</span></h3>
+  <div class="tw"><table>
+    <thead><tr><th>Critério</th><th>Melhor trilho</th></tr></thead>
+    <tbody>
+      <tr><td>Qualidade de datas, descrições de transação, detalhe de boleto</td><td><b>Direto</b></td></tr>
+      <tr><td>CPF/CNPJ da contraparte, alcance de produtos</td><td><b>Open Finance</b></td></tr>
+      <tr><td>Login em Caixa e Banco do Brasil</td><td><b>Open Finance</b></td></tr>
+      <tr><td>Login nos demais, se bem configurado</td><td><b>Direto</b></td></tr>
+      <tr><td><b>Quem pode autorizar</b></td><td><b>Direto</b> — aceita operador. OF exige todos os aprovadores</td></tr>
+    </tbody>
+  </table></div>
+
+  <h2>4. Credenciais pedidas por conector direto PJ <span class="tag t-doc">DOC</span></h2>
+  <div class="tw"><table>
+    <thead><tr><th>Conector</th><th>O que é pedido no formulário</th></tr></thead>
+    <tbody>
+      <tr><td>Caixa Empresas</td><td>usuário e senha do Internet Banking</td></tr>
+      <tr><td>Sicredi Empresas</td><td>CNPJ, usuário, senha</td></tr>
+      <tr><td>Sicoob PJ</td><td>número da cooperativa, chave de acesso, senha do IB</td></tr>
+      <tr><td>Santander Empresas</td><td>agência, conta, usuário, senha</td></tr>
+      <tr><td>Itaú Empresas</td><td>agência, conta, senha, CPF</td></tr>
+      <tr><td>Banco do Brasil Empresas</td><td>chave J, senha J, senha de 8 dígitos</td></tr>
+      <tr><td>Bradesco Empresas</td><td>usuário, senha, <b>chave de segurança gerada no app</b></td></tr>
+      <tr><td>Inter MEI</td><td>login no app com o número da conta MEI + <b>leitura de QR</b></td></tr>
+      <tr><td><b>Inter Empresas</b></td><td><b>Client ID, Client Secret, chave e certificado</b> de uma integração de API</td></tr>
+      <tr><td><b>Efí Bank</b></td><td><b>Client ID, Client Secret e certificado</b> de uma aplicação de API</td></tr>
+    </tbody>
+  </table></div>
+
+  <div class="box accent">
+    <h3>O que os tutoriais revelam sobre O4 e O5</h3>
+    <p>A Pluggy mantém <b>catorze tutoriais para conectores PJ</b>. Seis deles não ensinam a conectar — ensinam a provisionar acesso no banco <i>antes</i> de o widget servir para alguma coisa: autorizar dispositivo no BB, habilitar acesso móvel no Bradesco, criar usuário secundário no Santander, criar operador sem token no Itaú, criar integração de API no Inter Empresas e no Efí.</p>
+    <p style="margin:0"><b>Quase metade do esforço de documentação PJ da Pluggy está na etapa 2 Localizar, não na 5 Executar.</b> Nenhum desses pré-requisitos é comunicado antes da seleção da instituição: o empresário descobre que precisa de certificado digital depois de ter aceitado os termos e escolhido o banco. É a evidência mais forte deste ciclo a favor de H3.</p>
+  </div>
+
+  <h2>5. Eventos do widget × funil do Amplitude</h2>
+  <div class="tw"><table>
+    <thead><tr><th>Evento do widget</th><th>Significado documentado</th><th>Evento do funil</th></tr></thead>
+    <tbody>
+      <tr><td><code>SUBMITTED_CONSENT</code></td><td>confirmou termos e privacidade na primeira tela</td><td><b>não está no funil</b></td></tr>
+      <tr><td><code>SELECTED_INSTITUTION</code></td><td>selecionou uma instituição; traz o objeto <code>connector</code></td><td><code>List Item Clicked</code></td></tr>
+      <tr><td><code>SUBMITTED_LOGIN</code></td><td>enviou credenciais para criar o item</td><td><code>Form Submitted</code></td></tr>
+      <tr><td><code>SUBMITTED_MFA</code></td><td>enviou parâmetro extra</td><td>—</td></tr>
+      <tr><td><code>LOGIN_SUCCESS</code></td><td>enviou credenciais com sucesso</td><td>candidato a <code>Login Step Success</code></td></tr>
+      <tr><td><code>LOGIN_STEP_COMPLETED</code></td><td>"efetivamente fez login na instituição"</td><td>candidato a <code>Login Step Success</code></td></tr>
+      <tr><td><code>ITEM_RESPONSE</code></td><td>cada leitura do item na API — o batimento do polling</td><td>base do <code>Item Polling Finished</code></td></tr>
+    </tbody>
+  </table></div>
+
+  <div class="box">
+    <h3>1. A zona A já pode ser dividida hoje, e melhor que por page view</h3>
+    <p style="margin:0">O estudo propunha adicionar as visualizações <code>welcomePage</code> e <code>connectorsList</code>. Existe algo mais forte: <code>SUBMITTED_CONSENT</code> é uma <b>ação</b>, não uma visualização. Inserido no funil, separa com precisão <i>carregou → aceitou os termos</i> (abandono nas boas-vindas: O1–O5, O7; E1, E3) de <i>aceitou → clicou numa instituição</i> (abandono na lista: O6; E2). Dois problemas de produto diferentes, hoje somados em 23.402.</p>
+  </div>
+
+  <div class="box">
+    <h3>2. <code>Login Step Success</code> provavelmente significa coisas diferentes em cada trilho</h3>
+    <p>No <b>trilho direto</b>, as credenciais vão no formulário do widget — é um login de verdade no banco. No <b>Open Finance</b>, o que se submete é <b>apenas o CPF ou CNPJ</b>; o login acontece depois, no pop-up.</p>
+    <p><span class="tag t-inf">INFERÊNCIA</span> Se o evento do funil for <code>LOGIN_SUCCESS</code>, ele dispara <b>antes do handoff</b> no Open Finance — e a zona B contém o redirecionamento regulado inteiro. Ela deixa de ser majoritariamente ansiedade de espera (E5) para ser majoritariamente a ida e volta ao banco (O9, E1).</p>
+    <p style="margin:0"><b>Como resolver em uma consulta:</b> segmentar <i>Form Submitted → Login Step Success</i> por trilho. Se os 94,5% se mantiverem parecidos nos dois, o evento dispara antes do handoff — é improvável que 94,5% das pessoas completem a autorização no banco.</p>
+  </div>
+
+  <h2>6. Modos de falha: dezessete estados, oito famílias</h2>
+  <p>O estudo tratava a zona B como "erro técnico, erro do usuário e abandono". A documentação é mais granular, e cada família pede uma recuperação diferente. Isso dá corpo a H5.</p>
+  <div class="tw"><table>
+    <thead><tr><th>Família</th><th><code>executionStatus</code></th><th>O que a UI precisa dizer</th></tr></thead>
+    <tbody>
+      <tr><td>Credencial errada</td><td><code>INVALID_CREDENTIALS</code>, <code>INVALID_CREDENTIALS_MFA</code></td><td>qual campo, e que precisa recomeçar</td></tr>
+      <tr><td>Conta bloqueada ou exigindo ação</td><td><code>ACCOUNT_LOCKED</code>, <code>ACCOUNT_NEEDS_ACTION</code>, <code>ACCOUNT_CREDENTIALS_RESET</code></td><td><b>a ação é no banco</b>; <code>providerMessage</code> traz a instrução da instituição</td></tr>
+      <tr><td>Pessoa ou conta errada</td><td><code>USER_NOT_SUPPORTED</code></td><td><b>O5 puro</b> — quem está no widget não pode fazer isto</td></tr>
+      <tr><td>Autorização pendente</td><td><code>USER_AUTHORIZATION_PENDING</code>, <code>..._NOT_GRANTED</code></td><td><b>esperar, e quanto</b> — a Caixa leva ~30 min</td></tr>
+      <tr><td>Consentimento revogado</td><td><code>USER_AUTHORIZATION_REVOKED</code></td><td>foi revogado no app do banco</td></tr>
+      <tr><td>Instituição fora do ar</td><td><code>SITE_NOT_AVAILABLE</code>, <code>CONNECTION_ERROR</code>, <code>ALREADY_LOGGED_IN</code></td><td>não é culpa do usuário</td></tr>
+      <tr><td>Timeout de MFA</td><td><code>USER_INPUT_TIMEOUT</code></td><td>o código expirou</td></tr>
+      <tr><td>Falha da Pluggy</td><td><code>ERROR</code>, <code>MERGE_ERROR</code></td><td>não é culpa do usuário</td></tr>
+    </tbody>
+  </table></div>
+
+  <h2>7. Três mecanismos estruturais de perda</h2>
+  <p>Não são problemas de persuasão nem de reassurance. São mecânicos, e provavelmente respondem por fração relevante da zona B.</p>
+
+  <div class="box">
+    <h3>7.1 <code>oauthRedirectUri</code> não configurado pelo cliente <span class="tag t-doc">DOC</span> <span class="tag t-qa">QA</span></h3>
+    <p>Alguns navegadores móveis não deixam a janela de autorização se fechar sozinha. Sem <code>oauthRedirectUri</code>, <b>o usuário fica olhando uma página de autorização concluída sem caminho de volta</b>. A autorização funcionou; a conexão consta como não concluída.</p>
+    <p style="margin:0">É item recorrente no suporte, e o parâmetro é responsabilidade do ERP — <b>parte da conversão de cada cliente é função de uma linha na integração dele</b>. <b>Ação imediata, sem experimento:</b> levantar quais clientes criam tokens sem o parâmetro e cruzar com a conversão da zona B. Mais barato e mais rápido que qualquer teste A/B.</p>
+  </div>
+
+  <div class="box">
+    <h3>7.2 Pop-up bloqueado <span class="tag t-qa">QA</span></h3>
+    <p style="margin:0">O handoff abre um pop-up; bloqueadores o impedem. O widget já mostra uma mensagem, e a Pluggy <b>se recusa a removê-la a pedido de clientes</b> — o que confirma que o problema é frequente. Essa mensagem chega no <b>pico exato de E1</b> e é, em forma, indistinguível de um alerta de golpe. É a melhor candidata a experimento de copy de todo o fluxo: intervém no pico, é centralizada, não é regulada e não passa pelo jurídico.</p>
+  </div>
+
+  <div class="box">
+    <h3>7.3 O ciclo vicioso: ansiedade → nova tentativa → limite de taxa → falha <span class="tag t-doc">DOC</span></h3>
+    <p>Os limites do Open Finance são <b>mensais, por CPF/CNPJ + instituição + produto</b>, e contam <b>entre itens diferentes</b>. Os mais apertados:</p>
+    <div class="tw"><table>
+      <thead><tr><th>Produto</th><th>Requisições por mês</th></tr></thead>
+      <tbody>
+        <tr><td><b>Lista e detalhes da conta</b></td><td class="big">4</td></tr>
+        <tr><td>Transações de 7 a 365 dias</td><td class="big">4</td></tr>
+        <tr><td>Identidade, empréstimos</td><td class="big">4</td></tr>
+      </tbody>
+    </table></div>
+    <p>Um empresário que, sem saber se deu certo (E5, O11), <b>tenta conectar o mesmo banco cinco vezes no mês, esgota a cota</b> — e a quinta tentativa retorna <code>PARTIAL_SUCCESS</code> com warning 423.</p>
+    <p style="margin:0">Duas consequências. A ansiedade <b>não custa só abandono: degrada o produto de quem persiste</b>, o que eleva a importância de O11 e O12 e fortalece H2. E como <b><code>PARTIAL_SUCCESS</code> conta como sucesso</b> na definição atual do funil, parte dos 30.230 pode ser conexão degradada por retentativa — <b>o baseline de 37,9% é, nesse ponto, otimista</b>.</p>
+  </div>
+
+  <h2>8. Múltipla alçada <span class="tag t-qa">QA</span></h2>
+  <ul>
+    <li><b>É observável:</b> o <code>statusDetail</code> traz o <b>warning código 002, "Conta pendente de autorização"</b>. Contar itens PJ de Open Finance com esse warning dimensiona o problema. Falta rodar a consulta.</li>
+    <li><b>O outro aprovador não recebe notificação pela Pluggy.</b> Depende do banco. O fluxo simplesmente para, e a UI não tem como saber de quem se espera.</li>
+    <li><b>Há proposta oficial no conselho do Open Finance para mudar isso:</b> aprovadores notificados pelo app do banco, <b>basta um aprovador consentir</b>, e qualquer operador pode fazer o login inicial. Se aprovada, remove boa parte do problema — argumento para detectar e explicar o estado agora, e não investir em UI de fluxo multi-aprovador.</li>
+    <li>O sandbox já simula os três casos (aprovado, rejeitado, autenticação lenta), então dá para prototipar sem conta real.</li>
+  </ul>
+  <p><b>Consequência para o job map:</b> existe um estado, hoje ausente, em que o job <b>não pode ser concluído pelo executor sozinho</b>. Daí O16 — minimizar o tempo para saber que a conclusão depende de outra pessoa, e de quem.</p>
+
+  <h2>9. Efeito sobre as hipóteses</h2>
+  <div class="tw"><table>
+    <thead><tr><th>Hipótese</th><th>Situação após o mapa</th></tr></thead>
+    <tbody>
+      <tr><td><b>H1</b> preparar antes do redirect</td><td><b>Reforçada e mais concreta.</b> Agora se sabe o que preparar: pop-up, modo de login do banco e a tela de seleção de compartilhamento.</td></tr>
+      <tr><td><b>H2</b> confirmação no retorno</td><td><b>Reforçada, com novo argumento.</b> Não é só conforto: reduz retentativa, que consome cota e degrada o resultado.</td></tr>
+      <tr><td><b>H3</b> checklist do que ter em mãos</td><td><b>Promovida a prioridade alta.</b> Seis dos catorze tutoriais PJ são sobre provisionar acesso antes de começar.</td></tr>
+      <tr><td><b>H4</b> resumo de permissões</td><td>Mantida. No Open Finance a seleção acontece <b>no banco</b> — o resumo teria de ser antecipatório, não substituto.</td></tr>
+      <tr><td><b>H5</b> recuperação por tipo de erro</td><td><b>Mais concreta.</b> 17 estados em 8 famílias, e <code>providerMessage</code> como fonte de texto.</td></tr>
+      <tr><td><b>H6</b> mostrar como revogar</td><td>Mantida, com precisão nova: consentimentos de OF <b>não expiram por padrão</b> e se revogam <b>no app do banco</b>. Inter PJ expira em um ano.</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>Hipóteses novas</h3>
+  <div class="hyp">
+    <h3>H7 · Desambiguar instituições duplicadas na lista</h3>
+    <p>Quando a mesma marca aparece nos dois trilhos, rotular pela consequência para o usuário — quem pode autorizar, o que muda nos dados — e não pelo trilho regulatório.</p>
+    <p class="caption">Outcomes: O6 · Emocional: E2 · <b>Maior oportunidade aparente da zona A</b></p>
+  </div>
+  <div class="hyp">
+    <h3>H8 · Roteamento por poderes antes da lista</h3>
+    <p>Perguntar se a pessoa pode autorizar sozinha em nome da empresa e, quando não, sugerir o trilho direto com usuário operador.</p>
+    <p class="caption">Outcomes: O5, O6 · Emocional: E2 · Depende de confirmar a frequência</p>
+  </div>
+  <div class="hyp">
+    <h3>H9 · Tratar o aviso de pop-up bloqueado como tela de pico</h3>
+    <p>Reescrever a mensagem para que não pareça alerta de golpe e diga o próximo passo concreto.</p>
+    <p class="caption">Outcomes: O8, O9 · Emocional: E1 · Menor custo de implementação de todas</p>
+  </div>
+  <div class="box">
+    <h3>Não é hipótese: correção de configuração</h3>
+    <p style="margin:0">O <code>oauthRedirectUri</code> ausente não deve virar experimento. É defeito de integração — vira trabalho de CS, documentação e talvez um aviso no Dashboard. Convém medir antes de experimentar em cima de um ruído que se resolve sem UI.</p>
+  </div>
+
+  <h2>10. O que continua pendente</h2>
+  <h3>Depende de desbloqueio de rede, ou de rodar o Chrome localmente</h3>
+  <ol>
+    <li>Percorrer o widget tela a tela e registrar o texto real de cada uma. Todo este mapa descreve a especificação, não a interface.</li>
+    <li>Verificar a ordem e a redação da tela de boas-vindas, e como os termos são apresentados.</li>
+    <li>Conferir se a lista tem busca, como agrupa e como exibe marcas duplicadas.</li>
+    <li>Ler a redação exata do aviso de pop-up bloqueado — insumo de H9.</li>
+    <li>Percorrer os fluxos sintéticos do sandbox: <code>user-ok-multi-company</code>, <code>user-ok-phone</code>, <code>user-ok-select</code>, QR, conta conjunta e Open Finance com CPF <code>761.092.776-73</code>. Dados sintéticos, sem credencial nem conexão real.</li>
+  </ol>
+  <h3>Depende de re-autenticar o dashboard</h3>
+  <ol start="6">
+    <li><code>list_connectors</code> para a lista real da aplicação, em vez do universo documentado.</li>
+    <li><code>get_stats</code> com <code>items-by-connector</code> para distribuir a zona B por conector e por <code>executionStatus</code>.</li>
+    <li>Contagem de itens PJ de Open Finance com warning 002.</li>
+  </ol>
+  <h3>Depende de consulta no Amplitude</h3>
+  <ol start="9">
+    <li>Segmentar o funil por presença de <code>selectedConnectorId</code> e <code>updateItem</code>.</li>
+    <li>Inserir <code>SUBMITTED_CONSENT</code> no funil para dividir a zona A.</li>
+    <li>Segmentar <i>Form Submitted → Login Step Success</i> por trilho.</li>
+    <li>Proporção <code>SUCCESS</code> e <code>PARTIAL_SUCCESS</code> nos 30.230, e distribuição de warnings.</li>
+  </ol>
+
+  <footer>Mapa do widget versão 1.0 · 19 de setembro de 2026. Derivado da documentação viva da Pluggy e da base de Q&amp;A do suporte, não da observação da tela. Fonte em <code>docs/mapa-widget.md</code>.</footer>
+
+</section>
+
+<section class="panel" id="panel-modelo" role="tabpanel" aria-labelledby="tab-modelo" hidden>
+  <p class="lede">Banco de hipóteses de outcome, escrito a partir da Figura 2.4 de Ulwick e do mapa do widget. <b>Não é o modelo a adotar</b> — serve de roteiro para as entrevistas com empresários de PME, que é de onde a granularidade fina deve vir.</p>
+  <div class="box warn">
+    <h3>Como usar esta aba</h3>
+    <p style="margin:0">A Figura 2.4 sugere cerca de uma dúzia de outcomes por etapa, e uma versão anterior tratou isso como déficit do nosso job map. <b>A decisão foi outra:</b> o documento central segue com a granularidade atual, de cerca de dois por etapa, e os outcomes finos virão das entrevistas — não de dedução em cima de documentação. O que está abaixo permanece como <b>material de apoio</b>: formato de referência, 36 formulações para testar em entrevista e a tabela de proxies comportamentais, que é útil de imediato.</p>
+  </div>
+  <div class="legend">
+    <span><span class="tag t-doc">mapa</span> deriva de achado do mapa do widget</span>
+    <span><span class="tag t-neu">decomp</span> decomposição dos outcomes atuais</span>
+    <span><span class="tag t-inf">novo</span> hipótese, ainda a validar</span>
+  </div>
+
+  <h2>1. O que a Figura 2.4 cobra do nosso modelo</h2>
+  <div class="tw"><table>
+    <thead><tr><th>O que a figura estabelece</th><th>Onde estamos</th></tr></thead>
+    <tbody>
+      <tr><td>"In most cases <b>a dozen or so outcomes define success at each step</b>"</td><td><b>2 por etapa.</b> 16 outcomes em 8 etapas. Uma etapa tem 3, três etapas têm 1.</td></tr>
+      <tr><td>Os três exemplos são todos de <b>uma única etapa</b> (Plan the cut), e todos no formato <i>Minimize the time it takes to [ação observável]</i></td><td>Nossos outcomes misturam tempo, probabilidade e, em três casos, o próprio sucesso do job</td></tr>
+      <tr><td>As etapas têm <b>nomes do job</b>: Plan the cut, Adjust the saw, Start the cut, Operate the saw, Complete the cut, Maintain the saw</td><td>Usamos os rótulos genéricos do job map universal: Definir, Localizar, Preparar…</td></tr>
+      <tr><td><b>"Ensure Safety" é uma etapa transversal</b>, desenhada fora da cadeia com uma seta apontando para o job inteiro</td><td>Tratamos segurança como job emocional E1 pendurado em duas etapas</td></tr>
+    </tbody>
+  </table></div>
+
+  <div class="statrow">
+    <div class="stat"><span class="v">16</span><span class="k">outcomes no documento central</span></div>
+    <div class="stat"><span class="v">2</span><span class="k">por etapa, na média — mantido</span></div>
+    <div class="stat"><span class="v">~12</span><span class="k">por etapa em Ulwick, como referência</span></div>
+    <div class="stat"><span class="v">36</span><span class="k">formulações para testar em entrevista</span></div>
+  </div>
+
+  <div class="box accent">
+  <h3>O que vale guardar da Figura 2.4</h3>
+  <p>Não a cota, e sim o <b>formato</b>: os três exemplos da Bosch são todos <i>minimizar o tempo para [ação observável]</i>. Direção, unidade de medida, objeto e clarificador. É o molde para escrever o que sair das entrevistas.</p>
+  <p style="margin:0">E a observação que vem junto: outcome de tempo é observável, o que abre a porta da seção 5 — medir insatisfação pelo comportamento, sem pesquisa.</p>
+</div>
+
+  <h2>2. Auditoria de formato dos 16 outcomes atuais</h2>
+  <p>Formato canônico: <b>[direção] + [unidade de medida] + [objeto de controle] + [clarificador contextual]</b>. Um outcome precisa ser algo que o próprio executor consegue medir.</p>
+  <div class="tw"><table>
+    <thead><tr><th>Outcome</th><th>Problema</th><th>Veredito</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><b>O7</b> "minimizar a probabilidade de <b>desconfiar</b> da legitimidade do pedido <b>e desistir</b>"</td>
+        <td>Composto, e "desistir" é a métrica de conversão. Repete na escala da etapa o erro que a v0.1 já corrigiu em "maximizar a probabilidade de conectar com sucesso". Além disso, o executor não mede a própria desconfiança.</td>
+        <td><b>Reescrever</b></td>
+      </tr>
+      <tr>
+        <td><b>O10</b> "minimizar o tempo para concluir a autorização"</td>
+        <td>É a duração da etapa inteira. Mede o resultado, não um passo do resultado. Não indica onde intervir.</td>
+        <td><b>Vira roll-up, não outcome</b></td>
+      </tr>
+      <tr>
+        <td><b>O1</b> "quais <b>dados ou operações</b> o sistema terá acesso"</td>
+        <td>Composto. Dados e operações são coisas distintas, com ansiedades distintas.</td>
+        <td>Dividir</td>
+      </tr>
+      <tr>
+        <td><b>O16</b> "saber que a conclusão depende de outra pessoa, <b>e de quem</b>"</td>
+        <td>Composto.</td>
+        <td>Dividir</td>
+      </tr>
+      <tr>
+        <td>O2, O4, O5, O6, O11, O12, O13, O14</td>
+        <td>Formato válido, granularidade insuficiente</td>
+        <td>Decompor</td>
+      </tr>
+    </tbody>
+  </table></div>
+  <p class="caption">Nenhum outcome cita solução — isso a v0.1 já tinha acertado.</p>
+
+  <h2>3. "Garantir a legitimidade" é etapa transversal, não emoção</h2>
+  <p>Este é o ganho estrutural que a figura entrega.</p>
+  <p>Na Bosch, segurança não é atributo nem sentimento: é <b>uma etapa do job map com outcomes próprios</b>, que atravessa todas as outras. O desenho é literal — a caixa fica fora da cadeia, com uma seta apontando para o job inteiro.</p>
+
+  <div class="box accent">
+    <h3>O sintoma já estava no nosso modelo</h3>
+    <p style="margin:0">O estudo trata a legitimidade como job emocional E1, pendurado na etapa 4 (alta) e na etapa 5 (pico). <b>Que o mesmo item apareça em duas etapas com intensidades diferentes já é o sintoma: não é uma etapa, é algo que atravessa.</b> O empresário pergunta "isso é golpe?" na tela de boas-vindas, na lista de bancos, no formulário de credenciais, no aviso de pop-up e no redirecionamento. Cinco momentos, um único job.</p>
+  </div>
+
+  <div class="tw"><table>
+    <thead><tr><th>Antes</th><th>Depois</th></tr></thead>
+    <tbody>
+      <tr><td>Etapa 4 "Confirmar" (verificar legitimidade e poderes)</td><td><b>Dissolvida.</b> A verificação de poderes vai para a etapa 2; a de legitimidade vira transversal</td></tr>
+      <tr><td>Job emocional E1</td><td><b>Promovido a etapa transversal</b> "Garantir que não está sendo golpeado", com outcomes funcionais próprios</td></tr>
+      <tr><td>Job map de 8 etapas lineares</td><td><b>7 etapas lineares + 1 transversal</b></td></tr>
+    </tbody>
+  </table></div>
+
+  <p>Isso <b>não</b> contradiz o insight de "intervir nos picos, não em todas as telas". Bosch não põe proteção redundante em cada etapa da serra. Etapa transversal significa que a <i>necessidade</i> atravessa o job, não que a <i>solução</i> deva aparecer em toda tela. A distinção fica mais clara assim do que estava antes.</p>
+
+  <h3>O mapa renomeado na língua do executor</h3>
+  <div class="tw"><table>
+    <thead><tr><th>#</th><th>Antes (genérico)</th><th>Depois (na língua do empresário)</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td>Definir</td><td>Decidir o que liberar</td></tr>
+      <tr><td>2</td><td>Localizar</td><td>Reunir acesso e poderes</td></tr>
+      <tr><td>3</td><td>Preparar</td><td>Escolher por onde conectar</td></tr>
+      <tr><td>4</td><td>Confirmar</td><td><i>dissolvida</i></td></tr>
+      <tr><td>5</td><td>Executar</td><td>Autorizar no banco</td></tr>
+      <tr><td>6</td><td>Monitorar</td><td>Acompanhar a conclusão</td></tr>
+      <tr><td>7</td><td>Modificar</td><td>Corrigir e ajustar</td></tr>
+      <tr><td>8</td><td>Concluir</td><td>Voltar e usar</td></tr>
+      <tr><td>—</td><td><i>era E1</i></td><td><b>Garantir que não está sendo golpeado</b> <i>(transversal)</i></td></tr>
+    </tbody>
+  </table></div>
+
+  <h2>4. Trinta e seis formulações para testar em entrevista</h2>
+  <p>Escritas nas três etapas onde o mapa do widget produziu evidência. <b>São hipóteses de redação, não outcomes validados</b> — o roteiro da entrevista deve testá-las, descartar as que não ressoam e capturar as que faltam. As etiquetas de procedência dizem quanto lastro cada uma tem.</p>
+
+  <h3>4.1 Transversal · Garantir que não está sendo golpeado</h3>
+  <p class="caption">Substitui E1 e O7.</p>
+  <div class="tw"><table>
+    <thead><tr><th>ID</th><th>Outcome</th><th>Proc.</th></tr></thead>
+    <tbody>
+      <tr><td class="oid">G1</td><td>Minimizar o tempo para confirmar que o pedido de acesso partiu do sistema de gestão que a empresa contratou</td><td><span class="tag t-neu">decomp</span></td></tr>
+      <tr><td class="oid">G2</td><td>Minimizar o tempo para confirmar que o nome exibido na tela é o da empresa que enviou o convite</td><td><span class="tag t-doc">mapa</span></td></tr>
+      <tr><td class="oid">G3</td><td>Minimizar o tempo para verificar que o intermediário é autorizado a fazer o que está pedindo</td><td><span class="tag t-inf">novo</span></td></tr>
+      <tr><td class="oid">G4</td><td>Minimizar a probabilidade de informar credenciais fora do ambiente do banco sem perceber que saiu dele</td><td><span class="tag t-doc">mapa</span></td></tr>
+      <tr><td class="oid">G5</td><td><b>Minimizar o tempo para distinguir um aviso legítimo do sistema de um alerta de golpe</b></td><td><span class="tag t-doc">mapa</span></td></tr>
+      <tr><td class="oid">G6</td><td>Minimizar o tempo para confirmar que a janela que se abriu pertence ao banco</td><td><span class="tag t-doc">mapa</span></td></tr>
+      <tr><td class="oid">G7</td><td>Minimizar a probabilidade de interpretar o redirecionamento legítimo como sequestro de sessão</td><td><span class="tag t-neu">decomp</span></td></tr>
+      <tr><td class="oid">G8</td><td>Minimizar o tempo para confirmar que o acesso concedido pode ser retirado depois</td><td><span class="tag t-neu">decomp</span></td></tr>
+      <tr><td class="oid">G9</td><td>Minimizar a probabilidade de precisar confiar num passo sem ter como verificá-lo</td><td><span class="tag t-inf">novo</span></td></tr>
+      <tr><td class="oid">G10</td><td>Minimizar o tempo para saber a quem recorrer ao suspeitar de fraude durante o processo</td><td><span class="tag t-inf">novo</span></td></tr>
+      <tr><td class="oid">G11</td><td>Minimizar o tempo para confirmar que nenhuma senha foi exposta a terceiros</td><td><span class="tag t-inf">novo</span></td></tr>
+      <tr><td class="oid">G12</td><td>Minimizar a probabilidade de abandonar um pedido legítimo por não conseguir distingui-lo de um golpe</td><td><span class="tag t-neu">decomp</span></td></tr>
+    </tbody>
+  </table></div>
+  <p class="caption">G5 e G6 são a tradução exata do achado do aviso de pop-up bloqueado: uma mensagem que, em forma, é indistinguível de um alerta de fraude, entregue no pico. G12 é o que O7 tentava dizer sem a contaminação da métrica de conversão.</p>
+
+  <h3>4.2 Etapa 2 · Reunir acesso e poderes</h3>
+  <p class="caption">Substitui O4 e O5.</p>
+  <div class="tw"><table>
+    <thead><tr><th>ID</th><th>Outcome</th><th>Proc.</th></tr></thead>
+    <tbody>
+      <tr><td class="oid">R1</td><td>Minimizar o tempo para saber tudo o que será exigido antes de começar</td><td><span class="tag t-neu">decomp</span></td></tr>
+      <tr><td class="oid">R2</td><td>Minimizar o tempo para descobrir se quem está diante da tela pode autorizar em nome da empresa</td><td><span class="tag t-neu">decomp</span></td></tr>
+      <tr><td class="oid">R3</td><td>Minimizar a probabilidade de começar sem ter em mãos a credencial que será pedida</td><td><span class="tag t-neu">decomp</span></td></tr>
+      <tr><td class="oid">R4</td><td><b>Minimizar a probabilidade de começar sem o dispositivo previamente autorizado no banco</b></td><td><span class="tag t-doc">mapa</span></td></tr>
+      <tr><td class="oid">R5</td><td><b>Minimizar a probabilidade de começar sem o certificado digital que a instituição exige</b></td><td><span class="tag t-doc">mapa</span></td></tr>
+      <tr><td class="oid">R6</td><td>Minimizar o tempo para providenciar, no banco, o acesso que falta</td><td><span class="tag t-doc">mapa</span></td></tr>
+      <tr><td class="oid">R7</td><td>Minimizar o tempo para saber a quem pedir, dentro da empresa, quando falta poder para autorizar</td><td><span class="tag t-inf">novo</span></td></tr>
+      <tr><td class="oid">R8</td><td><b>Minimizar a probabilidade de descobrir um pré-requisito depois de já ter começado</b></td><td><span class="tag t-doc">mapa</span></td></tr>
+      <tr><td class="oid">R9</td><td>Minimizar o tempo para retomar de onde parou depois de providenciar o que faltava</td><td><span class="tag t-inf">novo</span></td></tr>
+      <tr><td class="oid">R10</td><td>Minimizar a probabilidade de precisar de uma segunda pessoa sem saber disso de antemão</td><td><span class="tag t-doc">mapa</span></td></tr>
+      <tr><td class="oid">R11</td><td>Minimizar o tempo para estimar quanto o processo inteiro vai tomar</td><td><span class="tag t-inf">novo</span></td></tr>
+      <tr><td class="oid">R12</td><td>Minimizar a probabilidade de começar num dispositivo que não permite concluir</td><td><span class="tag t-doc">mapa</span></td></tr>
+    </tbody>
+  </table></div>
+  <p class="caption">R4, R5 e R8 vêm dos seis tutoriais PJ que ensinam a provisionar acesso antes de conectar. R12 vem dos problemas de webview e pop-up no celular.</p>
+
+  <h3>4.3 Etapa 3 · Escolher por onde conectar</h3>
+  <p class="caption">Substitui O6.</p>
+  <div class="tw"><table>
+    <thead><tr><th>ID</th><th>Outcome</th><th>Proc.</th></tr></thead>
+    <tbody>
+      <tr><td class="oid">P1</td><td>Minimizar o tempo para localizar a instituição da empresa na lista</td><td><span class="tag t-neu">decomp</span></td></tr>
+      <tr><td class="oid">P2</td><td><b>Minimizar o tempo para decidir entre duas entradas da mesma instituição</b></td><td><span class="tag t-doc">mapa</span></td></tr>
+      <tr><td class="oid">P3</td><td><b>Minimizar a probabilidade de escolher uma entrada que exige mais aprovadores do que a empresa consegue reunir</b></td><td><span class="tag t-doc">mapa</span></td></tr>
+      <tr><td class="oid">P4</td><td><b>Minimizar a probabilidade de escolher uma entrada que exige credencial que a empresa não possui</b></td><td><span class="tag t-doc">mapa</span></td></tr>
+      <tr><td class="oid">P5</td><td>Minimizar a probabilidade de conectar uma empresa do grupo que não era a pretendida</td><td><span class="tag t-doc">mapa</span></td></tr>
+      <tr><td class="oid">P6</td><td>Minimizar o tempo para saber quais contas da empresa serão alcançadas pela escolha</td><td><span class="tag t-neu">decomp</span></td></tr>
+      <tr><td class="oid">P7</td><td>Minimizar o tempo para saber se a instituição está operando normalmente agora</td><td><span class="tag t-doc">mapa</span></td></tr>
+      <tr><td class="oid">P8</td><td>Minimizar o tempo para saber o que muda nos dados conforme a entrada escolhida</td><td><span class="tag t-doc">mapa</span></td></tr>
+      <tr><td class="oid">P9</td><td>Minimizar a probabilidade de precisar refazer a escolha depois de iniciar</td><td><span class="tag t-neu">decomp</span></td></tr>
+      <tr><td class="oid">P10</td><td>Minimizar o tempo para trocar de instituição sem recomeçar o processo</td><td><span class="tag t-inf">novo</span></td></tr>
+      <tr><td class="oid">P11</td><td>Minimizar o tempo para confirmar que a escolha feita é a adequada ao caso da empresa</td><td><span class="tag t-inf">novo</span></td></tr>
+      <tr><td class="oid">P12</td><td>Minimizar a probabilidade de escolher pela familiaridade da marca em vez da adequação ao caso</td><td><span class="tag t-inf">novo</span></td></tr>
+    </tbody>
+  </table></div>
+  <p class="caption">P2, P3 e P4 são o achado das quatro entradas do Itaú traduzido em medida. P12 é a armadilha específica: quatro entradas "Itaú" e o empresário escolhe a primeira.</p>
+
+  <div class="statrow">
+    <div class="stat"><span class="v">36</span><span class="k">outcomes refinados, em 3 etapas</span></div>
+    <div class="stat"><span class="v">44</span><span class="k">por desenvolver, em 5 etapas</span></div>
+    <div class="stat"><span class="v">~80</span><span class="k">total projetado</span></div>
+  </div>
+
+  <h2>5. O desbloqueio: outcomes de tempo já têm proxy no funil</h2>
+  <p>Os três exemplos da Bosch são todos de tempo, e não por acaso — tempo é observável. <b>Vários dos outcomes refinados já têm medida comportamental disponível hoje</b>, sem pesquisa com o empresário. Isso ataca de frente a restrição do B2B2B registrada no estudo.</p>
+  <div class="tw"><table>
+    <thead><tr><th>Outcome</th><th>Proxy comportamental</th><th>Disponível</th></tr></thead>
+    <tbody>
+      <tr><td class="oid">P1</td><td>intervalo <code>SUBMITTED_CONSENT</code> → <code>SELECTED_INSTITUTION</code></td><td>após inserir o evento no funil</td></tr>
+      <tr><td class="oid">P2</td><td>mesmo intervalo, segmentado por marcas com entrada duplicada</td><td>idem</td></tr>
+      <tr><td class="oid">P9 P10</td><td><code>SELECTED_INSTITUTION</code> emitido mais de uma vez com <code>connector</code> diferente</td><td><b>hoje</b> — o evento carrega o objeto</td></tr>
+      <tr><td class="oid">P4</td><td><code>SELECTED_INSTITUTION</code> sem <code>SUBMITTED_LOGIN</code> subsequente, por conector</td><td><b>hoje</b></td></tr>
+      <tr><td class="oid">P3</td><td>itens de Open Finance PJ com warning 002</td><td>após re-autenticar o dashboard</td></tr>
+      <tr><td class="oid">R8</td><td>abandono no formulário concentrado em conectores de certificado (Inter Empresas, Efí)</td><td><b>hoje</b></td></tr>
+      <tr><td class="oid">G5</td><td>tempo entre exibir o aviso de pop-up e o clique seguinte, e abandono nesse ponto</td><td>requer instrumentar o aviso</td></tr>
+      <tr><td class="oid">G12</td><td>abandono antes de <code>SUBMITTED_CONSENT</code></td><td>após inserir o evento</td></tr>
+    </tbody>
+  </table></div>
+
+  <div class="box accent">
+    <h3>A inversão prática</h3>
+    <p style="margin:0"><b>A insatisfação de boa parte dos outcomes pode ser estimada por comportamento; a importância é o que realmente exige pesquisa.</b> Isso inverte a ordem de trabalho — mede-se satisfação primeiro, de graça, e gasta-se o acesso escasso ao empresário só com importância. E 36 outcomes cabem num questionário único, coisa que 80 não caberiam.</p>
+  </div>
+
+  <h2>6. Refino dos experimentos</h2>
+  <p>Cada hipótese passa a mirar outcomes nomeados, com métrica primária derivada do outcome — não da conversão global.</p>
+  <div class="tw"><table>
+    <thead><tr><th>Hip.</th><th>Outcomes-alvo</th><th>Métrica primária</th><th>Antes</th></tr></thead>
+    <tbody>
+      <tr><td><b>H7</b> desambiguar entradas duplicadas</td><td class="oid">P2 P3 P4 P8 P12</td><td>tempo <code>SUBMITTED_CONSENT</code> → <code>SELECTED_INSTITUTION</code> em marcas duplicadas, e taxa de re-seleção</td><td>"O6"</td></tr>
+      <tr><td><b>H3</b> checklist do que ter em mãos</td><td class="oid">R1 R3 R4 R5 R8 R10</td><td>taxa de <code>SELECTED_INSTITUTION</code> sem <code>SUBMITTED_LOGIN</code>, por conector</td><td>"O4, O5"</td></tr>
+      <tr><td><b>H9</b> aviso de pop-up</td><td class="oid">G5 G6</td><td>tempo até o clique seguinte ao aviso; abandono nesse ponto</td><td>"O8, O9"</td></tr>
+      <tr><td><b>H8</b> roteamento por poderes</td><td class="oid">R2 R7 R10 P3</td><td>incidência de warning 002; conclusão em PJ multi-aprovador</td><td>"O5, O6"</td></tr>
+      <tr><td><b>H1</b> preparar antes do redirect</td><td class="oid">G4 G6 G7 R12</td><td>retorno do banco por dispositivo</td><td>"O7, O8, O9"</td></tr>
+      <tr><td><b>H2</b> confirmação no retorno</td><td class="oid">O11 O12 <i>(a refinar)</i></td><td>retentativas por CPF/CNPJ + instituição no mês</td><td>"O11, O12"</td></tr>
+    </tbody>
+  </table></div>
+
+  <div class="box">
+    <h3>Duas consequências de desenho</h3>
+    <ol style="margin:0">
+      <li><b>A métrica primária deixa de ser conversão.</b> Conversão vira métrica de resultado do conjunto; cada experimento responde pelo seu outcome. Isso torna possível declarar um experimento bem-sucedido no outcome e mal-sucedido na conversão — o que é informação, não fracasso.</li>
+      <li><b>H7 ganha uma variante barata que não estava no radar.</b> Se P12 for real, <b>ordenar ou agrupar as entradas duplicadas já move o outcome, sem mudar texto nenhum</b> — não passa pelo jurídico e não depende de customização por cliente.</li>
+    </ol>
+  </div>
+
+  <h2>7. O que muda nos objetivos do estudo</h2>
+  <div class="tw"><table>
+    <thead><tr><th>Antes</th><th>Depois</th></tr></thead>
+    <tbody>
+      <tr><td>"Rodar experimentos de UX no widget para aumentar a conversão"</td><td>Aumentar a conversão <b>atacando outcomes nomeados e medidos</b>, com a conversão como resultado, não como alvo de cada teste</td></tr>
+      <tr><td>Priorizar por oportunidade sobre 16 temas</td><td>Priorizar sobre ~80 outcomes, começando pelos 36 refinados</td></tr>
+      <tr><td>Importância e satisfação por pesquisa com o empresário</td><td><b>Satisfação por proxy comportamental primeiro; pesquisa reservada à importância</b></td></tr>
+      <tr><td>Segurança como job emocional E1</td><td>Etapa transversal com 12 outcomes funcionais próprios</td></tr>
+      <tr><td>8 etapas genéricas</td><td>7 etapas na língua do executor + 1 transversal</td></tr>
+    </tbody>
+  </table></div>
+
+  <h2>8. Pendências</h2>
+  <ol>
+    <li>Desenvolver a dúzia de outcomes nas cinco etapas restantes — Decidir o que liberar, Autorizar no banco, Acompanhar a conclusão, Corrigir e ajustar, Voltar e usar. Cerca de 44 outcomes. Depende de evidência: entrevistas, tickets e a leitura tela a tela ainda pendente.</li>
+    <li>Validar com produto e design a promoção de E1 a etapa transversal antes de reescrever o documento vivo inteiro.</li>
+    <li><b>Decidir o destino de E2 a E5.</b> A mesma pergunta se aplica: E5, a ansiedade de não saber se deu certo, é emoção ou é a etapa "Acompanhar a conclusão" mal especificada? Minha suspeita é a segunda, mas não desenvolvi.</li>
+    <li>Montar o questionário de importância sobre os 36 outcomes refinados — é o tamanho que cabe num instrumento único.</li>
+    <li>Confirmar os proxies da seção 5 no Amplitude antes de usá-los como satisfação.</li>
+  </ol>
+
+  <footer>Modelo de valor versão 1.0 · 19 de setembro de 2026. Deriva da Figura 2.4 de Ulwick, <i>What Customers Want</i>, aplicada ao estudo e ao mapa do widget. Fonte em <code>docs/modelo-valor-outcomes.md</code>. O refino ainda não foi validado com o time — por isso as seções 5 e 9 do estudo seguem na formulação anterior.</footer>
+
+</section>
+
+<section class="panel" id="panel-gates" role="tabpanel" aria-labelledby="tab-gates" hidden>
+  <p class="lede">Cruzamento do modelo de gates — oito unidades de orientação sobre dezesseis conectores — com o job map e os outcomes do estudo. Onde os dois se encaixam, onde há lacuna e o que precisa de dado antes de virar prioridade.</p>
+
+  <h2>1. Onde cada modelo vive</h2>
+  <p>A primeira coisa a fixar, porque confundir isso desmonta os dois modelos.</p>
+  <div class="tw"><table>
+    <thead><tr><th></th><th>Job map e outcomes</th><th>Modelo de gates</th></tr></thead>
+    <tbody>
+      <tr><td><b>Responde</b></td><td>o que o empresário tenta conseguir, e como julga se conseguiu</td><td>o que o produto diz e pergunta, e quando</td></tr>
+      <tr><td><b>Natureza</b></td><td>critério, estável</td><td>solução, substituível</td></tr>
+      <tr><td><b>Vem de</b></td><td>o executor</td><td>os fluxos dos conectores</td></tr>
+      <tr><td><b>Muda quando</b></td><td>o job muda — quase nunca</td><td>um banco muda a tela, ou se acha um jeito melhor</td></tr>
+    </tbody>
+  </table></div>
+  <div class="box accent">
+    <p style="margin:0"><b>Gates são solução; outcomes são o critério contra o qual a solução é julgada.</b> A v0.1 já tinha estabelecido que outcome não cita solução — é a mesma disciplina, na direção inversa. Se o time passar a tratar os gates como o modelo, perde a pergunta "existe forma melhor de atender este outcome do que um gate?". O acoplamento correto: todo gate responde por pelo menos um outcome, e todo outcome que importa tem gate ou tem lacuna conhecida.</p>
+  </div>
+
+  <h2>2. A convergência: duas análises independentes, mesma etapa</h2>
+  <p>O mapa do widget saiu da documentação. Os gates saíram das telas de referência dos conectores. Nenhum dos dois olhou para o outro.</p>
+  <div class="tw"><table>
+    <thead><tr><th>Gate</th><th>O que faz</th><th>Etapa</th><th>Outcomes</th></tr></thead>
+    <tbody>
+      <tr><td class="oid">Raiz</td><td>banco + tipo de conexão define o kit de credenciais</td><td>3 Preparar</td><td class="oid">O6</td></tr>
+      <tr><td class="oid">G1</td><td>pergunta se a pessoa tem perfil admin ou master</td><td><b>2 Localizar</b></td><td class="oid">O5 O4</td></tr>
+      <tr><td class="oid">G2</td><td>avisa que o Inter Direct é tarefa de TI</td><td><b>2 Localizar</b></td><td class="oid">O4</td></tr>
+      <tr><td class="oid">G3</td><td>avisa que a autorização de dispositivo leva de 30 min a 24h</td><td><b>2</b>, 6</td><td class="oid">O4 O12 O13</td></tr>
+      <tr><td class="oid">G4</td><td>pede o celular por perto para gerar o token</td><td><b>2 Localizar</b></td><td class="oid">O4 O8</td></tr>
+      <tr><td class="oid">G5</td><td>manda abrir o app antes, porque o código expira</td><td>5 Executar</td><td class="oid">O8 O10</td></tr>
+      <tr><td class="oid">G6</td><td>explica que o consentimento termina no celular</td><td>5 (pico)</td><td class="oid">O8 O9</td></tr>
+      <tr><td class="oid">G7</td><td>antecipa o resumo de compartilhamento</td><td>1 Definir</td><td class="oid">O1 O2 O3</td></tr>
+      <tr><td class="oid">G8</td><td>pergunta se a conta exige dupla aprovação</td><td><b>2</b>, 6</td><td class="oid">O5 O12 O16</td></tr>
+    </tbody>
+  </table></div>
+  <div class="box accent">
+    <h3>Cinco dos oito gates atendem a etapa 2 Localizar</h3>
+    <p style="margin:0">Os outcomes dessa etapa são exatamente dois no estudo — O4 e O5. O mapa do widget já tinha chegado lá por outro caminho: seis dos catorze tutoriais PJ da Pluggy são sobre provisionar acesso no banco antes de conectar. <b>Três análises independentes apontando para a mesma etapa é a evidência mais forte que este estudo tem de onde está a oportunidade.</b></p>
+  </div>
+
+  <h2>3. Os gates são a decomposição empírica de O4 e O5</h2>
+  <p>Vale registrar, porque fecha uma discussão anterior. A v0.4 tentou decompor os outcomes deduzindo uma dúzia por etapa a partir de Ulwick, e a decisão foi não seguir por ali — a granularidade viria das entrevistas, não de dedução em cima de documentação.</p>
+  <p><b>Os gates fazem exatamente essa decomposição, e por um caminho melhor.</b> "Minimizar a probabilidade de iniciar sem ter em mãos o que será exigido" (O4) se decompõe, na prática dos fluxos, em: sem o celular por perto (G4), sem o dispositivo autorizado (G3), sem as credenciais técnicas (G2), sem tempo antes do código expirar (G5). Isso não é dedução — é observação de dezesseis conectores.</p>
+  <p>O banco de hipóteses da aba Modelo de valor continua útil como roteiro de entrevista. Mas <b>o que já pode virar backlog é o que os gates sustentam</b>, porque tem lastro em fluxo real.</p>
+
+  <h2>4. A taxonomia de propriedade resolve um problema do estudo</h2>
+  <p>O estudo registra, entre as premissas, que "o pico de ansiedade acontece em boa parte dentro do app do banco; as janelas de intervenção da Pluggy ficam antes e depois". Verdade, mas vago demais para orientar desenho. O modelo de gates operacionaliza isso em três classes.</p>
+  <div class="tw"><table>
+    <thead><tr><th>Classe</th><th>Significado</th><th>O que a Pluggy pode fazer</th></tr></thead>
+    <tbody>
+      <tr><td><b>Alavanca da Pluggy</b></td><td>atrito que o widget consegue antecipar</td><td>verificar ou perguntar antes da tela do banco</td></tr>
+      <tr><td><b>Do banco</b></td><td>atrito que a instituição controla</td><td>só criar expectativa, para não parecer erro</td></tr>
+      <tr><td><b>Compartilhado</b></td><td>responsabilidade dividida</td><td>explicar antes, para a tela do banco não surpreender</td></tr>
+    </tbody>
+  </table></div>
+  <div class="box accent">
+    <h3>O melhor ganho conceitual deste cruzamento</h3>
+    <p><b>Há outcomes que a Pluggy pode satisfazer e outcomes que ela só pode tornar esperados.</b></p>
+    <p style="margin:0">Para atrito do banco, escrever "minimizar o tempo da autorização de dispositivo" é escrever um outcome que a Pluggy não pode mover — a Caixa leva o que leva. O outcome atendível é outro: <b>minimizar o tempo para saber que a espera é normal e quanto ela dura</b>. Não é firula de redação: muda qual métrica o experimento persegue e evita prometer o que não se entrega.</p>
+  </div>
+  <div class="tw"><table>
+    <thead><tr><th>Outcome atual</th><th>Classe</th><th>Reescrita proposta</th></tr></thead>
+    <tbody>
+      <tr><td class="oid">O10</td><td>do banco</td><td>de "minimizar o tempo para concluir a autorização" para <b>minimizar o tempo para saber quanto a autorização vai levar</b></td></tr>
+      <tr><td class="oid">O12</td><td>do banco</td><td>mantido — já está escrito sobre o saber, não sobre o pendente</td></tr>
+      <tr><td class="oid">O13</td><td>compartilhado</td><td>mantido</td></tr>
+    </tbody>
+  </table></div>
+
+  <h2>5. Onde os gates cobrem hipóteses que já existiam</h2>
+  <div class="tw"><table>
+    <thead><tr><th>Hipótese</th><th>O que os gates trazem</th></tr></thead>
+    <tbody>
+      <tr><td><b>H1</b> preparar antes do redirecionamento</td><td><b>Deixa de ser hipótese e vira especificação.</b> O modelo de gates é H1 inteira, com oito unidades, ordem fixa e texto por banco.</td></tr>
+      <tr><td><b>H3</b> checklist do que ter em mãos</td><td>É o "pacote de preparação montado" — só os gates que dispararam para aquele banco × tipo × perfil × canal.</td></tr>
+      <tr><td><b>H5</b> recuperação por tipo de erro</td><td>A seção "Depois — se não concluiu" cobre G3, G6 e G8 com orientação pós-falha. Combina com as oito famílias de erro do mapa do widget.</td></tr>
+      <tr><td><b>H2</b> confirmação imediata no retorno</td><td>A mensagem universal dos <b>5 minutos</b> para o banco começar a enviar dados é a peça que faltava: a tela de sucesso deve oferecer seguir trabalhando, em vez de parecer travada.</td></tr>
+      <tr><td><b>H8</b> roteamento por poderes</td><td>É o G1, já especificado, com o comportamento por banco levantado.</td></tr>
+    </tbody>
+  </table></div>
+
+  <h2>6. Três lacunas do modelo de gates</h2>
+  <p>Nenhuma invalida o modelo. Todas são trabalho que não está coberto e que alguém vai supor que está.</p>
+
+  <div class="box warn">
+    <h3>6.1 A escolha do trilho está a montante dos gates</h3>
+    <p>O nó raiz é "o usuário escolhe banco + tipo de conexão". O modelo <b>começa depois da escolha</b>, tratando-a como entrada dada.</p>
+    <p>Mas o mapa do widget identificou justamente aí a maior oportunidade aparente da zona A: num widget só de PJ a lista chega a 77 entradas, e nove marcas aparecem nos dois trilhos — Itaú com quatro. E a escolha muda quem pode autorizar: o trilho direto aceita operador, o Open Finance exige todos os aprovadores.</p>
+    <p><b>O G1 pergunta "você tem acesso admin?" depois de a pessoa já ter escolhido um trilho que talvez fosse evitável.</b> Se a resposta for "só operador" e o banco for o Santander, o Direct funciona e o Open Finance não — mas a escolha já foi feita. H7 e H8 são o mesmo problema atacado em dois momentos, e o momento mais barato é antes.</p>
+    <p style="margin:0"><b>Proposta:</b> um gate zero, antes da lista ou embutido nela, que use a resposta de poderes para ordenar ou rotular as entradas duplicadas. Converte a pergunta do G1 de triagem em roteamento.</p>
+  </div>
+
+  <div class="box warn">
+    <h3>6.2 Não há gate para pop-up bloqueado</h3>
+    <p style="margin:0">O G6 cobre a passagem para o app do banco. Não cobre o caso em que <b>o navegador bloqueia o pop-up do handoff</b> — que a base de suporte registra como recorrente, a ponto de a Pluggy recusar pedidos de clientes para remover o aviso. É atrito de uma quarta classe: não é da Pluggy nem do banco, é do navegador. E o aviso atual chega no pico de E1 com forma indistinguível de um alerta de golpe. Era a H9 e continua sem dono no modelo.</p>
+  </div>
+
+  <div class="box warn">
+    <h3>6.3 A etapa 8 Concluir não tem gate</h3>
+    <p style="margin:0">O modelo termina em "início do fluxo do banco", mais a mensagem dos 5 minutos. O que acontece depois da conexão bem-sucedida — O15, ser surpreendido com o que o sistema faz com o acesso, e O14, saber como revogar — fica de fora. É coerente com o escopo declarado, que é preparação; vale só não confundir cobertura de preparação com cobertura do job.</p>
+  </div>
+
+  <h2>7. O risco que precisa de métrica de guarda desde o primeiro teste</h2>
+  <p>O estudo é explícito: o job é instrumental, ninguém quer conectar conta, e "a tolerância a esforço, dúvida e risco percebido é baixa". <b>Oito gates são oito oportunidades de desistir antes de chegar ao banco.</b></p>
+  <p>O modelo já mitiga isso ao ser uma espinha dorsal que acumula num único pacote, em vez de 64 caminhos. Mas o risco é real e é quantificável com o funil que já existe.</p>
+  <div class="tw"><table>
+    <thead><tr><th>Janela do funil</th><th>Perda hoje</th><th>Relação com os gates</th></tr></thead>
+    <tbody>
+      <tr><td>Clique na instituição → formulário enviado</td><td class="big">7.976</td><td>onde vivem os gates de preparação — G1, G2, G4, G8</td></tr>
+      <tr><td>Login bem-sucedido → polling com sucesso</td><td class="big">15.570</td><td>onde vivem os gates de fluxo — G3, G5, G6, G7 — e onde a preparação deveria pagar</td></tr>
+    </tbody>
+  </table></div>
+  <div class="box accent">
+    <p style="margin:0"><b>O orçamento do modelo é este:</b> os gates de preparação precisam custar, na primeira janela, menos do que economizam na segunda. Como métrica de guarda, a transição clique → formulário enviado, hoje em <b>85,9%</b>, não deve cair. É um teste honesto e barato de montar — e tem um desdobramento útil: <b>se um gate custa mais do que economiza, ele não vira tela; vira texto dentro de uma tela que já existe.</b></p>
+  </div>
+
+  <h2>8. Uma crítica ao G1, que é o gate mais importante</h2>
+  <p>O G1 pergunta: <i>"Você tem acesso de administrador ou master neste banco?"</i> Duas objeções.</p>
+  <div class="box">
+    <h3>A pessoa pode não saber responder</h3>
+    <p style="margin:0">"Admin", "master" e "operador" são nomes de perfil do internet banking, não vocabulário do empresário. Quem usa o banco todo dia para pagar fornecedor não necessariamente sabe sob qual perfil está logado. <b>Uma pergunta que o executor não consegue responder com confiança não atende O5</b> — só transfere o erro para mais cedo, com aparência de rigor.</p>
+  </div>
+  <div class="box">
+    <h3>Uma pergunta de comportamento seria mais confiável que uma de nomenclatura</h3>
+    <p style="margin:0">Algo como <i>"no site do banco, você consegue cadastrar um novo pagamento sozinho, sem que outra pessoa precise aprovar?"</i> — o empresário sabe responder isso. E a resposta cobre de uma vez o perfil (G1) e a dupla aprovação (G8), que hoje são <b>dois gates perguntando facetas do mesmo fato</b>.</p>
+  </div>
+  <div class="box">
+    <h3>Melhor ainda seria não perguntar</h3>
+    <p style="margin:0">Verificar vale mais que perguntar. <code>USER_NOT_SUPPORTED</code> e o warning 002 são sinais que a Pluggy já recebe. Não servem para a primeira tentativa, mas servem para a segunda — e para dizer ao cliente, antes de o usuário abrir o widget, que aquele CNPJ já falhou por perfil.</p>
+  </div>
+
+  <h2>9. Duas afirmações que precisam de dado antes de virar prioridade</h2>
+  <div class="box warn">
+    <h3>"G1 é a maior fonte isolada de perda silenciosa de conversão"</h3>
+    <p style="margin:0">É conclusão de análise de fluxo, não de medição. O estudo tem essa mesma pergunta em aberto desde a v0.2 — "com que frequência quem está no widget não é o titular ou não tem poderes na conta?" — e ela segue sem resposta. Verificável: contagem de <code>USER_NOT_SUPPORTED</code> por conector, mais a decomposição da zona B. <b>Enquanto não medido, G1 é a hipótese mais promissora, não o fato estabelecido.</b></p>
+  </div>
+  <div class="box warn">
+    <h3>A cobertura é parcial, e a amostra não é aleatória</h3>
+    <p style="margin:0">São <b>16 conectores revisados</b>, contra 11 diretos PJ e 66 instituições de Open Finance com contexto empresarial no universo documentado. Os revisados são os grandes, o que é a escolha certa — mas a afirmação "o Open Finance tem o mesmo formato em toda instituição revisada" tem alcance de 16, não de 66. O próprio artefato reconhece isso ao listar Banrisul como nunca analisado e o Banco do Nordeste como sem documentação.</p>
+  </div>
+
+  <h2>10. Outcomes que os gates sugerem e o job map não tem</h2>
+  <p>Três candidatos, para o banco de hipóteses das entrevistas.</p>
+  <div class="tw"><table>
+    <thead><tr><th>Candidato</th><th>Por quê</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><b>Compartilhamento em bloco</b></td>
+        <td>"Todas as contas da empresa naquele banco são compartilhadas de uma vez — o usuário não escolhe." Golpe direto em <b>O2</b>, autorizar mais acesso do que pretendia. E é <b>inegociável</b>: vem do desenho do Open Finance. É o exemplo mais puro de outcome que a Pluggy só pode tornar esperado, nunca satisfazer. Vale medir a importância na entrevista justamente por isso — se for alta, é argumento para o trilho direto em certos casos.</td>
+      </tr>
+      <tr>
+        <td><b>Assinatura eletrônica</b></td>
+        <td>A Unicred pede uma antes do consentimento, e nenhum outro fluxo revisado pede. Se aparecer em mais cooperativas, é gate novo.</td>
+      </tr>
+      <tr>
+        <td><b>Saber que a espera acabou</b></td>
+        <td>Os 5 minutos do Open Finance não pertencem a nenhum gate e são o que separa "conectado" de "conectado e funcionando". Reforça <b>O11</b>.</td>
+      </tr>
+    </tbody>
+  </table></div>
+
+  <h2>11. Instrumentação: os gates são eventos</h2>
+  <p>Cada gate é tela mais ação, ou seja, <b>cada gate é instrumentável</b>. E é isso que resolve um problema que o funil tem hoje: <b>não há nenhuma visibilidade entre <code>SELECTED_INSTITUTION</code> e <code>SUBMITTED_LOGIN</code></b> — exatamente onde os gates de preparação vão viver, e onde se perdem 7.976 pessoas.</p>
+  <p>Recomendação: cada variante de gate emite um evento com o próprio ID estável — o esquema de 5 caracteres do artefato, <code>G1001</code> e afins. Com isso:</p>
+  <ul>
+    <li>a perda passa a ser atribuível ao gate, não à transição inteira;</li>
+    <li>a resposta do G1 vira dimensão de segmentação de todo o funil, o que <b>responde a pergunta aberta nº 4 sem pesquisa</b>;</li>
+    <li>o custo de cada gate fica mensurável isoladamente, o que permite remover os que não pagam.</li>
+  </ul>
+  <p>O esquema de IDs foi pensado para design, conteúdo e engenharia. <b>Vale estendê-lo a analytics desde o início</b> — é barato agora e caro depois.</p>
+
+  <h2>12. Próximos passos</h2>
+  <ol>
+    <li>Instrumentar os gates como eventos, usando os IDs estáveis, <b>antes</b> de desenhar as telas.</li>
+    <li>Fixar a transição clique → formulário enviado (85,9%) como métrica de guarda do modelo inteiro.</li>
+    <li>Medir o G1 antes de construí-lo: <code>USER_NOT_SUPPORTED</code> por conector e decomposição da zona B.</li>
+    <li>Testar a formulação comportamental do G1 contra a de nomenclatura, e avaliar a fusão de G1 e G8 numa pergunta só.</li>
+    <li>Decidir o gate zero — usar a resposta de poderes para ordenar ou rotular a lista, unindo H7 e H8.</li>
+    <li>Escrever o gate que falta para pop-up bloqueado, ou registrar que fica fora do modelo.</li>
+    <li>Levar os três candidatos da seção 10 para o roteiro das entrevistas com PME.</li>
+  </ol>
+
+  <footer>Gates × jobs versão 1.0 · 19 de setembro de 2026. Cruza <i>A lógica dos gates · Guided Connect</i> — 8 gates sobre 16 conectores — com o job map e os outcomes deste estudo. Fonte em <code>docs/gates-jobs.md</code>.</footer>
+
+</section>
+
 </main>
-</body>
-</html>
+
+<script>
+(function () {
+  var tabs = Array.prototype.slice.call(document.querySelectorAll('.tab'));
+  var KEY = 'jtbd-aba-v2'; // v2: a Main entrou como principal; a chave nova garante que
+  // quem já visitou caia nela uma vez, e só depois volte a ter a escolha lembrada
+
+  function show(id, focus) {
+    tabs.forEach(function (t) {
+      var on = t.id === id;
+      t.setAttribute('aria-selected', on ? 'true' : 'false');
+      t.tabIndex = on ? 0 : -1;
+      document.getElementById(t.getAttribute('aria-controls')).hidden = !on;
+      if (on && focus) t.focus();
+    });
+    try { localStorage.setItem(KEY, id); } catch (e) {}
+  }
+
+  tabs.forEach(function (t, i) {
+    t.addEventListener('click', function () {
+      show(t.id, false);
+      window.scrollTo({ top: 0, behavior: 'instant' });
+    });
+    t.addEventListener('keydown', function (e) {
+      var d = e.key === 'ArrowRight' ? 1 : e.key === 'ArrowLeft' ? -1 : 0;
+      if (!d) return;
+      e.preventDefault();
+      show(tabs[(i + d + tabs.length) % tabs.length].id, true);
+    });
+  });
+
+  try {
+    var saved = localStorage.getItem(KEY);
+    if (saved && document.getElementById(saved)) show(saved, false);
+  } catch (e) {}
+})();
+</script>
