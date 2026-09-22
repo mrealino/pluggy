@@ -1,6 +1,8 @@
 # Mapa do widget de conexão (Pluggy Connect)
 
-Versão 1.0 — 19 de setembro de 2026. Insumo para o estudo JTBD (`docs/estudo-jtbd-widget.html`).
+> **Reconciliado em 22 set 2026 contra a v1.0 do Estudo.** A seção 5 deste mapa estava **factualmente errada**: `Login Step Success` não mede login — dispara 22–25 vezes por item, de um `useEffect` sem trava, e mede frequência de polling. `Item Polling Finished` falta em ~41% dos itens. **Todo número de funil abaixo (zonas A e B, 37,9%, 23.402, 15.570, 7.976) está superado** pelo mapa de perdas L1–L5 da v1.0. O que permanece válido é o qualitativo: telas por trilho, credenciais por conector, famílias de erro, camadas de variação e múltipla alçada. Numeração de outcomes: ver `docs/de-para-outcomes.md`.
+
+Versão 1.1 — 22 de setembro de 2026. Insumo para o estudo JTBD (`docs/estudo-jtbd-widget.html`).
 
 ## 0. Método, e por que este mapa não saiu do Chrome
 
@@ -60,7 +62,7 @@ O widget **exibe aviso de instabilidade** quando um conector está com `health` 
 
 1. **A premissa "quase todo o widget é testável de forma centralizada" precisa ser revista.** O CTA da primeira tela, o CTA da tela de credenciais, os textos de consentimento e a própria lista de bancos são todos variáveis por cliente. O que sobra de fato centralizado é a estrutura do fluxo, as telas de MFA, as telas de espera e as telas de erro.
 2. **Estratificar por cliente não basta.** É preciso estratificar por *configuração*: dois clientes com o mesmo logo podem ter widgets funcionalmente diferentes se um usa `selectedConnectorId` e o outro não.
-3. **[INFERÊNCIA — alta prioridade de verificação]** Se sessões com `selectedConnectorId` ou `updateItem` pulam a seleção de instituição, elas entram no funil em `Connect Widget Loaded` e **nunca podem** chegar a `List Item Clicked`. Parte dos **23.402** da zona A pode ser artefato de instrumentação, não abandono. Antes de tratar a zona A como oportunidade de UX, é preciso segmentar o funil por presença desses parâmetros.
+3. **[INFERÊNCIA — alta prioridade de verificação]** Se sessões com `selectedConnectorId` ou `updateItem` pulam a seleção de instituição, elas entram no funil em `Connect Widget Loaded` e **nunca podem** chegar a `List Item Clicked`. Parte de **L1 e L2** pode ser artefato de configuração, não abandono. A v1.0 confirmou a leitura e a elevou a pré-requisito: enquanto essas sessões não forem separadas, **L1 e L2 não são interpretáveis como comportamento**.
 
 ---
 
@@ -189,7 +191,7 @@ A Pluggy mantém **14 tutoriais para conectores PJ**. Seis deles **não ensinam 
 - Inter Empresas — criar uma integração de API e emitir certificado
 - Efí Bank — criar uma aplicação de API e emitir certificado
 
-**Quase metade do esforço de documentação PJ da Pluggy está na etapa 2 Localizar, não na 5 Executar.** É a evidência mais forte que este mapa produziu de que **O4 ("iniciar sem ter em mãos o que será exigido") e O5 ("iniciar sem ter permissão para autorizar em nome da empresa") estão subatendidos** — e o estudo hoje trata ambos como outcomes secundários, com H3 marcada apenas como proposta.
+**Quase metade do esforço de documentação PJ da Pluggy está na etapa 2 Localizar, não na 5 Executar.** É a evidência mais forte que este mapa produziu de que **O6 ("iniciar sem ter em mãos o que será exigido") e O7 ("iniciar sem poderes para autorizar em nome da empresa") estão subatendidos** — números da v1.0, antigos O4 e O5. A v1.0 promoveu o achado a outcome próprio, **O8**, marcado como *dado*. Ressalva da reconciliação: subatendido não é o mesmo que maior perda — os gates desta etapa vivem em L3, 9,6%.
 
 Nenhum desses pré-requisitos é comunicado pelo widget antes da seleção da instituição. O empresário descobre que precisa de um certificado digital depois de já ter aceitado os termos e escolhido o banco.
 
@@ -224,11 +226,11 @@ São dois problemas de produto diferentes, com hipóteses diferentes. Hoje estã
 - No **trilho direto**, as credenciais vão no formulário do widget. `LOGIN_STEP_COMPLETED` ("efetivamente fez login na instituição") é um login de verdade no banco.
 - No **trilho Open Finance**, o que o usuário submete no widget é **apenas o CPF ou CNPJ**. O login acontece depois, no pop-up da instituição.
 
-**[INFERÊNCIA]** Se o evento do funil for `LOGIN_SUCCESS` (submissão bem-sucedida de credenciais), então, no Open Finance, ele dispara **antes do handoff** — e a zona B (66%, 15.570 perdidos) **contém o redirecionamento regulado inteiro**, não apenas a espera. Isso reinterpreta a zona B de ponta a ponta: ela não é majoritariamente ansiedade de espera (E5), é majoritariamente a viagem de ida e volta ao banco (O9, E1).
+**RESPONDIDO, e a inferência estava contornando o problema errado.** A v1.0 do Estudo mediu: `Login Step Success` **não mede login em trilho nenhum**. Dispara 22–25 vezes por item, de um `useEffect` que depende do item sob polling, sem trava — mede frequência de polling. Qualquer transição "formulário → login bem-sucedido" construída com ele engana.
 
-Se for `LOGIN_STEP_COMPLETED`, o handoff já aconteceu e a leitura atual se sustenta.
+E `Item Polling Finished`, que fechava o funil, **falta em ~41% dos itens**: um funil project-wide com ele no fim reportava 47,7% onde o Redshift dá 59,5% para a mesma população. Nunca usar como passo final de um funil apresentado como conversão.
 
-**Como resolver em uma consulta:** segmentar a transição `Form Submitted → Login Step Success` por trilho. Se a conversão de 94,5% se mantiver parecida nos dois trilhos, o evento dispara antes do handoff no OF (é improvável que 94,5% das pessoas completem a autorização no banco). Se cair muito no trilho OF, dispara depois.
+Duas armadilhas a mais, da mesma fonte: `List Item Clicked` **dispara duas vezes por clique**, de dois call sites — sempre filtrar `location=connectorsList`; e **~36% dos usuários de alguns clientes emitem zero evento**, por bloqueio client-side, o que não é perda parcial, é usuário inteiro invisível, e é mais comum em desktop.
 
 ---
 

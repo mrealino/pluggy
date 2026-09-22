@@ -1,179 +1,184 @@
 # Síntese: o que as quatro análises dizem juntas
 
-Versão 1.0 — 19 de setembro de 2026. Análise cruzada de `estudo-jtbd-widget` (job map e funil), `mapa-widget` (fluxo e conectores), `modelo-valor-outcomes` (banco de outcomes) e `gates-jobs` (modelo de gates). Este documento não repete as quatro fontes — ele diz o que só aparece quando as quatro são lidas juntas.
+Versão 2.0 — 22 de setembro de 2026. **Reconciliada contra a v1.0 do Estudo**, que trouxe medição de produção e derrubou parte do que a v1.0 desta síntese afirmava. Onde a v1.0 do Estudo mede e as outras abas deduzem, a medição vence.
 
-## 1. A conclusão que muda a ordem do trabalho
+As outras três abas — Mapa do widget, Banco de outcomes, Gates × jobs — foram escritas contra o funil antigo e a numeração antiga de outcomes. Continuam válidas no que é qualitativo: telas, credenciais por conector, famílias de erro, taxonomia de propriedade. **Todo número de funil que vier delas está superado.** O de/para da numeração está em `docs/de-para-outcomes.md`.
 
-**O 37,9% ainda não é um baseline.**
+## 1. O baseline mudou, e a conclusão anterior sobrevive por razões melhores
 
-O funil perde 49.600 pessoas. Lidas juntas, as quatro análises identificam **quatro causas de natureza diferente** dentro desse número, e apenas uma delas é problema de UX no sentido que o estudo assumia:
+A v1.0 desta síntese abria com "o 37,9% ainda não é um baseline". Estava certa na direção e errada no número: **o 37,9% não existe**. Foi construído com dois eventos que não medem o que parecem medir.
 
-| Causa | Natureza | Onde bate | Dimensionada? |
+| O que o funil antigo usava | O que é |
+|---|---|
+| `Login Step Success` como passo de login | **Não mede login.** Dispara 22–25 vezes por item, de um `useEffect` que depende do item sob polling, sem trava. Mede frequência de polling. |
+| `Item Polling Finished` como fechamento | **Viés de sobrevivência.** Falta em ~41% dos itens. Reportava 47,7% de conversão onde o Redshift dá 59,5% para a mesma população. |
+
+O funil defensável é outro, e é menor em escopo: **dentro do widget, 58,0% em 7 dias**, com eventos que existem de verdade.
+
+| Passo | Evento real | Usuários | Conversão |
 |---|---|---|---|
-| **Instrumentação** — sessões com `selectedConnectorId` ou `updateItem` pulam a seleção de instituição e nunca podem emitir `List Item Clicked` | artefato de medição | os 23.402 | **não** |
-| **Configuração do cliente** — `oauthRedirectUri` ausente deixa o usuário sem caminho de volta do banco | defeito de integração do ERP | os 15.570 | **não** |
-| **Mecânico** — pop-up bloqueado, limite de taxa do Open Finance por retentativa, múltipla alçada pendente, espera de autorização de dispositivo | estrutural, não persuasivo | 15.570 + parte dos 7.976 | **não** |
-| **Outcome desatendido** — O4, O5, O6 | UX, o alvo original | 23.402 + 7.976 | parcialmente |
+| 1 | `Connect Widget Loaded` | 20.685 | — |
+| 2 | `Button Clicked · location=welcomePage` | 18.418 | 89,0% |
+| 3 | `List Item Clicked · location=connectorsList` | 14.440 | 78,4% |
+| 4 | `Form Submitted · form=login` | 12.453 | 86,2% |
+| 5 | `Item Created` | 11.989 | 96,3% |
 
-Três das quatro não têm tamanho. Enquanto não tiverem, **não se sabe quanto dos 49.600 é sequer endereçável por experimento de UX** — e qualquer teste A/B roda sobre um denominador contaminado.
+O passo 2 é o ganho: **separa a tela de boas-vindas da lista de bancos**, que a síntese anterior pedia via `SUBMITTED_CONSENT` e que agora existe.
 
-Isso não paralisa o trabalho: dimensionar as três primeiras é barato, usa dados que já existem e não depende de pesquisa com o empresário. É a fase 0 da seção 8.
+### O mapa de perdas substitui as zonas A e B
 
-## 2. A convergência: três análises independentes apontam para a mesma etapa
+| | Perda | Etapas | Gates |
+|---|---|---|---|
+| **L1** carrega e não age na tela inicial | 11,0% | 1 | `entry.welcome` |
+| **L2** age e não escolhe banco | **19,2%** | 1–3 | **sem gate hoje** |
+| **L3** escolhe banco e não submete | 9,6% | 3–4 | `entry.credentials`, G1, G2, G3 |
+| **L4** submete e não cria item | 2,2% | 4 | — |
+| **L5** cria item e não chega a sucesso | **~23,5%** | 5–6 | G6, G7, G8, espera |
 
-O sinal mais forte de todo o material, e o mais fácil de perder porque está espalhado.
+L5 é estimativa — mistura funil de usuários do Amplitude com taxa de item do Redshift. É a melhor aproximação disponível, não um número para publicar.
 
-| Fonte | O que encontrou | Aponta para |
+## 2. A convergência na etapa 2 não sobrevive ao dado
+
+**Esta é a correção mais importante, e é contra uma conclusão minha.**
+
+A síntese anterior tinha como achado central que três análises independentes convergiam na etapa 2 Localizar, e que era por ali que se deveria começar. A convergência era real, mas era entre análises **qualitativas** — documentação, tutoriais e telas de referência. Nenhuma das três tinha medição de onde a perda acontece.
+
+O dado diz outra coisa:
+
+| Onde as análises apontavam | Onde a perda está |
+|---|---|
+| Etapa 2 Localizar, por três caminhos independentes | Os gates da etapa 2 (G1, G2, G3) vivem em **L3 = 9,6%** — a terceira maior perda |
+| — | As duas maiores são **L5 (~23,5%)**, depois do banco autorizar, e **L2 (19,2%)**, antes de um banco ser escolhido |
+
+Duas correções de fato, além do tamanho:
+
+- **Não são cinco gates na etapa 2, são três.** A aba Gates afirma "cinco dos oito gates atendem à etapa 2". Na numeração da v1.0, apenas G1, G2 e G3 estão ali — e **G2 e G3 são exclusivos do trilho direto**, então em Open Finance só G1 atende a etapa. G4 foi para a etapa 4 e G8 para a 5–6.
+- **A premissa de que o pré-requisito é descoberto na etapa 2 é do software, não do usuário.** A própria v1.0 levanta isso como uma das cinco maneiras de o mapa estar errado: a evidência dos tutoriais sugere que a pessoa descobre o pré-requisito na etapa 5 e **volta**. O job map do ODI é sequência de necessidades, não de telas.
+
+**O que sobrevive:** a etapa 2 continua subatendida, e a evidência dos seis tutoriais de provisionamento continua de pé — virou O8, com evidência marcada como *dado*. O que cai é a conclusão de que é por ali que se começa. Por tamanho de perda, não é.
+
+## 3. A maior oportunidade isolada foi confirmada, quantificada — e tem nome proibido
+
+A síntese anterior dizia que a escolha do trilho caía num vão entre modelos e era a maior oportunidade aparente. **O dado confirma e dá o número:** L2 é 19,2%, a segunda maior perda, e é a única faixa do fluxo **sem gate nenhum hoje**.
+
+Mas a proposta de "gate zero" está morta como nome: **não se cria G0**, porque colidiria com a árvore de decisão de outro time. O gate existe, é proposto na v1.0 e se chama **`entry.rail`** — desambiguar a mesma marca nos dois trilhos pela consequência para o usuário, na etapa 3.
+
+Um dado novo reforça: **32% das seleções vêm da busca**, o que sugere que a lista não é navegável por leitura.
+
+E há um alerta que a síntese anterior não tinha: mover G1 para antes da lista, como H3 e H8 pedem, **adiciona atrito exatamente em L2**. É uma das cinco perguntas que a v1.0 devolve ao time.
+
+## 4. Três classes de outcome — mantido
+
+Nada no dado contradiz. A taxonomia de propriedade do modelo de gates continua a melhor ferramenta de triagem que o material produziu.
+
+| Classe | O que a Pluggy pode fazer | Exemplos, já na numeração v1.0 |
 |---|---|---|
-| **Estudo** | O4 e O5 são os únicos outcomes da etapa 2, e H3 estava marcada apenas como proposta | etapa 2 Localizar |
-| **Mapa do widget** | 6 dos 14 tutoriais PJ da Pluggy não ensinam a conectar — ensinam a provisionar acesso no banco antes | etapa 2 Localizar |
-| **Gates** | 5 dos 8 gates atendem à etapa 2 | etapa 2 Localizar |
-| **Banco de outcomes** | o conjunto R é o mais lastreado: 5 das 12 formulações vêm de achado documentado | etapa 2 Localizar |
+| **Satisfazível** | mover o número | O6, O7, O10, O14, O24 |
+| **Apenas esperável** | fazer com que não pareça erro | O18, O21 — a Caixa leva 30 min, e isso não muda |
+| **Inegociável** | apenas divulgar | O2 — em Open Finance todas as contas da empresa naquele banco vão de uma vez |
 
-Nenhuma das três olhou para as outras. O mapa saiu da documentação, os gates saíram das telas de referência dos conectores, o estudo saiu do funil.
+A regra segue: para outcome apenas esperável, escreva sobre o *saber*, não sobre o *fato*. A v1.0 já nasce assim — O18 é "tempo para concluir", mas o par dela, O15, é "tempo para determinar o que vai acontecer na tela do banco".
 
-**A etapa 2 "Localizar" — reunir dispositivo, credenciais, app do banco e poderes na conta — é onde começar.** O estudo original a tratava como intensidade média, com dois outcomes e uma hipótese não priorizada. A evidência acumulada diz o contrário.
+E a v1.0 estende o caso de O2 de um jeito que faltava: **O5** — conceder acesso que não cobre o que a contabilidade exige. Dentro de um banco o escopo é tudo ou nada; entre bancos, a completude fica por conta do empresário, e nada no fluxo diz isso.
 
-E há um detalhe que reforça: a etapa 2 é a única em que **a Pluggy pode agir antes de o banco entrar em cena**. Tudo que acontece depois é atrito do banco, que só se consegue tornar esperado.
+## 5. A divergência sobre E1 se resolveu por absorção
 
-## 3. A maior oportunidade isolada não pertence a nenhum dos modelos
+A síntese anterior levantava duas teses incompatíveis: a dos gates, em que a ansiedade de legitimidade é subproduto de expectativa não atendida, e a do estudo, em que E1 é job com peso próprio.
 
-Num widget só de PJ, a lista chega a 77 entradas, e nove marcas aparecem nos dois trilhos — Itaú com quatro entradas, Caixa e Santander com três. A escolha entre elas muda **quem pode autorizar**: o trilho direto aceita usuário operador, que muitas empresas já têm; o Open Finance exige a aprovação de todos os aprovadores da conta.
+**A v1.0 mantém E1 como job e adota os gates** — e enuncia a tensão melhor do que eu: excesso de "confie, é seguro" espalhado por todas as telas é, em forma, indistinguível de golpe, e **isso é o maior risco do sistema de gates, que por definição adiciona telas explicativas**.
 
-Cruzando as quatro fontes, essa escolha cai num vão:
+Ou seja: não são duas teses concorrentes, é uma restrição de desenho sobre a solução. A pergunta de entrevista continua valendo, mas deixa de ser bifurcação.
 
-- O **estudo** classificava O6 como intensidade baixa.
-- O **mapa** identificou o problema e o chamou de maior oportunidade aparente da zona A.
-- O **modelo de gates** começa explicitamente *depois* da escolha — o nó raiz é "o usuário escolhe banco + tipo de conexão".
-- O **banco de outcomes** tem P2, P3, P4 e P12 escritos, mas eles não são cobertos por nenhum gate.
+A v1.0 acrescenta **E6** (reversibilidade) e **E7** (não ficar sem saída), com um teste discriminante que o modelo anterior não tinha: dois jobs emocionais só são distintos se o abandono que provocam tiver **causa diferente e tratamento diferente**. E7 é o melhor exemplo — o `oauthRedirectUri` ausente produz um caso em que o status existe, a autorização funcionou, e a pessoa continua presa. Status não trata E7.
 
-**Ninguém está olhando para o momento mais barato de resolver o problema mais caro.** O G1 pergunta "você tem acesso admin?" depois de a pessoa já ter escolhido um trilho que talvez fosse evitável: se ela é operador e o banco é o Santander, o Direct funciona e o Open Finance não — mas a escolha já foi feita.
+## 6. A instrumentação não é recomendação, é pré-requisito bloqueante
 
-**H7 e H8 são o mesmo problema atacado em dois momentos.** A proposta que sai deste cruzamento é um gate zero: usar a resposta de poderes para ordenar ou rotular as entradas duplicadas na própria lista, convertendo a pergunta de triagem em roteamento.
+A síntese anterior recomendava instrumentar os gates antes de desenhar telas. A v1.0 mostra que é mais duro que isso: **o experimento não é legível com a instrumentação de hoje**, porque não existe denominador por tentativa nem taxa de passagem por gate.
 
-## 4. Três classes de outcome, e uma regra de triagem
+Quatro fases são pré-requisito, e a primeira não é sobre analytics:
 
-O modelo de gates classifica o atrito por propriedade — alavanca da Pluggy, do banco, compartilhado. Aplicada aos outcomes do estudo, essa taxonomia produz uma distinção que nenhuma das fontes enuncia sozinha:
+1. **Allowlist de propriedades.** O objeto de props do host é repassado sem filtro, e isso já colocou **CPF e CNPJ em ~138 mil eventos em 90 dias**. Acrescentar telemetria de gate antes de fechar isso amplia um problema de LGPD. Entrega sozinha, primeiro.
+2. **Wrapper de telemetria**, sem nenhum call site falando direto com o SDK do fornecedor — é o que impede o erro já cometido duas vezes, de evento que nasce numa superfície e nunca chega às outras.
+3. **`connection_id` no item e `Connection Reconciled` emitido pelo backend no webhook** — o único evento que sobrevive ao widget fechar, e portanto a única forma de medir L5, que é a maior perda. Critério de aceite: resolução da tentativa ÷ conectores selecionados ≥ 0,98.
+4. **Gates e handoff instrumentados**, com `gate_surface`, os dois índices de gate e `help_id` como slug estável.
 
-| Classe | O que a Pluggy pode fazer | Exemplos |
-|---|---|---|
-| **Satisfazível** | mover o número | O4, O5, O6, O13 — verificar, perguntar, ordenar antes do banco |
-| **Apenas esperável** | fazer com que não pareça erro | O10, O12 — a Caixa leva 30 min, e isso não muda |
-| **Inegociável** | apenas divulgar | **O2** no Open Finance: todas as contas da empresa naquele banco são compartilhadas de uma vez, e o usuário não escolhe |
+## 7. O experimento tem desenho, e não é "com gate × sem gate"
 
-A regra prática: **para outcome apenas esperável, reescreva o outcome sobre o saber, não sobre o fato.** "Minimizar o tempo para concluir a autorização" (O10) é um outcome que a Pluggy não pode atender; "minimizar o tempo para saber quanto a autorização vai levar" é. A diferença decide qual métrica o experimento persegue e impede prometer o que não se entrega.
+A síntese anterior propunha como métrica de guarda a transição de 85,9% do funil antigo. Substituída por um desenho inteiro:
 
-O caso de O2 merece atenção própria: é um outcome que o desenho do Open Finance torna impossível de satisfazer. Se a importância dele for alta nas entrevistas, isso vira **argumento de produto para o trilho direto em certos casos** — não um problema de copy.
+| Elemento | Definição |
+|---|---|
+| Unidade de análise | `connect_attempt_id` — a tentativa, criada na escolha do conector. Não o usuário, não a sessão |
+| Variantes | `gate_surface = page` × `accordion_item`, mesmo `gate_id` e mesmo texto |
+| Métrica primária | o outcome que o gate mira, não a conversão |
+| Métrica de sistema | resolução da tentativa — sucesso exige **todas** as conexões da tentativa concluídas |
+| Guarda | tempo até a primeira ação · abandono antes da seleção · share de `PARTIAL_SUCCESS` · revogações precoces · tickets · conexões na conta errada · **cobertura de contas da empresa** |
+| Tamanho | ~**9.700 tentativas por braço** para detectar 2 pontos — cerca de dez dias, antes de descontar perda de telemetria |
 
-## 5. A teoria implícita dos gates sobre os jobs emocionais
+Comparar com e sem gate confundiria conteúdo com proeminência. Variando só a superfície, a única coisa que muda é quanta atenção a orientação exige.
 
-Vale explicitar, porque é uma divergência silenciosa entre as fontes e é testável.
+**A guarda que a síntese anterior não tinha:** cobertura de contas. Um gate que acelera a conexão única e reduz o número de contas conectadas por empresa é vitória falsa — mais rápido até a primeira conexão, menos banco conectado no fim, e a apuração fica pior. A tentativa é a unidade do experimento, mas não é a unidade do job.
 
-O **modelo de gates é inteiramente funcional**. Não há gate de segurança, de confiança ou de tranquilidade. E, no entanto, o próprio artefato de gates diz: *"uma etapa normal do banco que chega sem aviso é lida como erro; antecipada, é lida como progresso"*.
+## 8. Plano sequenciado, revisado
 
-Isso é uma tese sobre E1. A teoria implícita é que **a ansiedade de legitimidade não é uma necessidade independente — é subproduto de expectativa não atendida.** Se for verdade, E1 não precisa de tratamento próprio: some quando os gates fazem o trabalho.
+### Fase 0 · Correções que entregam sozinhas
 
-O estudo assume o contrário: E1 é job emocional com peso próprio, e "o fluxo legítimo parece golpe" porque os bancos treinaram o cliente a desconfiar de redirecionamentos — um reflexo que existiria mesmo com expectativa perfeitamente calibrada.
+1. **Allowlist de propriedades** — LGPD, bloqueante, não depende de mais nada.
+2. **Clientes sem `oauthRedirectUri`** — medir e corrigir com CS, documentação e aviso no Dashboard. Não é experimento.
+3. **Documento pré-preenchido (CPF × CNPJ)** — ver seção 9. Maior razão evidência/esforço do material.
 
-**As duas teses levam a produtos diferentes.** Pela primeira, basta prever bem e nenhuma reassurance é necessária. Pela segunda, há um trabalho de legitimidade que nenhum aviso de preparação resolve.
+### Fase 1 · Tornar o experimento legível
 
-É uma das perguntas mais valiosas para a entrevista com PME, e é barata de fazer: perguntar sobre uma conexão que deu certo e entender se o desconforto sumiu por saber o que ia acontecer, ou se permaneceu apesar disso.
+4. Wrapper de telemetria; `Connection Reconciled`; gates instrumentados com `gate_surface`.
+5. Segmentar o funil por configuração do SDK — `selectedConnectorId` e `updateItem` — **antes** de interpretar L1 e L2 como comportamento.
+6. Declarar a cobertura de telemetria por cliente ao lado de todo número: **~36% dos usuários de alguns clientes emitem zero evento**, e o bloqueio é mais comum em desktop.
 
-## 6. O que a instrumentação dos gates desbloqueia
+### Fase 2 · Medir quem é o executor
 
-Três peças de fontes diferentes que só funcionam juntas:
+7. É a premissa mais cara de estar errada. Se a maioria das sessões PJ for de funcionário ou contador, E1 e E2 mudam de sentido e os jobs emocionais **sociais** — hoje fora do escopo — podem ser os dominantes.
+8. Entrevistas para importância, com o banco de outcomes como material de apoio.
 
-1. O **banco de outcomes** mostra que outcomes escritos como tempo têm proxy comportamental — satisfação pode sair do funil, sem pesquisa.
-2. O **mapa do widget** mostra que o funil não tem nenhum evento entre `SELECTED_INSTITUTION` e `SUBMITTED_LOGIN`.
-3. Os **gates** vivem exatamente nesse vão, e cada um é tela mais ação — portanto, instrumentável, e já com esquema de ID estável.
+### Fase 3 · Experimentos
 
-Juntando: **os IDs de gate são a instrumentação que faz os proxies comportamentais funcionarem.** Nenhum dos três documentos diz isso sozinho.
+9. **H10** documento pré-preenchido — maior evidência.
+10. **H9** aviso de pop-up — menor custo.
+11. **H7** `entry.rail`, desambiguar marcas duplicadas — maior perda sem gate.
+12. **H1** preparação antes do redirecionamento, como experimento de superfície.
 
-Consequências diretas:
+## 9. O achado que nenhuma aba anterior tinha
 
-- A perda passa a ser atribuível ao gate, não à transição inteira de 7.976.
-- A resposta do G1 vira dimensão de segmentação do funil inteiro — o que **responde a pergunta aberta nº 4 do estudo sem pesquisa nenhuma**.
-- O custo de cada gate fica isolável, o que permite remover os que não pagam.
+**O documento pré-preenchido.** Num cliente medido, **~46% de todos os itens terminam em `USER_INPUT_TIMEOUT`** — e o padrão **inverte por segmento dentro do mesmo banco**: Santander PF 8% contra Santander Empresas 83%; Nubank PF 75% contra Nubank Empresas 17%.
 
-Por isso a recomendação é instrumentar **antes** de desenhar as telas. O esquema de IDs foi pensado para design, conteúdo e engenharia; estendê-lo a analytics é barato agora e caro depois.
+Copy não inverteria dentro de um banco. A suspeita é mecânica: o widget escolhe CPF ou CNPJ pelo que o conector suporta, e prefixando o errado o usuário cai num formulário que não tem como preencher.
 
-## 7. A tensão que precisa de métrica de guarda
+É o **O14**, marcado como *dado*, e a v1.0 o chama de maior razão evidência/esforço do mapa. Nenhuma das três abas anteriores o menciona, porque nenhuma tinha acesso a medição por conector e segmento.
 
-O estudo é explícito: o job é instrumental, ninguém quer conectar conta, "a tolerância a esforço, dúvida e risco percebido é baixa", e **"reassurance espalhada por todas as telas vira ruído"**.
+## 10. O risco número um, que a aba Gates subestimou
 
-O modelo de gates propõe oito unidades de orientação antes do banco.
+A aba Gates registra a cobertura parcial como uma ressalva de amostra: 16 conectores revisados contra 66 instituições de Open Finance empresariais. A v1.0 trata o mesmo fato como **premissa central e risco número um**, e com razão:
 
-A contradição é real, e o modelo de gates já a mitiga ao ser uma espinha dorsal que acumula num pacote único em vez de 64 caminhos. Mas o cruzamento permite quantificar o limite:
+> O modelo de gates foi desenhado contra 16 conectores revisados, **só cinco bancos têm variantes finalizadas**, e o widget principal exibe **mais de 170 instituições**.
 
-| Janela | Perda hoje | Papel |
-|---|---|---|
-| Clique na instituição → formulário enviado | **7.976** (85,9%) | onde vivem os gates de preparação |
-| Login bem-sucedido → polling com sucesso | **15.570** (66,0%) | onde a preparação precisa pagar |
+A consequência não é margem de erro, é desenho: o conteúdo de gate precisa funcionar de forma genérica na lista inteira. Se não escalar, o sistema de gates no widget principal é necessariamente mais genérico — **e mais genérico pode ser menos eficaz do que a evidência dos cinco bancos sugere**. O experimento pode acabar medindo cinco bancos em vez do sistema.
 
-**Os gates de preparação precisam custar menos na primeira janela do que economizam na segunda.** A transição de 85,9% é a métrica de guarda do modelo inteiro, desde o primeiro teste.
+É a primeira das cinco perguntas que a v1.0 devolve ao time: qual é o comportamento padrão para um banco não revisado — gate genérico, ou o gate simplesmente não dispara?
 
-Com um corolário de desenho: **se um gate custa mais do que economiza, ele não vira tela — vira texto dentro de uma tela que já existe.**
-
-## 8. Plano sequenciado
-
-### Fase 0 · Saneamento (nenhum experimento antes disto)
-
-Tudo aqui usa dados existentes e não depende do empresário.
-
-1. Segmentar o funil por presença de `selectedConnectorId` e `updateItem`.
-2. Levantar clientes que criam connect tokens sem `oauthRedirectUri` e cruzar com a conversão da zona B.
-3. Inserir `SUBMITTED_CONSENT` no funil para separar abandono nas boas-vindas do abandono na lista.
-4. Resolver o significado de `Login Step Success` segmentando a transição anterior por trilho.
-5. Medir `SUCCESS` contra `PARTIAL_SUCCESS` nos 30.230, e a distribuição de warnings.
-6. Contar `USER_NOT_SUPPORTED` por conector e itens PJ de Open Finance com warning 002.
-
-**Saída:** um baseline confiável, e o tamanho real da oportunidade de UX.
-
-### Fase 1 · Instrumentação
-
-7. Emitir um evento por variante de gate, com o ID estável, antes de desenhar qualquer tela.
-8. Fixar a transição clique → formulário enviado (85,9%) como métrica de guarda.
-
-### Fase 2 · Entrevistas com PME
-
-9. Roteiro sobre importância, usando as 36 formulações do banco de outcomes como material de apoio — descartar as que não ressoam, capturar as que faltam.
-10. Testar a tese de E1 da seção 5: a ansiedade some com expectativa calibrada, ou persiste?
-11. Testar a formulação comportamental do G1 contra a de nomenclatura.
-12. Medir a importância de O2 — o compartilhamento em bloco — que é inegociável e pode virar argumento de trilho.
-
-### Fase 3 · Experimentos, nesta ordem
-
-13. **Gate zero** — ordenar ou rotular as entradas duplicadas usando poderes (H7 + H8). Maior oportunidade, e a montante de tudo.
-14. **Pacote de preparação** — os gates da etapa 2 (H1 + H3), onde as três análises convergem.
-15. **Aviso de pop-up** (H9) — menor custo de implementação de todas, e no pico de E1.
-16. **Recuperação por tipo de erro** (H5) — 17 estados em 8 famílias, com `providerMessage` como fonte de texto.
-
-## 9. Tensões não resolvidas entre as fontes
-
-Registradas em vez de conciliadas por suposição.
-
-| Tensão | Entre | Como resolver |
-|---|---|---|
-| "G1 é o maior fator de perda" é conclusão de análise de fluxo; o estudo tem a mesma pergunta em aberto desde a v0.2 | Gates × Estudo | `USER_NOT_SUPPORTED` por conector (fase 0) |
-| E1 é necessidade própria ou subproduto de expectativa não atendida | Estudo × Gates | entrevista (fase 2) |
-| Reassurance espalhada vira ruído × oito gates de orientação | Estudo × Gates | métrica de guarda (seção 7) |
-| O6 como intensidade baixa × maior oportunidade da zona A | Estudo × Mapa | resolvido: O6 foi elevado a alta na v0.3 |
-| Cobertura: 16 conectores revisados × 11 diretos PJ e 66 instituições OF no universo documentado | Gates × Mapa | a generalização do modelo de gates vale para 16, não para 66 |
-| Granularidade: 2 outcomes por etapa × uma dúzia em Ulwick | Estudo × Banco | resolvido: fica em 2; a granularidade vem das entrevistas |
-
-## 10. O que continua desconhecido
-
-Consolidado das quatro fontes, ordenado pelo que cada resposta destrava.
+## 11. O que continua desconhecido
 
 | Pergunta | Destrava | Custo |
 |---|---|---|
-| Quanto da perda da zona A é instrumentação e não abandono | o baseline inteiro | consulta |
-| Quantos clientes não configuram `oauthRedirectUri` | dimensionar a zona B | consulta |
-| O que `Login Step Success` significa em cada trilho | a leitura da zona B | consulta |
-| Com que frequência quem está no widget não tem poderes | prioridade de G1 e do gate zero | consulta |
-| Qual lista de conectores cada cliente de fato exibe | validade dos experimentos por cliente | dashboard |
-| A importância de cada outcome | a priorização por oportunidade | entrevista |
-| Se E1 sobrevive à expectativa calibrada | o escopo do trabalho de legitimidade | entrevista |
-| O texto real de cada tela do widget | H9 e toda revisão de copy | Chrome, pendente |
+| Quem está no widget em sessões PJ | **a camada emocional inteira** | consulta + entrevista |
+| Comportamento de gate para banco não revisado | se o experimento mede o sistema ou cinco bancos | decisão de produto |
+| Quanto de L1 e L2 é configuração e não comportamento | interpretabilidade das duas primeiras perdas | consulta |
+| Confirmar a hipótese do documento pré-preenchido | H10, a correção de maior retorno | consulta |
+| Fonte da verdade do readout — Redshift × Amplitude | quando o experimento pode ser lido | decisão de produto |
+| `PARTIAL_SUCCESS` conta como sucesso? | se o experimento pode subir o número sem melhorar o resultado | decisão de produto |
+| Importância por outcome | a priorização por oportunidade | entrevista |
 
-As seis primeiras não dependem do empresário e podem ser respondidas nesta semana. As duas últimas são as que exigem campo.
+## 12. O que cada aba ainda vale
+
+| Aba | Vale | Não vale mais |
+|---|---|---|
+| **Mapa do widget** | telas por trilho, credenciais por conector direto PJ, 17 estados de erro em 8 famílias, três camadas de variação, múltipla alçada | seção 5 inteira, sobre eventos do funil; todo número das zonas A e B |
+| **Banco de outcomes** | o formato de redação, a tabela de proxies comportamentais, as 36 formulações como roteiro de entrevista | a numeração antiga nas colunas "substitui"; o alvo de ~80 outcomes, hoje 30 |
+| **Gates × jobs** | gates são solução e outcomes são critério; taxonomia de propriedade; crítica ao G1 | "cinco dos oito gates na etapa 2" — são três; o gate zero; as janelas de guarda do funil antigo |
