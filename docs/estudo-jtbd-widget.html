@@ -140,196 +140,205 @@ code{font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;font-size:.88em
 </header>
 
 <section class="panel" id="panel-main" role="tabpanel" aria-labelledby="tab-main">
-  <p class="lede">Análise cruzada das quatro fontes deste documento. Aqui está o que só aparece quando o job map, o mapa do widget, o banco de outcomes e o modelo de gates são lidos juntos — a conclusão, a ordem de trabalho e o que ainda não se sabe. As outras abas guardam os dados de cada análise.</p>
+  <p class="lede">Análise cruzada das quatro fontes deste documento, <b>reconciliada contra a v1.0 do Estudo</b> — que trouxe medição de produção e derrubou parte do que esta síntese afirmava. Onde a v1.0 mede e as outras abas deduzem, a medição vence.</p>
+  <div class="box warn">
+    <h3>O que mudou nesta versão</h3>
+    <p style="margin:0">As abas Mapa do widget, Banco de outcomes e Gates × jobs foram escritas contra o funil antigo e a numeração antiga de outcomes. Seguem válidas no que é qualitativo — telas, credenciais por conector, famílias de erro, taxonomia de propriedade. <b>Todo número de funil que vier delas está superado.</b> O de/para da numeração está em <code>docs/de-para-outcomes.md</code>; cada aba afetada abre com uma nota do que nela não vale mais.</p>
+  </div>
   <div class="legend">
-    <span><span class="tag t-src">E</span> Estudo</span>
+    <span><span class="tag t-src">E</span> Estudo v1.0</span>
     <span><span class="tag t-src">M</span> Mapa do widget</span>
     <span><span class="tag t-src">B</span> Banco de outcomes</span>
     <span><span class="tag t-src">G</span> Gates × jobs</span>
   </div>
 
-  <h2>1. A conclusão que muda a ordem do trabalho</h2>
+  <h2>1. O baseline mudou, e a conclusão anterior sobrevive por razões melhores</h2>
+  <p>A versão anterior desta síntese abria com "o 37,9% ainda não é um baseline". Estava certa na direção e errada no número: <b>o 37,9% não existe</b>. Foi construído com dois eventos que não medem o que parecem medir. <span class="tag t-src">E</span></p>
+  <div class="tw"><table>
+    <thead><tr><th>O que o funil antigo usava</th><th>O que é</th></tr></thead>
+    <tbody>
+      <tr><td><code>Login Step Success</code> como passo de login</td><td><b>Não mede login.</b> Dispara 22–25 vezes por item, de um <code>useEffect</code> que depende do item sob polling, sem trava. Mede frequência de polling.</td></tr>
+      <tr><td><code>Item Polling Finished</code> como fechamento</td><td><b>Viés de sobrevivência.</b> Falta em ~41% dos itens. Reportava 47,7% onde o Redshift dá 59,5% para a mesma população.</td></tr>
+    </tbody>
+  </table></div>
+  <p>O funil defensável é outro, e é menor em escopo: <b>dentro do widget, 58,0% em 7 dias</b>, com eventos que existem de verdade.</p>
+  <div class="tw"><table>
+    <thead><tr><th>Passo</th><th>Evento real</th><th>Usuários</th><th>Conversão</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td><code>Connect Widget Loaded</code></td><td class="big">20.685</td><td>—</td></tr>
+      <tr><td>2</td><td><code>Button Clicked · location=welcomePage</code></td><td class="big">18.418</td><td>89,0%</td></tr>
+      <tr><td>3</td><td><code>List Item Clicked · location=connectorsList</code></td><td class="big">14.440</td><td>78,4%</td></tr>
+      <tr><td>4</td><td><code>Form Submitted · form=login</code></td><td class="big">12.453</td><td>86,2%</td></tr>
+      <tr><td>5</td><td><code>Item Created</code></td><td class="big">11.989</td><td>96,3%</td></tr>
+    </tbody>
+  </table></div>
+  <p class="caption">O passo 2 é o ganho: separa a tela de boas-vindas da lista de bancos — o que esta síntese pedia via <code>SUBMITTED_CONSENT</code> e que agora existe.</p>
+
+  <h3>O mapa de perdas substitui as zonas A e B</h3>
+  <div class="tw"><table>
+    <thead><tr><th>Perda</th><th>% dos loads</th><th>Etapas</th><th>Gates</th></tr></thead>
+    <tbody>
+      <tr><td><b>L1</b> carrega e não age na tela inicial</td><td class="big">11,0%</td><td>1</td><td><code>entry.welcome</code></td></tr>
+      <tr><td><b>L2</b> age e não escolhe banco</td><td class="big">19,2%</td><td>1–3</td><td><b>sem gate hoje</b></td></tr>
+      <tr><td><b>L3</b> escolhe banco e não submete</td><td class="big">9,6%</td><td>3–4</td><td><code>entry.credentials</code>, G1, G2, G3</td></tr>
+      <tr><td><b>L4</b> submete e não cria item</td><td class="big">2,2%</td><td>4</td><td>—</td></tr>
+      <tr><td><b>L5</b> cria item e não chega a sucesso</td><td class="big">~23,5%</td><td>5–6</td><td>G6, G7, G8, espera</td></tr>
+    </tbody>
+  </table></div>
+  <p class="caption">L5 é estimativa — mistura funil de usuários do Amplitude com taxa de item do Redshift. Melhor aproximação disponível, não número para publicar.</p>
+
+  <h2>2. A convergência na etapa 2 não sobrevive ao dado</h2>
+  <div class="box warn">
+    <h3>Esta é a correção mais importante, e é contra uma conclusão minha</h3>
+    <p style="margin:0">A versão anterior tinha como achado central que três análises independentes convergiam na etapa 2 Localizar, e que era por ali que se deveria começar. A convergência era real — mas entre análises <b>qualitativas</b>: documentação, tutoriais e telas de referência. <b>Nenhuma das três tinha medição de onde a perda acontece.</b></p>
+  </div>
+  <div class="tw"><table>
+    <thead><tr><th>Onde as análises apontavam</th><th>Onde a perda está</th></tr></thead>
+    <tbody>
+      <tr><td>Etapa 2 Localizar, por três caminhos independentes</td><td>Os gates da etapa 2 vivem em <b>L3 = 9,6%</b>, a terceira maior perda</td></tr>
+      <tr><td>—</td><td>As duas maiores são <b>L5 (~23,5%)</b>, depois do banco autorizar, e <b>L2 (19,2%)</b>, antes de um banco ser escolhido</td></tr>
+    </tbody>
+  </table></div>
+  <p>Duas correções de fato, além do tamanho:</p>
+  <ul>
+    <li><b>Não são cinco gates na etapa 2, são três.</b> A aba Gates afirmava "cinco dos oito". Na numeração da v1.0 apenas G1, G2 e G3 estão ali — e <b>G2 e G3 são exclusivos do trilho direto</b>, então em Open Finance só G1 atende a etapa. G4 foi para a etapa 4 e G8 para a 5–6. <span class="tag t-src">G</span></li>
+    <li><b>A premissa de que o pré-requisito é descoberto na etapa 2 é do software, não do usuário.</b> A própria v1.0 levanta isso entre as cinco maneiras de o mapa estar errado: a evidência dos tutoriais sugere que a pessoa descobre o pré-requisito <b>na etapa 5, e volta</b>. O job map do ODI é sequência de necessidades, não de telas.</li>
+  </ul>
   <div class="box accent">
-    <h3>O 37,9% ainda não é um baseline <span class="tag t-src">E</span><span class="tag t-src">M</span></h3>
-    <p style="margin:0">O funil perde 49.600 pessoas. Lidas juntas, as quatro análises identificam <b>quatro causas de natureza diferente</b> dentro desse número — e apenas uma delas é problema de UX no sentido que o estudo assumia.</p>
+    <p style="margin:0"><b>O que sobrevive:</b> a etapa 2 continua subatendida, e os seis tutoriais de provisionamento seguem de pé — viraram <b>O8</b>, com evidência marcada como <i>dado</i>. <b>O que cai é a conclusão de que é por ali que se começa.</b> Por tamanho de perda, não é.</p>
   </div>
-  <div class="tw"><table>
-    <thead><tr><th>Causa</th><th>Natureza</th><th>Onde bate</th><th>Dimensionada?</th></tr></thead>
-    <tbody>
-      <tr><td><b>Instrumentação</b> — sessões com <code>selectedConnectorId</code> ou <code>updateItem</code> pulam a seleção e nunca podem emitir <code>List Item Clicked</code></td><td>artefato de medição</td><td class="big">23.402</td><td><b>não</b></td></tr>
-      <tr><td><b>Configuração do cliente</b> — <code>oauthRedirectUri</code> ausente deixa o usuário sem caminho de volta do banco</td><td>defeito de integração do ERP</td><td class="big">15.570</td><td><b>não</b></td></tr>
-      <tr><td><b>Mecânico</b> — pop-up bloqueado, limite de taxa por retentativa, múltipla alçada pendente, espera de autorização de dispositivo</td><td>estrutural, não persuasivo</td><td class="big">15.570<br><span class="caption">+ parte de 7.976</span></td><td><b>não</b></td></tr>
-      <tr><td><b>Outcome desatendido</b> — O4, O5, O6</td><td>UX, o alvo original</td><td class="big">23.402<br><span class="caption">+ 7.976</span></td><td>parcial</td></tr>
-    </tbody>
-  </table></div>
-  <p>Três das quatro não têm tamanho. Enquanto não tiverem, <b>não se sabe quanto dos 49.600 é sequer endereçável por experimento de UX</b> — e qualquer teste A/B roda sobre um denominador contaminado.</p>
-  <p>Isso não paralisa o trabalho: dimensionar as três primeiras é barato, usa dados que já existem e não depende de pesquisa com o empresário. É a fase 0 da seção 8.</p>
 
-  <h2>2. A convergência: três análises independentes, mesma etapa</h2>
-  <p>O sinal mais forte de todo o material, e o mais fácil de perder porque está espalhado.</p>
+  <h2>3. A maior oportunidade foi confirmada, quantificada — e tem nome proibido</h2>
+  <p>A versão anterior dizia que a escolha do trilho caía num vão entre modelos e era a maior oportunidade aparente. <b>O dado confirma e dá o número:</b> L2 é 19,2%, a segunda maior perda, e é a única faixa do fluxo <b>sem gate nenhum hoje</b>.</p>
+  <div class="box warn">
+    <p><b>Mas "gate zero" está morto como nome.</b> Não se cria G0 — colidiria com a árvore de decisão de outro time, e gate fora da série G leva prefixo. O gate existe, é proposto na v1.0 e se chama <b><code>entry.rail</code></b>: desambiguar a mesma marca nos dois trilhos pela consequência para o usuário, na etapa 3.</p>
+    <p style="margin:0">Dado novo que reforça: <b>32% das seleções vêm da busca</b>, o que sugere que a lista não é navegável por leitura. E um alerta que faltava: mover G1 para antes da lista, como H3 e H8 pedem, <b>adiciona atrito exatamente em L2</b>. É uma das cinco perguntas que a v1.0 devolve ao time.</p>
+  </div>
+
+  <h2>4. Três classes de outcome — mantido</h2>
+  <p>Nada no dado contradiz. A taxonomia de propriedade continua a melhor ferramenta de triagem que o material produziu. <span class="tag t-src">G</span></p>
   <div class="tw"><table>
-    <thead><tr><th>Fonte</th><th>O que encontrou</th><th>Aponta para</th></tr></thead>
+    <thead><tr><th>Classe</th><th>O que a Pluggy pode fazer</th><th>Exemplos, já na numeração v1.0</th></tr></thead>
     <tbody>
-      <tr><td><span class="tag t-src">E</span> Estudo</td><td>O4 e O5 são os únicos outcomes da etapa 2, e H3 estava apenas como proposta</td><td><b>etapa 2 Localizar</b></td></tr>
-      <tr><td><span class="tag t-src">M</span> Mapa</td><td>6 dos 14 tutoriais PJ não ensinam a conectar — ensinam a provisionar acesso no banco antes</td><td><b>etapa 2 Localizar</b></td></tr>
-      <tr><td><span class="tag t-src">G</span> Gates</td><td>5 dos 8 gates atendem à etapa 2</td><td><b>etapa 2 Localizar</b></td></tr>
-      <tr><td><span class="tag t-src">B</span> Banco</td><td>o conjunto R é o mais lastreado: 5 das 12 formulações vêm de achado documentado</td><td><b>etapa 2 Localizar</b></td></tr>
+      <tr><td><b>Satisfazível</b></td><td>mover o número</td><td class="oid">O6 O7 O10 O14 O24</td></tr>
+      <tr><td><b>Apenas esperável</b></td><td>fazer com que não pareça erro</td><td class="oid">O18 O21 — a Caixa leva 30 min, e isso não muda</td></tr>
+      <tr><td><b>Inegociável</b></td><td>apenas divulgar</td><td class="oid">O2 — em OF todas as contas da empresa naquele banco vão de uma vez</td></tr>
     </tbody>
   </table></div>
+  <p>A regra segue: para outcome apenas esperável, escreva sobre o <i>saber</i>, não sobre o <i>fato</i>. A v1.0 já nasce assim — O18 é "tempo para concluir", mas o par dela, <b>O15</b>, é "tempo para determinar o que vai acontecer na tela do banco".</p>
+  <p>E a v1.0 estende o caso de O2 de um jeito que faltava: <b>O5</b>, conceder acesso que não cobre o que a contabilidade exige. Dentro de um banco o escopo é tudo ou nada; entre bancos, a completude fica por conta do empresário, e nada no fluxo diz isso.</p>
+
+  <h2>5. A divergência sobre E1 se resolveu por absorção</h2>
+  <p>A versão anterior levantava duas teses incompatíveis: a dos gates, em que a ansiedade de legitimidade é subproduto de expectativa não atendida, e a do estudo, em que E1 é job com peso próprio.</p>
   <div class="box accent">
-    <p>Nenhuma das três olhou para as outras. O mapa saiu da documentação, os gates saíram das telas de referência dos conectores, o estudo saiu do funil.</p>
-    <p style="margin:0"><b>A etapa 2 Localizar — reunir dispositivo, credenciais, app do banco e poderes na conta — é onde começar.</b> O estudo original a tratava como intensidade média, com dois outcomes e uma hipótese não priorizada. E há um reforço: a etapa 2 é a única em que a Pluggy pode agir <b>antes de o banco entrar em cena</b>. Tudo depois é atrito do banco, que só se consegue tornar esperado.</p>
+    <p style="margin:0"><b>A v1.0 mantém E1 como job e adota os gates</b> — e enuncia a tensão melhor do que eu: excesso de "confie, é seguro" espalhado por todas as telas é, em forma, indistinguível de golpe, e <b>isso é o maior risco do sistema de gates, que por definição adiciona telas explicativas</b>. Não são duas teses concorrentes: é uma restrição de desenho sobre a solução. A pergunta de entrevista continua valendo, mas deixa de ser bifurcação.</p>
+  </div>
+  <p>A v1.0 acrescenta <b>E6</b> (reversibilidade) e <b>E7</b> (não ficar sem saída), com um teste discriminante que o modelo anterior não tinha: dois jobs emocionais só são distintos se o abandono que provocam tiver <b>causa diferente e tratamento diferente</b>.</p>
+  <p>E7 é o melhor exemplo — o <code>oauthRedirectUri</code> ausente produz um caso em que o status existe, a autorização funcionou, e a pessoa continua presa. <b>Status não trata E7.</b></p>
+
+  <h2>6. A instrumentação não é recomendação, é pré-requisito bloqueante</h2>
+  <p>A versão anterior recomendava instrumentar os gates antes de desenhar telas. A v1.0 mostra que é mais duro: <b>o experimento não é legível com a instrumentação de hoje</b>, porque não existe denominador por tentativa nem taxa de passagem por gate.</p>
+  <div class="box warn">
+    <h3>Quatro fases de pré-requisito — e a primeira não é sobre analytics</h3>
+    <ol style="margin:0">
+      <li><b>Allowlist de propriedades.</b> O objeto de props do host é repassado sem filtro, e isso já colocou <b>CPF e CNPJ em ~138 mil eventos em 90 dias</b>. Acrescentar telemetria de gate antes de fechar isso amplia um problema de LGPD. <b>Entrega sozinha, primeiro.</b></li>
+      <li><b>Wrapper de telemetria</b>, sem nenhum call site falando direto com o SDK do fornecedor — impede o erro já cometido duas vezes, de evento que nasce numa superfície e nunca chega às outras.</li>
+      <li><b><code>connection_id</code> no item e <code>Connection Reconciled</code> emitido pelo backend no webhook</b> — o único evento que sobrevive ao widget fechar, e portanto a única forma de medir L5, que é a maior perda. Aceite: resolução da tentativa ÷ conectores selecionados ≥ 0,98.</li>
+      <li><b>Gates e handoff instrumentados</b>, com <code>gate_surface</code>, os dois índices de gate e <code>help_id</code> como slug estável.</li>
+    </ol>
   </div>
 
-  <h2>3. A maior oportunidade isolada não pertence a nenhum dos modelos</h2>
-  <p>Num widget só de PJ a lista chega a 77 entradas, e nove marcas aparecem nos dois trilhos — Itaú com quatro, Caixa e Santander com três. A escolha entre elas muda <b>quem pode autorizar</b>: o trilho direto aceita usuário operador, que muitas empresas já têm; o Open Finance exige a aprovação de todos os aprovadores.</p>
-  <p>Cruzando as quatro fontes, essa escolha cai num vão:</p>
+  <h2>7. O experimento tem desenho, e não é "com gate × sem gate"</h2>
+  <p>A métrica de guarda que esta síntese propunha — a transição de 85,9% do funil antigo — foi substituída por um desenho inteiro.</p>
   <div class="tw"><table>
+    <thead><tr><th>Elemento</th><th>Definição</th></tr></thead>
     <tbody>
-      <tr><td><span class="tag t-src">E</span></td><td>classificava O6 como intensidade baixa</td></tr>
-      <tr><td><span class="tag t-src">M</span></td><td>identificou o problema e o chamou de maior oportunidade aparente da zona A</td></tr>
-      <tr><td><span class="tag t-src">G</span></td><td>começa explicitamente <b>depois</b> da escolha — o nó raiz é "o usuário escolhe banco + tipo"</td></tr>
-      <tr><td><span class="tag t-src">B</span></td><td>tem P2, P3, P4 e P12 escritos, mas nenhum gate os cobre</td></tr>
+      <tr><td>Unidade de análise</td><td><code>connect_attempt_id</code> — a tentativa, criada na escolha do conector. Não o usuário, não a sessão</td></tr>
+      <tr><td>Variantes</td><td><code>gate_surface = page</code> × <code>accordion_item</code>, mesmo <code>gate_id</code> e mesmo texto</td></tr>
+      <tr><td>Métrica primária</td><td>o outcome que o gate mira, não a conversão</td></tr>
+      <tr><td>Métrica de sistema</td><td>resolução da tentativa — sucesso exige <b>todas</b> as conexões da tentativa concluídas</td></tr>
+      <tr><td>Guarda</td><td>tempo até a primeira ação · abandono antes da seleção · share de <code>PARTIAL_SUCCESS</code> · revogações precoces · tickets · conexões na conta errada · <b>cobertura de contas da empresa</b></td></tr>
+      <tr><td>Tamanho</td><td>~<b>9.700 tentativas por braço</b> para detectar 2 pontos — cerca de dez dias, antes de descontar perda de telemetria</td></tr>
     </tbody>
   </table></div>
+  <p>Comparar com e sem gate confundiria conteúdo com proeminência. Variando só a superfície, a única coisa que muda é quanta atenção a orientação exige.</p>
   <div class="box accent">
-    <h3>Ninguém olha para o momento mais barato de resolver o problema mais caro</h3>
-    <p>O G1 pergunta "você tem acesso admin?" depois de a pessoa já ter escolhido um trilho que talvez fosse evitável. Se ela é operador e o banco é o Santander, o Direct funciona e o Open Finance não — mas a escolha já foi feita.</p>
-    <p style="margin:0"><b>H7 e H8 são o mesmo problema atacado em dois momentos.</b> A proposta que sai deste cruzamento é um <b>gate zero</b>: usar a resposta de poderes para ordenar ou rotular as entradas duplicadas na própria lista, convertendo a pergunta de triagem em roteamento.</p>
+    <h3>A guarda que faltava: cobertura de contas</h3>
+    <p style="margin:0">Um gate que acelera a conexão única e reduz o número de contas conectadas por empresa é <b>vitória falsa</b> — mais rápido até a primeira conexão, menos banco conectado no fim, e a apuração fica pior do que estava. A tentativa é a unidade do experimento, mas <b>não é a unidade do job</b>.</p>
   </div>
 
-  <h2>4. Três classes de outcome, e uma regra de triagem</h2>
-  <p>O modelo de gates classifica o atrito por propriedade. Aplicada aos outcomes do estudo, essa taxonomia produz uma distinção que nenhuma fonte enuncia sozinha. <span class="tag t-src">G</span><span class="tag t-src">E</span></p>
-  <div class="tw"><table>
-    <thead><tr><th>Classe</th><th>O que a Pluggy pode fazer</th><th>Exemplos</th></tr></thead>
-    <tbody>
-      <tr><td><b>Satisfazível</b></td><td>mover o número</td><td class="oid">O4 O5 O6 O13 — verificar, perguntar, ordenar antes do banco</td></tr>
-      <tr><td><b>Apenas esperável</b></td><td>fazer com que não pareça erro</td><td class="oid">O10 O12 — a Caixa leva 30 min, e isso não muda</td></tr>
-      <tr><td><b>Inegociável</b></td><td>apenas divulgar</td><td class="oid">O2 — no Open Finance todas as contas da empresa naquele banco vão de uma vez, e o usuário não escolhe</td></tr>
-    </tbody>
-  </table></div>
-  <div class="box">
-    <p><b>Regra prática:</b> para outcome apenas esperável, reescreva o outcome sobre o <i>saber</i>, não sobre o <i>fato</i>. "Minimizar o tempo para concluir a autorização" (O10) é um outcome que a Pluggy não pode atender; "minimizar o tempo para saber quanto a autorização vai levar" é. A diferença decide qual métrica o experimento persegue.</p>
-    <p style="margin:0">O caso de O2 merece atenção própria: é impossível de satisfazer por desenho do Open Finance. Se a importância for alta nas entrevistas, vira <b>argumento de produto para o trilho direto em certos casos</b> — não um problema de copy.</p>
-  </div>
-
-  <h2>5. A teoria implícita dos gates sobre os jobs emocionais</h2>
-  <p>Vale explicitar, porque é uma divergência silenciosa entre as fontes — e é testável.</p>
-  <p>O <b>modelo de gates é inteiramente funcional</b>. Não há gate de segurança, de confiança ou de tranquilidade. E, no entanto, o próprio artefato diz: <i>"uma etapa normal do banco que chega sem aviso é lida como erro; antecipada, é lida como progresso"</i>.</p>
-  <div class="tw"><table>
-    <thead><tr><th>Tese</th><th>De onde vem</th><th>O que implica</th></tr></thead>
-    <tbody>
-      <tr><td>A ansiedade de legitimidade é <b>subproduto de expectativa não atendida</b>. Some quando os gates fazem o trabalho.</td><td><span class="tag t-src">G</span> implícita no modelo</td><td>basta prever bem; nenhuma reassurance é necessária</td></tr>
-      <tr><td>E1 é <b>job emocional com peso próprio</b>. Os bancos treinaram o cliente a desconfiar de redirecionamentos — reflexo que existiria mesmo com expectativa calibrada.</td><td><span class="tag t-src">E</span> explícita no estudo</td><td>há um trabalho de legitimidade que nenhum aviso de preparação resolve</td></tr>
-    </tbody>
-  </table></div>
-  <div class="box accent">
-    <p style="margin:0"><b>As duas teses levam a produtos diferentes</b>, e a pergunta é barata de fazer em entrevista: perguntar sobre uma conexão que deu certo e entender se o desconforto sumiu por saber o que ia acontecer, ou se permaneceu apesar disso.</p>
-  </div>
-
-  <h2>6. O que a instrumentação dos gates desbloqueia</h2>
-  <p>Três peças de fontes diferentes que só funcionam juntas.</p>
-  <div class="tw"><table>
-    <tbody>
-      <tr><td><span class="tag t-src">B</span></td><td>outcomes escritos como tempo têm proxy comportamental — satisfação pode sair do funil, sem pesquisa</td></tr>
-      <tr><td><span class="tag t-src">M</span></td><td>o funil não tem nenhum evento entre <code>SELECTED_INSTITUTION</code> e <code>SUBMITTED_LOGIN</code></td></tr>
-      <tr><td><span class="tag t-src">G</span></td><td>os gates vivem exatamente nesse vão, e cada um é tela mais ação — instrumentável, com esquema de ID estável</td></tr>
-    </tbody>
-  </table></div>
-  <div class="box accent">
-    <h3>Os IDs de gate são a instrumentação que faz os proxies funcionarem</h3>
-    <p>Nenhum dos três documentos diz isso sozinho. Consequências diretas:</p>
-    <ul style="margin:0">
-      <li>a perda passa a ser atribuível ao gate, não à transição inteira de 7.976;</li>
-      <li>a resposta do G1 vira dimensão de segmentação do funil inteiro — o que <b>responde a pergunta aberta nº 4 do estudo sem pesquisa nenhuma</b>;</li>
-      <li>o custo de cada gate fica isolável, o que permite remover os que não pagam.</li>
-    </ul>
-  </div>
-  <p>Por isso a recomendação é instrumentar <b>antes</b> de desenhar as telas. O esquema de IDs foi pensado para design, conteúdo e engenharia; estendê-lo a analytics é barato agora e caro depois.</p>
-
-  <h2>7. A tensão que precisa de métrica de guarda</h2>
-  <p>O estudo é explícito: o job é instrumental, ninguém quer conectar conta, e <b>"reassurance espalhada por todas as telas vira ruído"</b>. O modelo de gates propõe oito unidades de orientação antes do banco. <span class="tag t-src">E</span><span class="tag t-src">G</span></p>
-  <p>A contradição é real, e o modelo já a mitiga ao ser uma espinha dorsal que acumula num pacote único em vez de 64 caminhos. Mas o cruzamento permite quantificar o limite:</p>
-  <div class="tw"><table>
-    <thead><tr><th>Janela</th><th>Perda hoje</th><th>Papel</th></tr></thead>
-    <tbody>
-      <tr><td>Clique na instituição → formulário enviado</td><td class="big">7.976<br><span class="caption">85,9%</span></td><td>onde vivem os gates de preparação</td></tr>
-      <tr><td>Login bem-sucedido → polling com sucesso</td><td class="big">15.570<br><span class="caption">66,0%</span></td><td>onde a preparação precisa pagar</td></tr>
-    </tbody>
-  </table></div>
-  <div class="box accent">
-    <p style="margin:0"><b>Os gates de preparação precisam custar menos na primeira janela do que economizam na segunda.</b> A transição de 85,9% é a métrica de guarda do modelo inteiro, desde o primeiro teste. Com um corolário de desenho: <b>se um gate custa mais do que economiza, ele não vira tela — vira texto dentro de uma tela que já existe.</b></p>
-  </div>
-
-  <h2>8. Plano sequenciado</h2>
-
-  <h3>Fase 0 · Saneamento <span class="tag t-neu">nenhum experimento antes disto</span></h3>
-  <p class="caption">Tudo aqui usa dados existentes e não depende do empresário.</p>
+  <h2>8. Plano sequenciado, revisado</h2>
+  <h3>Fase 0 · Correções que entregam sozinhas</h3>
   <ol>
-    <li>Segmentar o funil por presença de <code>selectedConnectorId</code> e <code>updateItem</code>.</li>
-    <li>Levantar clientes que criam connect tokens sem <code>oauthRedirectUri</code> e cruzar com a conversão da zona B.</li>
-    <li>Inserir <code>SUBMITTED_CONSENT</code> no funil para separar abandono nas boas-vindas do abandono na lista.</li>
-    <li>Resolver o significado de <code>Login Step Success</code> segmentando a transição anterior por trilho.</li>
-    <li>Medir <code>SUCCESS</code> contra <code>PARTIAL_SUCCESS</code> nos 30.230, e a distribuição de warnings.</li>
-    <li>Contar <code>USER_NOT_SUPPORTED</code> por conector e itens PJ de Open Finance com warning 002.</li>
+    <li><b>Allowlist de propriedades</b> — LGPD, bloqueante, não depende de mais nada.</li>
+    <li><b>Clientes sem <code>oauthRedirectUri</code></b> — medir e corrigir com CS, documentação e aviso no Dashboard. Não é experimento.</li>
+    <li><b>Documento pré-preenchido (CPF × CNPJ)</b> — ver seção 9. Maior razão evidência/esforço do material.</li>
   </ol>
-  <p class="caption"><b>Saída:</b> um baseline confiável, e o tamanho real da oportunidade de UX.</p>
-
-  <h3>Fase 1 · Instrumentação</h3>
+  <h3>Fase 1 · Tornar o experimento legível</h3>
+  <ol start="4">
+    <li>Wrapper de telemetria; <code>Connection Reconciled</code>; gates instrumentados com <code>gate_surface</code>.</li>
+    <li>Segmentar o funil por configuração do SDK — <code>selectedConnectorId</code> e <code>updateItem</code> — <b>antes</b> de interpretar L1 e L2 como comportamento.</li>
+    <li>Declarar a cobertura de telemetria por cliente ao lado de todo número: <b>~36% dos usuários de alguns clientes emitem zero evento</b>, e o bloqueio é mais comum em desktop.</li>
+  </ol>
+  <h3>Fase 2 · Medir quem é o executor</h3>
   <ol start="7">
-    <li>Emitir um evento por variante de gate, com o ID estável, <b>antes</b> de desenhar qualquer tela.</li>
-    <li>Fixar a transição clique → formulário enviado (85,9%) como métrica de guarda.</li>
+    <li>É a premissa mais cara de estar errada. Se a maioria das sessões PJ for de funcionário ou contador, E1 e E2 mudam de sentido e os jobs emocionais <b>sociais</b> — hoje fora do escopo — podem ser os dominantes.</li>
+    <li>Entrevistas para importância, com o banco de outcomes como material de apoio.</li>
   </ol>
-
-  <h3>Fase 2 · Entrevistas com PME</h3>
+  <h3>Fase 3 · Experimentos</h3>
   <ol start="9">
-    <li>Roteiro sobre importância, usando as 36 formulações do banco de outcomes como material de apoio — descartar as que não ressoam, capturar as que faltam.</li>
-    <li>Testar a tese de E1 da seção 5: a ansiedade some com expectativa calibrada, ou persiste?</li>
-    <li>Testar a formulação comportamental do G1 contra a de nomenclatura.</li>
-    <li>Medir a importância de O2, o compartilhamento em bloco, que é inegociável e pode virar argumento de trilho.</li>
+    <li><b>H10</b> documento pré-preenchido — maior evidência.</li>
+    <li><b>H9</b> aviso de pop-up — menor custo.</li>
+    <li><b>H7</b> <code>entry.rail</code>, desambiguar marcas duplicadas — maior perda sem gate.</li>
+    <li><b>H1</b> preparação antes do redirecionamento, como experimento de superfície.</li>
   </ol>
 
-  <h3>Fase 3 · Experimentos, nesta ordem</h3>
-  <ol start="13">
-    <li><b>Gate zero</b> — ordenar ou rotular as entradas duplicadas usando poderes (H7 + H8). Maior oportunidade, e a montante de tudo.</li>
-    <li><b>Pacote de preparação</b> — os gates da etapa 2 (H1 + H3), onde as três análises convergem.</li>
-    <li><b>Aviso de pop-up</b> (H9) — menor custo de implementação de todas, e no pico de E1.</li>
-    <li><b>Recuperação por tipo de erro</b> (H5) — 17 estados em 8 famílias, com <code>providerMessage</code> como fonte de texto.</li>
-  </ol>
+  <h2>9. O achado que nenhuma aba anterior tinha</h2>
+  <div class="box accent">
+    <h3>O documento pré-preenchido <span class="tag t-src">E</span></h3>
+    <p>Num cliente medido, <b>~46% de todos os itens terminam em <code>USER_INPUT_TIMEOUT</code></b> — e o padrão <b>inverte por segmento dentro do mesmo banco</b>:</p>
+    <div class="tw"><table>
+      <thead><tr><th>Banco</th><th>PF</th><th>Empresas</th></tr></thead>
+      <tbody>
+        <tr><td>Santander</td><td class="big">8%</td><td class="big">83%</td></tr>
+        <tr><td>Nubank</td><td class="big">75%</td><td class="big">17%</td></tr>
+      </tbody>
+    </table></div>
+    <p style="margin:0">Copy não inverteria dentro de um banco. A suspeita é mecânica: o widget escolhe CPF ou CNPJ pelo que o conector suporta, e prefixando o errado o usuário cai num formulário que não tem como preencher. É o <b>O14</b>, marcado como <i>dado</i>, e a v1.0 o chama de maior razão evidência/esforço do mapa. <b>Nenhuma das três abas anteriores o menciona</b>, porque nenhuma tinha medição por conector e segmento.</p>
+  </div>
 
-  <h2>9. Tensões não resolvidas entre as fontes</h2>
-  <p>Registradas em vez de conciliadas por suposição.</p>
-  <div class="tw"><table>
-    <thead><tr><th>Tensão</th><th>Entre</th><th>Como resolver</th></tr></thead>
-    <tbody>
-      <tr><td>"G1 é o maior fator de perda" é conclusão de análise de fluxo; o estudo tem a mesma pergunta em aberto desde a v0.2</td><td><span class="tag t-src">G</span><span class="tag t-src">E</span></td><td><code>USER_NOT_SUPPORTED</code> por conector — fase 0</td></tr>
-      <tr><td>E1 é necessidade própria ou subproduto de expectativa não atendida</td><td><span class="tag t-src">E</span><span class="tag t-src">G</span></td><td>entrevista — fase 2</td></tr>
-      <tr><td>Reassurance espalhada vira ruído × oito gates de orientação</td><td><span class="tag t-src">E</span><span class="tag t-src">G</span></td><td>métrica de guarda — seção 7</td></tr>
-      <tr><td>Cobertura: 16 conectores revisados × 11 diretos PJ e 66 instituições OF no universo documentado</td><td><span class="tag t-src">G</span><span class="tag t-src">M</span></td><td>a generalização do modelo de gates vale para 16, não para 66</td></tr>
-      <tr><td><s>O6 como intensidade baixa × maior oportunidade da zona A</s></td><td><span class="tag t-src">E</span><span class="tag t-src">M</span></td><td><b>resolvido:</b> O6 elevado a alta na v0.3</td></tr>
-      <tr><td><s>Granularidade: 2 outcomes por etapa × uma dúzia em Ulwick</s></td><td><span class="tag t-src">E</span><span class="tag t-src">B</span></td><td><b>resolvido:</b> fica em 2; a granularidade vem das entrevistas</td></tr>
-    </tbody>
-  </table></div>
+  <h2>10. O risco número um, que a aba Gates subestimou</h2>
+  <p>A aba Gates registra a cobertura parcial como ressalva de amostra. A v1.0 trata o mesmo fato como <b>premissa central e risco número um</b>, e com razão: o modelo foi desenhado contra 16 conectores, <b>só cinco bancos têm variantes finalizadas</b>, e o widget principal exibe <b>mais de 170 instituições</b>.</p>
+  <div class="box warn">
+    <p style="margin:0">A consequência não é margem de erro, é desenho: o conteúdo de gate precisa funcionar de forma genérica na lista inteira. Se não escalar, o sistema no widget principal é necessariamente mais genérico — <b>e mais genérico pode ser menos eficaz do que a evidência dos cinco bancos sugere</b>. <b>O experimento pode acabar medindo cinco bancos em vez do sistema.</b></p>
+  </div>
+  <p class="caption">É a primeira das cinco perguntas que a v1.0 devolve ao time: qual é o comportamento padrão para um banco não revisado — gate genérico, ou o gate simplesmente não dispara?</p>
 
-  <h2>10. O que continua desconhecido</h2>
-  <p>Consolidado das quatro fontes, ordenado pelo que cada resposta destrava.</p>
+  <h2>11. O que continua desconhecido</h2>
   <div class="tw"><table>
     <thead><tr><th>Pergunta</th><th>Destrava</th><th>Custo</th></tr></thead>
     <tbody>
-      <tr><td>Quanto da perda da zona A é instrumentação e não abandono</td><td><b>o baseline inteiro</b></td><td>consulta</td></tr>
-      <tr><td>Quantos clientes não configuram <code>oauthRedirectUri</code></td><td>dimensionar a zona B</td><td>consulta</td></tr>
-      <tr><td>O que <code>Login Step Success</code> significa em cada trilho</td><td>a leitura da zona B</td><td>consulta</td></tr>
-      <tr><td>Com que frequência quem está no widget não tem poderes</td><td>prioridade de G1 e do gate zero</td><td>consulta</td></tr>
-      <tr><td>Qual lista de conectores cada cliente de fato exibe</td><td>validade dos experimentos por cliente</td><td>dashboard</td></tr>
-      <tr><td>A importância de cada outcome</td><td>a priorização por oportunidade</td><td>entrevista</td></tr>
-      <tr><td>Se E1 sobrevive à expectativa calibrada</td><td>o escopo do trabalho de legitimidade</td><td>entrevista</td></tr>
-      <tr><td>O texto real de cada tela do widget</td><td>H9 e toda revisão de copy</td><td>Chrome, pendente</td></tr>
+      <tr><td>Quem está no widget em sessões PJ</td><td><b>a camada emocional inteira</b></td><td>consulta + entrevista</td></tr>
+      <tr><td>Comportamento de gate para banco não revisado</td><td>se o experimento mede o sistema ou cinco bancos</td><td>decisão de produto</td></tr>
+      <tr><td>Quanto de L1 e L2 é configuração e não comportamento</td><td>interpretabilidade das duas primeiras perdas</td><td>consulta</td></tr>
+      <tr><td>Confirmar a hipótese do documento pré-preenchido</td><td>H10, a correção de maior retorno</td><td>consulta</td></tr>
+      <tr><td>Fonte da verdade do readout — Redshift × Amplitude</td><td>quando o experimento pode ser lido</td><td>decisão de produto</td></tr>
+      <tr><td><code>PARTIAL_SUCCESS</code> conta como sucesso?</td><td>se o experimento pode subir o número sem melhorar o resultado</td><td>decisão de produto</td></tr>
+      <tr><td>Importância por outcome</td><td>a priorização por oportunidade</td><td>entrevista</td></tr>
     </tbody>
   </table></div>
-  <p>As seis primeiras não dependem do empresário e podem ser respondidas nesta semana. As duas últimas são as que exigem campo.</p>
 
-  <footer>Síntese versão 1.0 · 19 de setembro de 2026. Análise cruzada das quatro abas seguintes, que guardam os dados de cada linha de investigação. Fonte em <code>docs/sintese.md</code>.</footer>
+  <h2>12. O que cada aba ainda vale</h2>
+  <div class="tw"><table>
+    <thead><tr><th>Aba</th><th>Vale</th><th>Não vale mais</th></tr></thead>
+    <tbody>
+      <tr><td><b>Mapa do widget</b></td><td>telas por trilho, credenciais por conector direto PJ, 17 estados de erro em 8 famílias, três camadas de variação, múltipla alçada</td><td>a seção 5 inteira, sobre eventos do funil; todo número das zonas A e B</td></tr>
+      <tr><td><b>Banco de outcomes</b></td><td>o formato de redação, a tabela de proxies comportamentais, as 36 formulações como roteiro de entrevista</td><td>a numeração antiga nas colunas "substitui"; o alvo de ~80 outcomes, hoje 30</td></tr>
+      <tr><td><b>Gates × jobs</b></td><td>gates são solução e outcomes são critério; taxonomia de propriedade; crítica ao G1</td><td>"cinco dos oito gates na etapa 2" — são três; o gate zero; as janelas de guarda do funil antigo</td></tr>
+    </tbody>
+  </table></div>
 
+  <footer>Síntese versão 2.0 · 22 de setembro de 2026. Reconciliada contra a v1.0 do Estudo. Fonte em <code>docs/sintese.md</code>; de/para da numeração em <code>docs/de-para-outcomes.md</code>.</footer>
 </section>
 
 <section class="panel" id="panel-estudo" role="tabpanel" aria-labelledby="tab-estudo" hidden>
@@ -1328,6 +1337,12 @@ code{font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;font-size:.88em
   </div>
 
   <div class="box warn">
+    <h3>Reconciliado contra a v1.0 do Estudo <span class="tag t-new">22 set</span></h3>
+    <p>A <b>seção 5 deste mapa estava factualmente errada</b>: <code>Login Step Success</code> não mede login — dispara 22–25 vezes por item, de um <code>useEffect</code> sem trava, e mede frequência de polling. <code>Item Polling Finished</code> falta em ~41% dos itens.</p>
+    <p style="margin:0"><b>Todo número de funil abaixo</b> — zonas A e B, 37,9%, 23.402, 15.570, 7.976 — <b>está superado</b> pelo mapa L1–L5 da v1.0, na aba Main. Permanece válido o qualitativo: telas por trilho, credenciais por conector, famílias de erro, camadas de variação e múltipla alçada. Numeração de outcomes: ver aba Main, e <code>docs/de-para-outcomes.md</code>.</p>
+  </div>
+
+  <div class="box warn">
     <h3>Este mapa não saiu do Chrome</h3>
     <p>A tarefa previa percorrer <code>demo-connect.pluggy.dev</code> com a integração do Chrome. <b>Não foi possível:</b> o ambiente remoto bloqueia a saída de rede para <code>connect.pluggy.ai</code>, <code>demo-connect.pluggy.dev</code> e <code>api.pluggy.ai</code> — o proxy responde 403 no CONNECT, por política da organização. Não é falta de credencial, é egresso bloqueado.</p>
     <p style="margin:0">O mapa foi reconstruído a partir da documentação viva e da base de Q&amp;A do suporte. <b>Ele descreve a especificação do fluxo, não a interface observada.</b> As ferramentas de dashboard (<code>list_connectors</code>, <code>get_stats</code>) pedem re-autenticação e não puderam ser usadas — nenhuma contagem aqui vem da aplicação real, só do universo documentado. A leitura tela a tela segue pendente, na seção 10.</p>
@@ -1511,8 +1526,9 @@ code{font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;font-size:.88em
   <div class="box">
     <h3>2. <code>Login Step Success</code> provavelmente significa coisas diferentes em cada trilho</h3>
     <p>No <b>trilho direto</b>, as credenciais vão no formulário do widget — é um login de verdade no banco. No <b>Open Finance</b>, o que se submete é <b>apenas o CPF ou CNPJ</b>; o login acontece depois, no pop-up.</p>
-    <p><span class="tag t-inf">INFERÊNCIA</span> Se o evento do funil for <code>LOGIN_SUCCESS</code>, ele dispara <b>antes do handoff</b> no Open Finance — e a zona B contém o redirecionamento regulado inteiro. Ela deixa de ser majoritariamente ansiedade de espera (E5) para ser majoritariamente a ida e volta ao banco (O9, E1).</p>
-    <p style="margin:0"><b>Como resolver em uma consulta:</b> segmentar <i>Form Submitted → Login Step Success</i> por trilho. Se os 94,5% se mantiverem parecidos nos dois, o evento dispara antes do handoff — é improvável que 94,5% das pessoas completem a autorização no banco.</p>
+    <p><b>RESPONDIDO — e a inferência contornava o problema errado.</b> A v1.0 mediu: <code>Login Step Success</code> <b>não mede login em trilho nenhum</b>. Dispara 22–25 vezes por item, de um <code>useEffect</code> sem trava — mede frequência de polling. Qualquer transição "formulário → login bem-sucedido" construída com ele engana.</p>
+    <p>E <code>Item Polling Finished</code>, que fechava o funil, <b>falta em ~41% dos itens</b>: reportava 47,7% onde o Redshift dá 59,5% para a mesma população.</p>
+    <p style="margin:0">Duas armadilhas a mais: <code>List Item Clicked</code> <b>dispara duas vezes por clique</b>, de dois call sites — sempre filtrar <code>location=connectorsList</code>; e <b>~36% dos usuários de alguns clientes emitem zero evento</b>, por bloqueio client-side, o que não é perda parcial, é usuário inteiro invisível, e é mais comum em desktop.</p>
   </div>
 
   <h2>6. Modos de falha: dezessete estados, oito famílias</h2>
@@ -1878,6 +1894,10 @@ code{font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;font-size:.88em
 
 <section class="panel" id="panel-gates" role="tabpanel" aria-labelledby="tab-gates" hidden>
   <p class="lede">Cruzamento do modelo de gates — oito unidades de orientação sobre dezesseis conectores — com o job map e os outcomes do estudo. Onde os dois se encaixam, onde há lacuna e o que precisa de dado antes de virar prioridade.</p>
+  <div class="box warn">
+    <h3>Reconciliado contra a v1.0 do Estudo <span class="tag t-new">22 set</span></h3>
+    <p style="margin:0">Três correções materiais, todas contra afirmações desta aba: <b>são três gates na etapa 2, não cinco</b> (G1, G2, G3 — e dois deles só no trilho direto); o <b>"gate zero" é nome proibido</b> e o gate se chama <code>entry.rail</code>; e as janelas de guarda usam o funil antigo, substituído pelo mapa L1–L5. A cobertura parcial, registrada aqui como ressalva de amostra, é tratada pela v1.0 como <b>risco número um</b>. Detalhe na aba Main.</p>
+  </div>
 
   <h2>1. Onde cada modelo vive</h2>
   <p>A primeira coisa a fixar, porque confundir isso desmonta os dois modelos.</p>
