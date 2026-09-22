@@ -7,12 +7,16 @@ Publicado em `docs/estudo-jtbd-widget.html`, em cinco abas. **A aba Main é a s�
 | Aba | Fonte | Conteúdo |
 |---|---|---|
 | **Main** | `docs/sintese.md` (v1.0) | análise cruzada das quatro, plano sequenciado, tensões |
-| Estudo | — (v0.5) | job map, 16 outcomes, funil, hipóteses |
+| Estudo | `docs/fonte-connect-outcome-map.html` (v1.0) | Mapa de outcomes do Connect — bilíngue PT/EN, E1–E7, camada de gates, funil com eventos reais |
 | Mapa do widget | `docs/mapa-widget.md` (v1.0) | telas, conectores, eventos, perdas estruturais |
 | Banco de outcomes | `docs/modelo-valor-outcomes.md` (v1.1) | 36 formulações para testar em entrevista |
 | Gates × jobs | `docs/gates-jobs.md` (v1.0) | 8 gates cruzados com job map e outcomes |
 
 Ao acrescentar uma análise nova: ela vira aba própria **e** a Main é atualizada com o que o cruzamento revela.
+
+Documento externo vira aba com `scripts/integrar-aba.py`, que prefixa as classes com `om-` e escopa o CSS sob o painel — sem isso ele reestiliza as outras abas, porque usa os mesmos nomes de token e de classe.
+
+> **Atenção:** a aba Estudo v1.0 traz dados de produção que **contradizem** as abas Main, Mapa e Gates, todas construídas sobre o funil antigo. Ver "Conflito aberto" abaixo.
 
 ## Quem sou e o objetivo
 
@@ -179,3 +183,21 @@ python3 scripts/export-aba.py gates caminho.html
 ```
 
 Abas: `main`, `estudo`, `mapa`, `modelo`, `gates`. Reexportar depois de mudar o documento — os arquivos em `docs/export/` são derivados e não devem ser editados à mão.
+
+## Conflito aberto: a aba Estudo v1.0 invalida números das outras três
+
+A v1.0 do Estudo (22 set 2026) trouxe medição de produção que derruba a base sobre a qual Main, Mapa do widget e Gates × jobs foram escritos. **As três não foram atualizadas** — decisão consciente, para não reescrever por conta própria.
+
+| O que as outras abas afirmam | O que a v1.0 mede |
+|---|---|
+| Funil 37,9% ponta a ponta, 49.600 perdidos | **Não existe número ponta a ponta defensável.** Dentro do widget, 58,0% em 7 dias |
+| `Login Step Success` é o passo de login | **Não mede login.** Dispara 22–25× por item, de um `useEffect` sem trava — mede frequência de polling |
+| `Item Polling Finished` fecha o funil | **Viés de sobrevivência:** falta em ~41% dos itens. Reportava 47,7% onde o Redshift dá 59,5% |
+| Zonas A e B | **L1–L5:** 11,0% / 19,2% / 9,6% / 2,2% / ~23,5%. As duas maiores perdas estão em pontas opostas |
+| Gates atacam a perda principal | Gates disparam **depois da seleção do conector** — alcançam L5 e L3, não L1 nem L2. Valem para ~metade da perda |
+| Proposta de "gate zero" (Main §3, Gates §6.1) | **Proibido:** G0 colidiria com a árvore de decisão de outro time. O nome correto é `entry.rail` |
+| Mobile é o caso difícil | **Mobile converte melhor:** 78,2% × 72,1% desktop, mediana 16s × 26s |
+
+Novidades da v1.0 sem equivalente nas outras abas: **E6** (reversibilidade) e **E7** (sensação de estar sem saída); prefixos `entry.*` e `bridge.*`; unidade de análise `connect_attempt_id`; cobertura de contas como métrica de guarda; ~36% dos usuários de alguns clientes emitem zero evento; CPF e CNPJ vazando em ~138 mil eventos em 90 dias (LGPD, bloqueante).
+
+**Antes de usar Main, Mapa ou Gates:** tratar todo número de funil que vier delas como superado. A reconciliação ainda não foi feita.
